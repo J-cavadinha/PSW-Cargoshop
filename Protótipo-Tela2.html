@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CargoShop - Detalhes do Produto</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            padding-left: 10%;
+        }
+        
+        h2 {
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .menu-icon,
+        .user-icon,
+        .cart-icon {
+            font-size: 24px;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-seller {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            appearance: none;
+        }
+
+        .order-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="menu-icon">☰</span>
+            <h1>CargoShop</h1>
+            <div>
+                <span class="user-icon">👤</span>
+                <span class="cart-icon">🛒</span>
+            </div>
+        </header>
+
+        <h2>Finalizar compra</h2>
+
+        <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Mountain Bike" class="product-image"> 
+        <div class="product-price">R$ 347,90</div>
+        <div class="product-seller">Vendido por: Leonardo Pinto</div>
+
+        <select>
+            <option>Opção de envio</option>
+            <option value="option1">Entrega simples</option>
+            <option value="option2">Entrega rápida</option>
+        </select>
+
+        <select>
+            <option>Forma de pagamento</option>
+            <option value="option1">Cartão de Crédito</option>
+            <option value="option2">Cartão de Débito</option>
+            <option value="option2">Boleto Bancário</option>
+        </select>
+
+        <button class="order-button">Finalizar pedido</button>
+    </div>
+</body>
+</html>
