@@ -6,6 +6,8 @@ import MainPage from './main/mainPage';
 import UserMain from './user/UserMain';
 import ProductDetails from './purchase/ProductDetails';
 import Sidebar from './main/Sidebar';
+import SobreNos from './sidebar/SobreNos';
+import Contato from './sidebar/Contatos';
 
 const App = () => {
 
@@ -25,6 +27,8 @@ return (
         <Route path="/" element={<MainPage/>}></Route>
         <Route path="/usuario" element={<UserMain/>}></Route>
         <Route path="/produtos/:id" element={<ProductDetails />}></Route>
+        <Route path="/sobrenos" element={<SobreNos />}></Route>
+        <Route path="/contato" element={<Contato />}></Route>
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>
     </div>
