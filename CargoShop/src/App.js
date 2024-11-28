@@ -1,4 +1,6 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 
@@ -8,6 +10,7 @@ import ProductDetails from './purchase/ProductDetails';
 import Sidebar from './main/Sidebar';
 import SobreNos from './sidebar/SobreNos';
 import Contato from './sidebar/Contatos';
+import PerfilPage from './user/PerfilPage';
 
 const App = () => {
 
@@ -29,6 +32,8 @@ return (
         <Route path="/produtos/:id" element={<ProductDetails />}></Route>
         <Route path="/sobrenos" element={<SobreNos />}></Route>
         <Route path="/contato" element={<Contato />}></Route>
+        <Route path="/perfil" element={<PerfilPage/>}></Route>
+        <Route exact path="/" component={<UserMain/>}></Route>
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>
     </div>

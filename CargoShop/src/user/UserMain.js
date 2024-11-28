@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Button({ children, onClick, className }) {
   return (
@@ -24,7 +25,9 @@ function Button({ children, onClick, className }) {
 function UserMain() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Button onClick={() => alert('Clicou no botão Perfil')}>Perfil</Button>
+      <Link to="/perfil" style={{ textDecoration: 'none' }}>
+        <Button>Perfil</Button>
+      </Link>
       <Button className="secondary" onClick={() => alert('Clicou no botão Configurações')}>Configurações</Button>
       <Button className="success" onClick={() => alert('Clicou no botão Ajuda')}>Ajuda</Button>
       <Button className="danger" onClick={() => alert('Clicou no botão Relatório')}>Relatório</Button>
