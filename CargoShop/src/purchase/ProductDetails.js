@@ -32,8 +32,9 @@ export default function ProductDetails() {
             <div id="product-price" className="h4">
               R${product.price}
             </div>
-            <div id="product-seller">Vendido por: Leonardo</div>
-    
+            <div id="product-seller">Vendido por: {product.seller}</div>
+            <br/>
+            <p id="product-description">{product.description}</p>
             <select className="form-select mt-3">
               <option>Opção de envio</option>
               <option value="option1">Entrega simples</option>

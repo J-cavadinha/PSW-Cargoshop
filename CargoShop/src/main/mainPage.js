@@ -1,4 +1,3 @@
-'use client'
 import { useState } from 'react';
 import ProductCard from './ProductCard';
 import CategoryCard from './CategoryCard';
@@ -24,9 +23,7 @@ const [categories] = useState([
 const products = useSelector(state => state.products);
 
 const filteredProducts = products.filter(product => {
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory   
-    === 'Todas' || product.category === selectedCategory);
+    return product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory);
     });
 
     return (
@@ -53,9 +50,9 @@ const filteredProducts = products.filter(product => {
             <h2>Produtos</h2>
             <br/>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
-            ))}
+            {
+                filteredProducts.map(product => (<ProductCard key={product.id} product={product} />))
+            }
             </div>
         </div>
     );

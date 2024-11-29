@@ -13,6 +13,8 @@ import PerfilPage from './user/PerfilPage';
 import Pechincha from './user/Pechincha';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import MyProducts from './user/MyProducts';
+import ProductForm from './user/AddProduct';
 
 const App = () => {
 
@@ -36,6 +38,9 @@ return (
         <Route path="/contato" element={<Contato />}></Route>
         <Route path="/perfil" element={<PerfilPage/>}></Route>
         <Route path="/pechinchas" element={<Pechincha/>}></Route>
+        <Route path="/meusprodutos" element={<MyProducts/>}></Route>
+        <Route path="/vender" element={<ProductForm/>}></Route>
+        <Route path="/vender/:id" element={<ProductForm/>}></Route>
         <Route exact path="/" component={<UserMain/>}></Route>
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>

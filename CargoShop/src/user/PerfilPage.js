@@ -6,8 +6,9 @@ function PerfilPage() {
     <div style={styles.container}>
       <h1>Bem-vindo à página de Perfil!</h1>
       
-      {/* Botão colado abaixo do título */}
+      <Link to="/meusprodutos" style={{ textDecoration: 'none' }}>
       <button className="btn btn-primary" style={styles.button}>Seus produtos!</button>
+      </Link>
       <Link to="/pechinchas" style={{ textDecoration: 'none' }}>
         <button className="btn btn-danger" style={styles.button}>Suas Pechinchas!</button>
       </Link>
