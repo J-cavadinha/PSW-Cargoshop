@@ -1,9 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPechincha } from "../slices/PechinchaSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
     const product = location.state.product;
+    const dispatch = useDispatch();
 
     const [pechinchaValue, setPechinchaValue] = useState(0);
     const [notificacao, setNotificacao] = useState('');
@@ -13,8 +16,17 @@ export default function ProductDetails() {
     };
 
     const confirmarValor = () => {
-        const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechinca adicionada a suas pechinchas!`;
-        setNotificacao(message);
+      const novaPechincha = {
+        id: Date.now(),  
+        name: product.name,  
+        price: product.price,  
+        discount: pechinchaValue,  
+        image: product.image  
+      };
+      dispatch(addPechincha(novaPechincha));
+  
+      const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechincha adicionada às suas pechinchas!`;
+      setNotificacao(message);
     };
 
     return (
