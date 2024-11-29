@@ -42,6 +42,8 @@ return (
         <Route path="/vender" element={<ProductForm/>}></Route>
         <Route path="/vender/:id" element={<ProductForm/>}></Route>
         <Route exact path="/" component={<UserMain/>}></Route>
+        <Route path="/Pedidos" element={<Pedidos/>}></Route>
+
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>
     </div>
