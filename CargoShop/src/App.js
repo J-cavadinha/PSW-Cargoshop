@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 
 import MainPage from './main/mainPage';
@@ -12,11 +11,13 @@ import SobreNos from './sidebar/SobreNos';
 import Contato from './sidebar/Contatos';
 import PerfilPage from './user/PerfilPage';
 import Pechincha from './user/Pechincha';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const App = () => {
 
 return (
-
+<Provider store={store}>
 <BrowserRouter>
   <body>
     <div className="container">
@@ -41,7 +42,7 @@ return (
     </div>
   </body>
 </BrowserRouter>
-
+</Provider>
 );
 
 };
