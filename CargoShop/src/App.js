@@ -11,6 +11,7 @@ import Sidebar from './main/Sidebar';
 import SobreNos from './sidebar/SobreNos';
 import Contato from './sidebar/Contatos';
 import PerfilPage from './user/PerfilPage';
+import Pechincha from './user/Pechincha';
 
 const App = () => {
 
@@ -33,6 +34,7 @@ return (
         <Route path="/sobrenos" element={<SobreNos />}></Route>
         <Route path="/contato" element={<Contato />}></Route>
         <Route path="/perfil" element={<PerfilPage/>}></Route>
+        <Route path="/pechinchas" element={<Pechincha/>}></Route>
         <Route exact path="/" component={<UserMain/>}></Route>
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>

@@ -13,7 +13,7 @@ export default function ProductDetails() {
     };
 
     const confirmarValor = () => {
-        const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha!`;
+        const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechinca adicionada a suas pechinchas!`;
         setNotificacao(message);
     };
 
