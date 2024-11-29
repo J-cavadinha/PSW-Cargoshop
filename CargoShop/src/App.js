@@ -13,6 +13,7 @@ import PerfilPage from './user/PerfilPage';
 import Pechincha from './user/Pechincha';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import Pedidos from './Pedidos/Pedidos';
 
 const App = () => {
 
@@ -37,6 +38,8 @@ return (
         <Route path="/perfil" element={<PerfilPage/>}></Route>
         <Route path="/pechinchas" element={<Pechincha/>}></Route>
         <Route exact path="/" component={<UserMain/>}></Route>
+        <Route path="/Pedidos" element={<Pedidos/>}></Route>
+
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>
     </div>

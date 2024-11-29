@@ -1,4 +1,5 @@
 import React from 'react';
+import Pedidos from '../Pedidos/Pedidos'
 import { Link } from 'react-router-dom';
 
 function PerfilPage() {
@@ -8,10 +9,13 @@ function PerfilPage() {
       
       {/* Botão colado abaixo do título */}
       <button className="btn btn-primary" style={styles.button}>Seus produtos!</button>
+
       <Link to="/pechinchas" style={{ textDecoration: 'none' }}>
         <button className="btn btn-danger" style={styles.button}>Suas Pechinchas!</button>
       </Link>
-      <button className="btn btn-warning" style={styles.button}>Seus Pedidos!</button>
+
+      <button onClick={Pedidos} className="btn btn-warning" style={styles.button}><Link to={`../Pedidos`}style={styles.button}>Seus Pedidos!</Link></button>
+
     </div>
   );
 }
@@ -29,7 +33,9 @@ const styles = {
   button: {
     fontSize: '1.5rem',
     padding: '1rem 2rem',
-    marginTop: '100px',             // Pequeno espaçamento abaixo do título
+    marginTop: '100px',
+    textDecoration: "none",
+    color: "#000000"             // Pequeno espaçamento abaixo do título
   },
 };
 

@@ -1,0 +1,70 @@
+.pedidos-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .pedidos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .pedido-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .produto-imagem {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 8px;
+  }
+  
+  .pedido-info {
+    flex-grow: 1;
+  }
+  
+  .pedido-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+  }
+  
+  .pedido-info p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .pedido-status {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .pedido-status span {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+  }
+  
+  .pedido-status span {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .pedido-status span {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .pedido-status span {
+    background-color: #f44336;
+    color: white;
+  }
+  
