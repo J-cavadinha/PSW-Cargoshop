@@ -14,22 +14,21 @@ function PerfilPage() {
   );
 }
 
-// Estilos para centralizar o conteúdo e o botão
 const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',  // Alinha os itens no topo da tela
-    alignItems: 'center',          // Centraliza horizontalmente
-    height: '100vh',               // Ocupa toda a altura da tela
-    paddingTop: '20px',            // Adiciona um pequeno espaço acima do conteúdo
+    justifyContent: 'flex-start',  
+    alignItems: 'center',          
+    height: '100vh',               
+    paddingTop: '20px',            
   },
   button: {
     fontSize: '1.5rem',
     padding: '1rem 2rem',
-    marginTop: '100px',
+    marginTop: '50px',
     textDecoration: "none",
-    color: "#000000"
+    color: "#000000"             
   },
 };
 

@@ -20,6 +20,7 @@ import { fetchProducts } from './slices/ProductsSlice';
 
 store.dispatch(fetchProducts());
 
+
 const App = () => {
 
 return (
@@ -49,7 +50,7 @@ return (
         <Route path="/pedidos" element={<Pedidos/>}></Route>
 
       </Routes>
-      <footer className="py-3">&copy; 2024 CargoShop</footer>
+      <footer className="py-3 text-center">&copy; 2024 CargoShop </footer>
     </div>
   </body>
 </BrowserRouter>
