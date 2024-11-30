@@ -17,6 +17,7 @@ import MyProducts from './user/MyProducts';
 import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
 
+
 const App = () => {
 
 return (
@@ -42,11 +43,12 @@ return (
         <Route path="/meusprodutos" element={<MyProducts/>}></Route>
         <Route path="/vender" element={<ProductForm/>}></Route>
         <Route path="/vender/:id" element={<ProductForm/>}></Route>
-        <Route exact path="/" component={<UserMain/>}></Route>
         <Route path="/Pedidos" element={<Pedidos/>}></Route>
+        <Route exact path="/" component={<UserMain/>}></Route>
+        
 
       </Routes>
-      <footer className="py-3">&copy; 2024 CargoShop</footer>
+      <footer className="py-3 text-center">&copy; 2024 CargoShop </footer>
     </div>
   </body>
 </BrowserRouter>

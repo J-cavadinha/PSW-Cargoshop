@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addPechincha } from "../slices/PechinchaSlice";
+import { addPedidos } from "../Pedidos/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
@@ -26,6 +27,21 @@ export default function ProductDetails() {
       dispatch(addPechincha(novaPechincha));
   
       const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechincha adicionada às suas pechinchas!`;
+      setNotificacao(message);
+    };
+
+    const ConfirmarPedido = () => {
+      const novoPedido = {
+        id: 0,  
+        name: product.name,  
+        price: product.price,    
+        image: product.image ,
+        NomeVendedor : product.seller,
+        status: 'Em andamento',
+      };
+      dispatch(addPedidos(novoPedido));
+
+      const message = `O pedido foi adicionado!`;
       setNotificacao(message);
     };
 
@@ -86,9 +102,10 @@ export default function ProductDetails() {
               {notificacao}
             </div>
     
-            <button className="btn btn-primary btn-lg mt-4 w-100">
+            <button className="btn btn-primary btn-lg mt-4 w-100" onClick={ConfirmarPedido} >
               Finalizar pedido
             </button>
+            
           </div>
         </div>
       );

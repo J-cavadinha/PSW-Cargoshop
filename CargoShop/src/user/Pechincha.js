@@ -6,9 +6,7 @@ import { removePechincha } from '../slices/PechinchaSlice';
 export default function Pechincha() {
 
   const pechinchas = useSelector(state => state.pechinchas); 
-
   const dispatch = useDispatch();  
-
  
   const handleDelete = (id) => {
     dispatch(removePechincha(id)); 

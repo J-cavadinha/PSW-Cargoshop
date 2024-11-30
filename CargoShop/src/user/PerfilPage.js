@@ -14,28 +14,29 @@ function PerfilPage() {
         <button className="btn btn-danger" style={styles.button}>Suas Pechinchas!</button>
       </Link>
 
-      <button onClick={Pedidos} className="btn btn-warning" style={styles.button}><Link to={`../Pedidos`}style={styles.button}>Seus Pedidos!</Link></button>
+      <Link to={"../Pedidos"} style={{textDecoration: 'none'}}>
+      <button onClick={Pedidos} className="btn btn-warning" style={styles.button}>Seus Pedidos!</button>
+      </Link>
 
     </div>
   );
 }
 
-// Estilos para centralizar o conteúdo e o botão
 const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',  // Alinha os itens no topo da tela
-    alignItems: 'center',          // Centraliza horizontalmente
-    height: '100vh',               // Ocupa toda a altura da tela
-    paddingTop: '20px',            // Adiciona um pequeno espaço acima do conteúdo
+    justifyContent: 'flex-start',  
+    alignItems: 'center',          
+    height: '100vh',               
+    paddingTop: '20px',            
   },
   button: {
     fontSize: '1.5rem',
     padding: '1rem 2rem',
-    marginTop: '100px',
+    marginTop: '50px',
     textDecoration: "none",
-    color: "#000000"             // Pequeno espaçamento abaixo do título
+    color: "#000000"             
   },
 };
 
