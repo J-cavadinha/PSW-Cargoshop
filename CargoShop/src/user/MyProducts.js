@@ -9,7 +9,6 @@ export default function MyProducts() {
         return product.seller.toLowerCase().includes("leonardo");
         });
 
-
     return (
         <div>
             <br/>

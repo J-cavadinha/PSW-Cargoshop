@@ -42,21 +42,24 @@ function ProductForm() {
 
     return (
         <div className="container">
+            <br/>
+            <div className="text-center"><h1>Produto</h1></div>
+            <br/>
             <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <label htmlFor="name" className="form-label">Name</label>
+                <label htmlFor="name" className="form-label">Nome</label>
                 <input type="text" className="form-control" id="name" name="name" value={product.name} onChange={handleChange} />
             </div>
             <div className="mb-3">
-                <label htmlFor="description" className="form-label">Description</label>
+                <label htmlFor="description" className="form-label">Descrição</label>
                 <textarea className="form-control" id="description" name="description" value={product.description} onChange={handleChange} />
             </div>
             <div className="mb-3">
-                <label htmlFor="price" className="form-label">Price</label>
+                <label htmlFor="price" className="form-label">Preço</label>
                 <input type="number" className="form-control" id="price" name="price" value={product.price} onChange={handleChange} />
             </div>
             <div className="mb-3">
-                <label htmlFor="category" className="form-label">Category</label>
+                <label htmlFor="category" className="form-label">Categoria</label>
                 <select className="form-select" id="category" name="category" value={product.category} onChange={handleChange}>
                 <option value="Todas">Categoria</option>
                 <option value="Beleza">Beleza</option>
@@ -72,7 +75,7 @@ function ProductForm() {
                 </select>
             </div>
             <div className="mb-3">
-                <label htmlFor="image" className="form-label">Image</label>
+                <label htmlFor="image" className="form-label">Imagem</label>
                 <input type="file" className="form-control" id="image" name="image" onChange={handleImageChange} />
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>

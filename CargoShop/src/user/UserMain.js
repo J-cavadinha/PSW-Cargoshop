@@ -29,8 +29,7 @@ function UserMain() {
         <Button>Perfil</Button>
       </Link>
       <Button className="secondary" onClick={() => alert('Clicou no botão Configurações')}>Configurações</Button>
-      <Button className="success" onClick={() => alert('Clicou no botão Ajuda')}>Ajuda</Button>
-      <Button className="danger" onClick={() => alert('Clicou no botão Relatório')}>Relatório</Button>
+      <Button className="danger" onClick={() => alert('Clicou no botão Relatório')}>Relatórios</Button>
     </div>
   );
 }

@@ -16,6 +16,9 @@ import { store } from './store';
 import MyProducts from './user/MyProducts';
 import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
+import { fetchProducts } from './slices/ProductsSlice';
+
+store.dispatch(fetchProducts());
 
 const App = () => {
 
@@ -43,7 +46,7 @@ return (
         <Route path="/vender" element={<ProductForm/>}></Route>
         <Route path="/vender/:id" element={<ProductForm/>}></Route>
         <Route exact path="/" component={<UserMain/>}></Route>
-        <Route path="/Pedidos" element={<Pedidos/>}></Route>
+        <Route path="/pedidos" element={<Pedidos/>}></Route>
 
       </Routes>
       <footer className="py-3">&copy; 2024 CargoShop</footer>
