@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import CategoryCard from './CategoryCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../slices/ProductsSlice';
 
 export default function MainPage() {
 const [showCategories, setShowCategories] = useState(false);
@@ -20,11 +21,30 @@ const [categories] = useState([
           '🛒 Todas'
           ]);
 
-const products = useSelector(state => state.products);
+const products = useSelector(state => state.products.products);
+const status = useSelector(state => state.products.status);
+const error =  useSelector(state => state.products.error);
+
+const dispatch = useDispatch();
+
+useEffect(() => {
+    if (status === "not_loaded") {
+        dispatch(fetchProducts());
+    }
+}, [status, dispatch])
 
 const filteredProducts = products.filter(product => {
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory);
+        return product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory);
     });
+
+    let produtos = null;
+    if (status === "loaded") {
+        produtos = filteredProducts.map(product => (<ProductCard key={product.id} product={product} />));
+    } else if (status === "loading") {
+        produtos = <div>Carregando os produtos...</div>;
+    } else if (status === "failed") {
+        produtos = <div>Erro: {error}</div>
+    }
 
     return (
         <div>
@@ -50,9 +70,7 @@ const filteredProducts = products.filter(product => {
             <h2>Produtos</h2>
             <br/>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {
-                filteredProducts.map(product => (<ProductCard key={product.id} product={product} />))
-            }
+                {produtos}
             </div>
         </div>
     );

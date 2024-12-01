@@ -8,7 +8,7 @@ function ProductForm() {
     let { id } = useParams();
     id = parseInt(id);
 
-    const products = useSelector(state => state.products);
+    const products = useSelector(state => state.products.products);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

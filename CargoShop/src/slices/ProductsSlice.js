@@ -1,36 +1,48 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const initialProducts = [];
+const initialState =  {
+    status: "not_loaded",
+    products: [],
+    error: null
+}
 
-function addProductReducer(produtos, produto) {
+function addProductReducer(state, product) {
     let id;
+
     try {
-        id = 1 + produtos.map(p => p.id).reduce((x, y) => Math.max(x, y));
-    } catch {id = 1}
-    return produtos.concat([{...produto, id: id}]);
+        id = 1 + state.products.map(p => p.id).reduce((x, y) => Math.max(x, y));
+    } catch {
+        id = 1;
+    }
+
+    return { ...state, products: state.products.concat({ ...product, id: id }) };
 }
 
-function updateProductReducer(produtos, produto) {
-    let index = produtos.map(p => p.id).indexOf(produto.id);
-    produtos.splice(index, 1, produto);
-    return produtos;
+function updateProductReducer(state, product) {
+    const products = state.products.slice();
+    const index = products.map(p => p.id).indexOf(product.id);
+
+    products.splice(index, 1, product);
+
+    return { ...state, products: products };
 }
 
-function removeProductReducer(produtos, id) {
-    return produtos.filter((p) => p.id !== id);
+function removeProductReducer(state, id) {
+    return { ...state, products: state.products.filter((p) => p.id !== id) };
 }
 
 export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
     return await (await fetch("http://localhost:3004/products")).json();
 })
 
-function fullfillProductsReducer(productState, productsFetched) {
-    return productsFetched;
+function fullfillProductsReducer(productsState, productsFetched) {
+    productsState.status = "loaded";
+    productsState.products = productsFetched;
 }
 
 export const productSlice = createSlice({
     name: 'products',
-    initialState: initialProducts,
+    initialState: initialState,
     reducers: {
         addProduct: (state, action) => addProductReducer(state, action.payload),
         updateProduct: (state, action) => updateProductReducer(state, action.payload),
@@ -38,6 +50,13 @@ export const productSlice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(fetchProducts.fulfilled, (state, action) => fullfillProductsReducer(state, action.payload));
+        builder.addCase(fetchProducts.pending, (state, action) => {
+            state.status = "loading"
+        });
+        builder.addCase(fetchProducts.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.message
+        })
     }
 });
 

@@ -16,17 +16,12 @@ import { store } from './store';
 import MyProducts from './user/MyProducts';
 import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
-import { fetchProducts } from './slices/ProductsSlice';
-
-store.dispatch(fetchProducts());
-
 
 const App = () => {
 
 return (
 <Provider store={store}>
 <BrowserRouter>
-  <body>
     <div className="container">
       <header className="d-flex justify-content-between align-items-center py-3">
       <Sidebar />
@@ -52,7 +47,6 @@ return (
       </Routes>
       <footer className="py-3 text-center">&copy; 2024 CargoShop </footer>
     </div>
-  </body>
 </BrowserRouter>
 </Provider>
 );
