@@ -5,9 +5,10 @@ import { removePechincha } from '../slices/PechinchaSlice';
 
 export default function Pechincha() {
 
-  const pechinchas = useSelector(state => state.pechinchas); 
+  
+  const pechinchas = useSelector(state => state.pechinchas.pechinchas); 
   const dispatch = useDispatch();  
- 
+
   const handleDelete = (id) => {
     dispatch(removePechincha(id)); 
   };
@@ -21,7 +22,7 @@ export default function Pechincha() {
           <PechinchaCard 
             key={pechincha.id} 
             pechincha={pechincha} 
-            onDelete={handleDelete} 
+            onDelete={handleDelete}  
           />
         ))}
       </div>

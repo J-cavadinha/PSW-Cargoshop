@@ -1,29 +1,64 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const initialPechinchas = [
-  { id: 19, name: 'Batom', price: 29, discount: 15, image: 'image_url' },
-  { id: 20, name: 'Rímel', price: 27, discount: 10, image: 'image_url' },
-  { id: 1, name: 'Mountain Bike Aro 29', price: 26, discount: 3, image: 'image_url' },
-];
+const initialState = {
+  status: "not_loaded",
+  pechinchas: [],
+  error: null,
+};
 
-const pechinchaSlice = createSlice({
+function addPechinchaReducer(state, action) {
+  let id;
+
+  try {
+    id = 1 + state.pechinchas.map(p => p.id).reduce((x, y) => Math.max(x, y));
+  } catch {
+    id = 1;
+  }
+
+  return { ...state, pechinchas: state.pechinchas.concat({ ...action.payload, id: id }) };
+}
+
+function updatePechinchaReducer(state, action) {
+  const pechinchas = state.pechinchas.slice();
+  const index = pechinchas.map(p => p.id).indexOf(action.payload.id);
+
+  pechinchas.splice(index, 1, action.payload.updatedPechincha);
+
+  return { ...state, pechinchas: pechinchas };
+}
+
+function removePechinchaReducer(state, action) {
+  return { ...state, pechinchas: state.pechinchas.filter((p) => p.id !== action.payload) };
+}
+
+export const fetchPechinchas = createAsyncThunk("pechinchas/fetchPechinchas", async () => {
+  return await (await fetch("http://localhost:3004/pechinchas")).json();
+});
+
+function fullfillPechinchasReducer(pechinchasState, pechinchasFetched) {
+  pechinchasState.status = "loaded";
+  pechinchasState.pechinchas = pechinchasFetched;
+}
+
+export const pechinchaSlice = createSlice({
   name: 'pechinchas',
-  initialState: initialPechinchas,
+  initialState,
   reducers: {
-    addPechincha(state, action) {
-      const id = state.map((p) => p.id).reduce((x, y) => Math.max(x, y), 0) + 1; 
-      action.payload.id = id;
-      state.push(action.payload);
-    },
-    updatePechincha(state, action) {
-      const { id, updatedPechincha } = action.payload;
-      const index = state.findIndex((pechincha) => pechincha.id === id);
-      state[index] = updatedPechincha;
-    },
-    removePechincha(state, action) {
-      return state.filter((pechincha) => pechincha.id !== action.payload);  
-    },
+    addPechincha: (state, action) => addPechinchaReducer(state, action),
+    updatePechincha: (state, action) => updatePechinchaReducer(state, action),
+    removePechincha: (state, action) => removePechinchaReducer(state, action),
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPechinchas.fulfilled, (state, action) => fullfillPechinchasReducer(state, action.payload))
+      .addCase(fetchPechinchas.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchPechinchas.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  }
 });
 
 export const { addPechincha, updatePechincha, removePechincha } = pechinchaSlice.actions;

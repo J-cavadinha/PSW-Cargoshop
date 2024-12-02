@@ -16,18 +16,37 @@ export default function ProductDetails() {
         setPechinchaValue(parseFloat(event.target.value));
     };
 
-    const confirmarValor = () => {
+    const confirmarValor = async () => {
       const novaPechincha = {
-        id: Date.now(),  
+        id: product.id,  
         name: product.name,  
         price: product.price,  
         discount: pechinchaValue,  
         image: product.image  
       };
-      dispatch(addPechincha(novaPechincha));
-  
-      const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechincha adicionada às suas pechinchas!`;
-      setNotificacao(message);
+      try {
+        const response = await fetch("http://localhost:3004/pechinchas", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(novaPechincha),
+        });
+
+        if (response.ok) {
+
+          dispatch(addPechincha(novaPechincha));
+
+          const message = `Você ofereceu R$${pechinchaValue.toFixed(2)} de pechincha! Pechincha adicionada às suas pechinchas!`;
+          setNotificacao(message);
+        } else {
+
+          setNotificacao('Erro ao adicionar a pechincha. Tente novamente.');
+        }
+      } catch (error) {
+
+        setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
+      }
     };
 
     const ConfirmarPedido = () => {
@@ -35,8 +54,8 @@ export default function ProductDetails() {
         id: 0,  
         name: product.name,  
         price: product.price,    
-        image: product.image ,
-        NomeVendedor : product.seller,
+        image: product.image,
+        NomeVendedor: product.seller,
         status: 'Em andamento',
       };
       dispatch(addPedidos(novoPedido));
