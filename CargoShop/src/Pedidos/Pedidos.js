@@ -1,19 +1,13 @@
-import { useEffect, React } from 'react';
+import { React } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from "./PedidosCard";
-import { removePedidos, fetchPedidos } from './PedidoSlice';
+import { removePedidos} from './PedidoSlice';
 
 
 export default function Pedidos() {
 
   const { pedidos, status, error } = useSelector((state) => state.pedidos);
   const dispatch = useDispatch();  
-
-  useEffect(() => {
-    if (status === "not_loaded") {
-      dispatch(fetchPedidos());
-    }
-  }, [status, dispatch]);
   
   const handleDelete = async (id) => {
     try {
