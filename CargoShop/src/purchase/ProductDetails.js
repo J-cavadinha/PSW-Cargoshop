@@ -49,19 +49,37 @@ export default function ProductDetails() {
       }
     };
 
-    const ConfirmarPedido = () => {
+    const ConfirmarPedido = async () => {
       const novoPedido = {
-        id: 0,  
+        id: product.id,  
         name: product.name,  
         price: product.price,    
         image: product.image,
         NomeVendedor: product.seller,
         status: 'Em andamento',
+        endereco: 'Rua A',
       };
+      try {
+        const response = await fetch("http://localhost:3004/pedidos", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(novoPedido),
+        });
+      if (response.ok) {
       dispatch(addPedidos(novoPedido));
 
       const message = `O pedido foi adicionado!`;
       setNotificacao(message);
+      }else {
+
+        setNotificacao('Erro ao adicionar a pedido. Tente novamente.');
+      }
+      } catch (error) {
+
+        setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
+      }
     };
 
     return (

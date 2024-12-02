@@ -1,34 +1,48 @@
-import React from 'react';
+import { useEffect, React } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from "./PedidosCard";
-import { removePedidos } from './PedidoSlice';
+import { removePedidos, fetchPedidos } from './PedidoSlice';
+
 
 export default function Pedidos() {
 
-  const pedidos = useSelector(state => state.pedidos); 
+  const { pedidos, status, error } = useSelector((state) => state.pedidos);
   const dispatch = useDispatch();  
+
+  useEffect(() => {
+    if (status === "not_loaded") {
+      dispatch(fetchPedidos());
+    }
+  }, [status, dispatch]);
   
-  const handleDelete = (id) => {
-    dispatch(removePedidos(id)); 
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`http://localhost:3004/pedidos/${id}`, {
+        method: 'DELETE',
+      });
+      dispatch(removePedidos(id));
+    } catch (error) {
+      console.error('Erro ao excluir pedido:', error);
+    }
   };
-
-  if (pedidos.length === 0) {
-    return <h2 style={{ textAlign: 'center' , marginBottom: '30px'}}>Nenhum pedido encontrado.</h2>;
-  };
-
+  
+  if (status === "failed") {
+    return <p>Erro ao carregar os pedidos: {error}</p>;
+  }
   return (
     
     <div className="container">
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
-      <div className="row g-4">
-        {pedidos.map(pedido => (  
-          <PedidosCard 
-            key={pedido.id} 
-            pedido={pedido} 
-            onDelete={handleDelete} 
-          />
-        ))}
-      </div>
+        <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
+        <div className="row g-4">
+
+          {pedidos.map(pedido => (  
+            <PedidosCard 
+              key={pedido.id} 
+              pedido={pedido} 
+              onDelete={handleDelete} 
+            />
+          ))}
+        </div>
     </div>
   );
 }
