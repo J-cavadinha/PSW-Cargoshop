@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { removeProduct } from "../slices/ProductsSlice";
+import { removeProductServer } from "../slices/ProductsSlice";
 import { useDispatch } from "react-redux";
 
 export default function ProductCard({ product }) {
@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
                         {product.price}
                     </p>
                     <button className="btn btn-warning mx-1"><Link to={`/vender/${product.id}`} style={{color: "#FFFFFF", textDecoration: "none"}} state={{product}}>Editar</Link></button>
-                    <button className="btn btn-danger mx-1" onClick={() => dispatch(removeProduct(product.id))}>Remover</button>
+                    <button className="btn btn-danger mx-1" onClick={() => dispatch(removeProductServer(product.id))}>Remover</button>
                 </div>
             </div>
       </div>

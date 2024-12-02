@@ -2,38 +2,40 @@ import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import CategoryCard from './CategoryCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../slices/ProductsSlice';
+import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
 
 export default function MainPage() {
-const [showCategories, setShowCategories] = useState(false);
-const [searchTerm, setSearchTerm] = useState('');
-const [selectedCategory, setSelectedCategory] = useState('Todas');
-const [categories] = useState([
-          '💄 Beleza',
-          '🚲 Bicicletas',
-          '🛍️ Compras',
-          '💻 Eletrônicos',
-          '🔧 Ferramentas',
-          '💎 Joalheria',
-          '👓 Óculos',
-          '✏️ Papelaria',
-          '⌚ Relógios',
-          '🛒 Todas'
-          ]);
+    const [showCategories, setShowCategories] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('Todas');
+    const [categories] = useState([
+            '💄 Beleza',
+            '🚲 Bicicletas',
+            '🛍️ Compras',
+            '💻 Eletrônicos',
+            '🔧 Ferramentas',
+            '💎 Joalheria',
+            '👓 Óculos',
+            '✏️ Papelaria',
+            '⌚ Relógios',
+            '🛒 Todas'
+            ]);
 
-const products = useSelector(state => state.products.products);
-const status = useSelector(state => state.products.status);
-const error =  useSelector(state => state.products.error);
+    const products = useSelector(selectAllProducts);
+    const status = useSelector(state => state.products.status);
+    const error =  useSelector(state => state.products.error);
 
-const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-useEffect(() => {
-    if (status === "not_loaded") {
-        dispatch(fetchProducts());
-    }
-}, [status, dispatch])
+    useEffect(() => {
+        if (status === "not_loaded" || status === "saved" || status === "deleted") {
+            dispatch(fetchProducts());
+        } else if (status === "failed") {
+            setTimeout(() => dispatch(fetchProducts()), 5000);
+        }
+    }, [status, dispatch])
 
-const filteredProducts = products.filter(product => {
+    const filteredProducts = products.filter(product => {
         return product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory);
     });
 

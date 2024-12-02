@@ -1,65 +1,75 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { httpDelete, httpGet, httpPost, httpPut } from '../utils';
 
-const initialState =  {
+const productsAdapter = createEntityAdapter();
+
+const initialState =  productsAdapter.getInitialState({
     status: "not_loaded",
-    products: [],
     error: null
-}
+});
 
-function addProductReducer(state, product) {
-    let id;
-
-    try {
-        id = 1 + state.products.map(p => p.id).reduce((x, y) => Math.max(x, y));
-    } catch {
-        id = 1;
-    }
-
-    return { ...state, products: state.products.concat({ ...product, id: id }) };
-}
-
-function updateProductReducer(state, product) {
-    const products = state.products.slice();
-    const index = products.map(p => p.id).indexOf(product.id);
-
-    products.splice(index, 1, product);
-
-    return { ...state, products: products };
-}
-
-function removeProductReducer(state, id) {
-    return { ...state, products: state.products.filter((p) => p.id !== id) };
-}
+const baseUrl = "http://localhost:3004";
 
 export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-    return await (await fetch("http://localhost:3004/products")).json();
-})
+    return await httpGet(`${baseUrl}/products`);
+});
 
-function fullfillProductsReducer(productsState, productsFetched) {
-    productsState.status = "loaded";
-    productsState.products = productsFetched;
-}
+export const addProductServer = createAsyncThunk("products/addProductServer", async (product) => {
+    return await httpPost(`${baseUrl}/products`, product);
+});
+
+export const updateProductServer = createAsyncThunk("products/updateProductServer", async (product) => {
+    return await httpPut(`${baseUrl}/products/${product.id}`, product);
+});
+
+export const removeProductServer = createAsyncThunk("products/removeProductServer", async (productId) => {
+    await httpDelete(`${baseUrl}/products/${productId}`);
+    return productId;
+});
 
 export const productSlice = createSlice({
     name: 'products',
     initialState: initialState,
-    reducers: {
-        addProduct: (state, action) => addProductReducer(state, action.payload),
-        updateProduct: (state, action) => updateProductReducer(state, action.payload),
-        removeProduct: (state, action) => removeProductReducer(state, action.payload)
-    },
     extraReducers: builder => {
-        builder.addCase(fetchProducts.fulfilled, (state, action) => fullfillProductsReducer(state, action.payload));
+        builder.addCase(fetchProducts.fulfilled, (state, action) => {
+            state.status = "loaded";
+            productsAdapter.setAll(state, action.payload);
+        });
         builder.addCase(fetchProducts.pending, (state, action) => {
-            state.status = "loading"
+            state.status = "loading";
         });
         builder.addCase(fetchProducts.rejected, (state, action) => {
             state.status = "failed";
-            state.error = action.error.message
-        })
+            state.error = action.error.message;
+        });
+        builder.addCase(addProductServer.fulfilled, (state, action) => {
+            state.status = "saved";
+            productsAdapter.addOne(state, action.payload);
+        });
+        builder.addCase(addProductServer.pending, (state, action) => {
+            state.status = "loading";
+        });
+        builder.addCase(updateProductServer.fulfilled, (state, action) => {
+            state.status = "saved";
+            productsAdapter.upsertOne(state, action.payload);
+        });
+        builder.addCase(updateProductServer.pending, (state, action) => {
+            state.status = "loading";
+        });
+        builder.addCase(removeProductServer.fulfilled, (state, action) => {
+            state.status = "deleted";
+            productsAdapter.removeOne(state, action.payload);
+        });
+        builder.addCase(removeProductServer.pending, (state, action) => {
+            state.status = "loading";
+        });
     }
 });
 
-export const { addProduct, updateProduct, removeProduct } = productSlice.actions;
-
 export default productSlice.reducer;
+
+export const {
+    selectAll: selectAllProducts,
+    selectById: selectProductsById,
+    selectIds: selectProductsIds
+} = productsAdapter.getSelectors(state => state.products);

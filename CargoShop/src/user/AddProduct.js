@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, updateProduct } from '../slices/ProductsSlice';
+import { addProductServer, selectAllProducts, selectProductsById, updateProductServer } from '../slices/ProductsSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function ProductForm() {
 
     let { id } = useParams();
-    id = parseInt(id);
 
-    const products = useSelector(state => state.products.products);
+    const productFound = useSelector(state => selectProductsById(state, id));
+
+    const products = useSelector(selectAllProducts);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(
-        id ? products.filter((p) => p.id === id)[0] ?? {name: '', description: '', id: 0, price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
-        } : {name: '', description: '', id: 0, price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
+        id ? productFound ?? {name: '', description: '', id: "0", price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
+        } : {name: '', description: '', id: "0", price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
         }
     );
 
     const [actionType, ] = useState(
-        id ? products.filter((p) => p.id === id)[0] ? 'update' : 'add' : 'add'
+        id ? productFound ? 'update' : 'add' : 'add'
     );
 
     const handleChange = (event) => {
@@ -33,10 +34,18 @@ function ProductForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (actionType === 'add')
-            dispatch(addProduct(product));
+
+        if (actionType === 'add') {
+            try {
+                product.id = (1 + products.map(p => parseInt(p.id)).reduce((x, y) => Math.max(x, y))).toString();
+            } catch {
+                product.id = "1";
+            }
+            dispatch(addProductServer(product));
+        }
         else
-            dispatch(updateProduct(product));
+            dispatch(updateProductServer(product));
+        
         navigate('/');
     };
 

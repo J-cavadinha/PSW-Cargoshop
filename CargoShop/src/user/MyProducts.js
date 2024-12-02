@@ -2,18 +2,20 @@ import { useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProducts } from '../slices/ProductsSlice';
+import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
 
 export default function MyProducts() {
-    const products = useSelector(state => state.products.products);
+    const products = useSelector(selectAllProducts);
     const status = useSelector(state => state.products.status);
     const error =  useSelector(state => state.products.error);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (status === "not_loaded") {
+        if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchProducts());
+        } else if (status === "failed") {
+            setTimeout(() => dispatch(fetchProducts()), 5000);
         }
     }, [status, dispatch])
 
