@@ -2,50 +2,42 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductServer, selectAllProducts, selectProductsById, updateProductServer } from '../slices/ProductsSlice';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { productSchema } from './ProductSchema';
 
 function ProductForm() {
-
     let { id } = useParams();
 
     const productFound = useSelector(state => selectProductsById(state, id));
-
     const products = useSelector(selectAllProducts);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [product, setProduct] = useState(
-        id ? productFound ?? {name: '', description: '', id: "0", price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
-        } : {name: '', description: '', id: "0", price: 0, seller: 'Leonardo Pinto', category: '', image: 'https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png'
-        }
-    );
 
     const [actionType, ] = useState(
         id ? productFound ? 'update' : 'add' : 'add'
     );
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setProduct({ ...product, [name]: value });
-    };
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(productSchema)
+    });
 
-    const handleImageChange = (event) => {
-        setProduct({ ...product, image: event.target.files[0] });
-    };
+    const [productOnLoad] = useState(
+        id ? productFound ?? productSchema.cast({}) : productSchema.cast({})
+    );
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        if (actionType === 'add') {
+    function onSubmit(product) {
+        if (actionType === "add") {
             try {
                 product.id = (1 + products.map(p => parseInt(p.id)).reduce((x, y) => Math.max(x, y))).toString();
             } catch {
                 product.id = "1";
             }
             dispatch(addProductServer(product));
+        } else {
+            dispatch(updateProductServer({ ...product, id: productFound.id }));
         }
-        else
-            dispatch(updateProductServer(product));
-        
+
         navigate('/');
     };
 
@@ -54,40 +46,75 @@ function ProductForm() {
             <br/>
             <div className="text-center"><h1>Produto</h1></div>
             <br/>
-            <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <label htmlFor="name" className="form-label">Nome</label>
-                <input type="text" className="form-control" id="name" name="name" value={product.name} onChange={handleChange} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="description" className="form-label">Descrição</label>
-                <textarea className="form-control" id="description" name="description" value={product.description} onChange={handleChange} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="price" className="form-label">Preço</label>
-                <input type="number" className="form-control" id="price" name="price" value={product.price} onChange={handleChange} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="category" className="form-label">Categoria</label>
-                <select className="form-select" id="category" name="category" value={product.category} onChange={handleChange}>
-                <option value="Todas">Categoria</option>
-                <option value="Beleza">Beleza</option>
-                <option value="Bicicletas">Bicicletas</option>
-                <option value="Compras">Compras</option>
-                <option value="Eletrônicos">Eletrônicos</option>
-                <option value="Ferramentas">Ferramentas</option>
-                <option value="Joalheria">Joalheria</option>
-                <option value="Óculos">Óculos</option>
-                <option value="Papelaria">Papelaria</option>
-                <option value="Relógios">Relógios</option>
-                <option value="Todas">Geral</option>
-                </select>
-            </div>
-            <div className="mb-3">
-                <label htmlFor="image" className="form-label">Imagem</label>
-                <input type="file" className="form-control" id="image" name="image" onChange={handleImageChange} />
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Nome</label>
+                    <input 
+                        placeholder="Insira o nome do produto" 
+                        type="text" 
+                        className="form-control" 
+                        name="name" 
+                        defaultValue={productOnLoad.name}
+                        {...register("name")}
+                    />
+                    {errors.name && <p>{errors.name.message}</p>}
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">Descrição</label>
+                    <textarea 
+                        placeholder="Insira uma descrição para o produto"
+                        className="form-control"
+                        name="description"
+                        defaultValue={productOnLoad.description}
+                        {...register("description")}
+                    />
+                    {errors.description && <p>{errors.description.message}</p>}
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="price" className="form-label">Preço</label>
+                    <input
+                        placeholder="Insira o valor do produto"
+                        type="number"
+                        className="form-control"
+                        name="price"
+                        defaultValue={productOnLoad.price}
+                        {...register("price")}
+                    />
+                    {errors.price && <p>{errors.price.message}</p>}
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="category" className="form-label">Categoria</label>
+                    <select
+                        className="form-select"
+                        name="category"
+                        defaultValue={productOnLoad.category}
+                        {...register("category")}
+                    >
+                        <option value="Todas">Geral</option>
+                        <option value="Beleza">Beleza</option>
+                        <option value="Bicicletas">Bicicletas</option>
+                        <option value="Compras">Compras</option>
+                        <option value="Eletrônicos">Eletrônicos</option>
+                        <option value="Ferramentas">Ferramentas</option>
+                        <option value="Joalheria">Joalheria</option>
+                        <option value="Óculos">Óculos</option>
+                        <option value="Papelaria">Papelaria</option>
+                        <option value="Relógios">Relógios</option>
+                    </select>
+                    {errors.category && <p>{errors.category.message}</p>}
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="image" className="form-label">Imagem</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        name="image"
+                        defaultValue={productOnLoad.image}
+                        {...register("image")}
+                    />
+                    {errors.image && <p>{errors.image.message}</p>}
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     );
