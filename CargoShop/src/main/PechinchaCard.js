@@ -1,54 +1,99 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { removePechincha, updatePechincha } from '../slices/PechinchaSlice'; // Importando as ações do Redux
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
+import { fetchPechinchas, removePechincha, updatePechincha } from '../slices/PechinchaSlice'; 
 import '../PechinchaCard.css';
 
 export default function PechinchaCard({ pechincha }) {
-  const dispatch = useDispatch();  // Hook para disparar ações do Redux
+  const dispatch = useDispatch();
+  
+  const status = useSelector(state => state.products.status);
+
+  
+  useEffect(() => {
+      if (status === "not_loaded") {
+          dispatch(fetchPechinchas());
+      }
+  }, [status, dispatch])
 
   const [showCancelModal, setShowCancelModal] = useState(false); 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [pechinchaValue, setPechinchaValue] = useState(pechincha.discount);  // Inicializando com o valor de desconto
+  const [pechinchaValue, setPechinchaValue] = useState(pechincha.discount);  
   const [notificacao, setNotificacao] = useState('');
 
-  // Função para atualizar o valor da pechincha
+ 
   const handlePechinchaChange = (event) => {
     setPechinchaValue(parseFloat(event.target.value));
   };
 
-  // Exibir o modal de cancelamento
+
   const handleCancelClick = () => {
     setShowCancelModal(true); 
   };
 
-  // Exibir o modal de edição
+
   const handleEditClick = () => {
     setShowEditModal(true);
   };
 
-  // Confirmar a edição da pechincha (atualiza no Redux)
-  const handleConfirmEdit = () => {
+  const handleConfirmEdit = async () => {
     const updatedPechincha = {
       ...pechincha,
-      discount: pechinchaValue, // Atualizando o desconto
+      discount: pechinchaValue, 
     };
-    dispatch(updatePechincha({ id: pechincha.id, updatedPechincha })); // Disparando a ação para atualizar
-    setNotificacao(`Pechincha atualizada para R$${pechinchaValue.toFixed(2)}`);
-    setShowEditModal(false);
+  
+    try {
+      const response = await fetch(`http://localhost:3004/pechinchas/${pechincha.id}`, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPechincha), 
+      });
+  
+      if (response.ok) {
+        const updatedPechinchaFromServer = await response.json(); 
+        dispatch(updatePechincha({ id: pechincha.id, updatedPechincha: updatedPechinchaFromServer })); 
+        setNotificacao(`Pechincha atualizada para R$${pechinchaValue.toFixed(2)}`);
+        setShowEditModal(false); 
+      } 
+      else {
+        setNotificacao('Erro ao editar a pechincha. Tente novamente.');
+      }
+    } catch (error) {
+      setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
+    }
   };
 
-  // Confirmar o cancelamento da pechincha (remove do Redux)
-  const handleConfirmCancel = () => {
-    dispatch(removePechincha(pechincha.id)); // Disparando a ação para remover
+  const handleConfirmCancel = async () => {
+    dispatch(removePechincha(pechincha.id));
+    try {
+      const response = await fetch(`http://localhost:3004/pechinchas/${pechincha.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+
+        dispatch(removePechincha(pechincha.id));
+
+      } else {
+
+        setNotificacao('Erro ao adicionar a pechincha. Tente novamente.');
+      }
+    } catch (error) {
+
+      setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
+    }
+      
     setShowCancelModal(false);
   };
 
-  // Fechar o modal de cancelamento
   const handleCloseCancelModal = () => {
     setShowCancelModal(false); 
   };
 
-  // Fechar o modal de edição
   const handleCloseEditModal = () => {
     setShowEditModal(false); 
   };
@@ -75,7 +120,7 @@ export default function PechinchaCard({ pechincha }) {
         </div>
       </div>
 
-      {/* Modal de Cancelamento */}
+    
       {showCancelModal && (
         <div className="modal">
           <div className="modal-content">
@@ -86,7 +131,6 @@ export default function PechinchaCard({ pechincha }) {
         </div>
       )}
         
-      {/* Modal de Edição */}
       {showEditModal && (
         <div className="modal">
           <div className="modal-content">
