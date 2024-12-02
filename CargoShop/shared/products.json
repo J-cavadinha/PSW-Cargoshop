@@ -1,13 +1,13 @@
 {
   "products": [
     {
-      "name": "Batom",
-      "id": "1",
-      "price": "25",
-      "description": "Batom vermelho bom.",
-      "category": "Beleza",
+      "image": "https://images.pexels.com/photos/2587370/pexels-photo-2587370.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "seller": "Leonardo Pinto",
-      "image": "https://images.pexels.com/photos/2587370/pexels-photo-2587370.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      "category": "Beleza",
+      "price": 25,
+      "description": "Batom vermelho bom.",
+      "name": "Batom",
+      "id": "1"
     },
     {
       "name": "Rímel",
@@ -19,13 +19,13 @@
       "image": "https://images.pexels.com/photos/2637820/pexels-photo-2637820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "name": "Mountain Bike Aro 29",
-      "id": "3",
+      "image": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "seller": "Leonardo Pinto",
+      "category": "Bicicletas",
       "price": 2500,
       "description": "Bicicleta ideal para trilhas e terrenos acidentados.",
-      "category": "Bicicletas",
-      "seller": "Leonardo Pinto",
-      "image": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      "name": "Mountain Bike Aro",
+      "id": "3"
     },
     {
       "name": "Bicicleta Speed",
@@ -161,6 +161,69 @@
       "category": "Relógios",
       "seller": "Leonardo Pinto",
       "image": "https://images.pexels.com/photos/14808296/pexels-photo-14808296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "image": "",
+      "seller": "Leonardo Pinto",
+      "price": 10,
+      "description": "Teste",
+      "name": "Teste 2",
+      "category": "Todas",
+      "id": "19"
+    },
+    {
+      "id": "20",
+      "image": "",
+      "seller": "Leonardo Pinto",
+      "price": 10,
+      "description": "Teste",
+      "name": "Teste",
+      "category": "Todas"
+    },
+    {
+      "id": "21",
+      "image": "",
+      "seller": "Leonardo Pinto",
+      "price": 11,
+      "description": "Vamos",
+      "name": "Teste 3",
+      "category": "Todas"
+    },
+    {
+      "id": "22",
+      "image": "",
+      "seller": "Leonardo Pinto",
+      "price": 15,
+      "description": "Bora",
+      "name": "Teste 4",
+      "category": "Todas"
+    },
+    {
+      "id": "23",
+      "image": "",
+      "seller": "Leonardo Pinto",
+      "price": 20,
+      "description": "Teste",
+      "name": "Teste",
+      "category": "Todas"
+    },
+    {
+      "id": "24",
+      "image": "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png",
+      "seller": "Leonardo Pinto",
+      "price": 1,
+      "description": "Teste",
+      "name": "Teste",
+      "category": "Todas"
+    },
+    {
+      "id": "25",
+      "image": "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png",
+      "seller": "Leonardo Pinto",
+      "price": 122,
+      "description": "AAAA",
+      "name": "PC",
+      "category": "Todas"
     }
   ],
   "pechinchas": []
