@@ -42,3 +42,4 @@ async function client(endpoint, { body, ...customConfig } = {}) {
   export const httpDelete = async function (endpoint, customConfig = {}) {
     return client(endpoint, { ...customConfig, method: 'DELETE' })
   }
+  

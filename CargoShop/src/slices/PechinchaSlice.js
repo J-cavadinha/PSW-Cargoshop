@@ -1,67 +1,78 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { httpDelete, httpGet, httpPost, httpPut } from '../utils';
 
-const initialState = {
-  status: "not_loaded",
-  pechinchas: [],
-  error: null,
-};
+const pechinchasAdapter = createEntityAdapter();
 
-
-function addPechinchaReducer(state, action) {
-  let id;
-
-  try {
-    id = 1 + state.pechinchas.map(p => p.id).reduce((x, y) => Math.max(x, y));
-  } catch {
-    id = 1;
-  }
-
-  return { ...state, pechinchas: state.pechinchas.concat({ ...action.payload, id: id }) };
-}
-
-function updatePechinchaReducer(state, action) {
-  const pechinchas = state.pechinchas.slice();
-  const index = pechinchas.map(p => p.id).indexOf(action.payload.id);
-
-  pechinchas.splice(index, 1, action.payload.updatedPechincha);
-
-  return { ...state, pechinchas: pechinchas };
-}
-
-function removePechinchaReducer(state, action) {
-  return { ...state, pechinchas: state.pechinchas.filter((p) => p.id !== action.payload) };
-}
-
-export const fetchPechinchas = createAsyncThunk("pechinchas/fetchPechinchas", async () => {
-  return await (await fetch("http://localhost:3004/pechinchas")).json();
+const initialState =  pechinchasAdapter.getInitialState({
+    status: "not_loaded",
+    error: null
 });
 
-function fullfillPechinchasReducer(pechinchasState, pechinchasFetched) {
-  pechinchasState.status = "loaded";
-  pechinchasState.pechinchas = pechinchasFetched;
-}
+const baseUrl = "http://localhost:3004";
+
+
+export const fetchPechinchas = createAsyncThunk("pechinchas/fetchPechinchas", async () => {
+  return await httpGet(`${baseUrl}/pechinchas`);
+});
+
+export const addPechinchaServer = createAsyncThunk("pechinchas/addPechinchaServer", async (pechincha) => {
+  return await httpPost(`${baseUrl}/pechinchas`, pechincha);
+});
+
+export const updatePechinchaServer = createAsyncThunk("pechinchas/updatePechinchaServer", async (pechincha) => {
+  return await httpPut(`${baseUrl}/pechinchas/${pechincha.id}`, pechincha);
+});
+
+export const removePechinchaServer = createAsyncThunk("pechinchas/removePechinchaServer", async (pechinchaId) => {
+  await httpDelete(`${baseUrl}/pechinchas/${pechinchaId}`);
+  return pechinchaId;
+});
+
+
 
 export const pechinchaSlice = createSlice({
   name: 'pechinchas',
-  initialState,
-  reducers: {
-    addPechincha: (state, action) => addPechinchaReducer(state, action),
-    updatePechincha: (state, action) => updatePechinchaReducer(state, action),
-    removePechincha: (state, action) => removePechinchaReducer(state, action),
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchPechinchas.fulfilled, (state, action) => fullfillPechinchasReducer(state, action.payload))
-      .addCase(fetchPechinchas.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchPechinchas.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
-  }
+    initialState: initialState,
+    extraReducers: builder => {
+        builder.addCase(fetchPechinchas.fulfilled, (state, action) => {
+            state.status = "loaded";
+            pechinchasAdapter.setAll(state, action.payload);
+        });
+        builder.addCase(fetchPechinchas.pending, (state, action) => {
+            state.status = "loading";
+        });
+        builder.addCase(fetchPechinchas.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.message;
+        });
+        builder.addCase(addPechinchaServer.fulfilled, (state, action) => {
+            state.status = "saved";
+            pechinchasAdapter.addOne(state, action.payload);
+        });
+        builder.addCase(addPechinchaServer.pending, (state, action) => {
+            state.status = "loading";
+        });
+        builder.addCase(updatePechinchaServer.fulfilled, (state, action) => {
+            state.status = "saved";
+            pechinchasAdapter.upsertOne(state, action.payload);
+        });
+        builder.addCase(updatePechinchaServer.pending, (state, action) => {
+            state.status = "loading";
+        });
+        builder.addCase(removePechinchaServer.fulfilled, (state, action) => {
+            state.status = "deleted";
+            pechinchasAdapter.removeOne(state, action.payload);
+        });
+        builder.addCase(removePechinchaServer.pending, (state, action) => {
+            state.status = "loading";
+        });
+    }
 });
 
-export const { addPechincha, updatePechincha, removePechincha } = pechinchaSlice.actions;
-
 export default pechinchaSlice.reducer;
+
+export const {
+    selectAll: selectAllPechinchas,
+    selectById: selectPechinchasById,
+    selectIds: selectPechinchasIds
+} = pechinchasAdapter.getSelectors(state => state.pechinchas);

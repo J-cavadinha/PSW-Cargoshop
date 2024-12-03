@@ -1,17 +1,23 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';  
-import PechinchaCard from '../main/PechinchaCard';  
-import { removePechincha } from '../slices/PechinchaSlice'; 
+import { useEffect, React } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';  
+import PechinchaCard from '../main/PechinchaCard';
+import {selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice'; 
 
 export default function Pechincha() {
 
-  
-  const pechinchas = useSelector(state => state.pechinchas.pechinchas); 
-  const dispatch = useDispatch();  
+  const pechinchas = useSelector(selectAllPechinchas);
+  const status = useSelector(state => state.pechinchas.status);
 
-  const handleDelete = (id) => {
-    dispatch(removePechincha(id)); 
-  };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      if (status === "not_loaded" || status === "saved" || status === "deleted") {
+          dispatch(fetchPechinchas());
+      } else if (status === "failed") {
+          setTimeout(() => dispatch(fetchPechinchas()), 5000);
+      }
+  }, [status, dispatch])
+
 
   return (
     <div style={{ padding: '100px' }}>
@@ -21,8 +27,7 @@ export default function Pechincha() {
         {pechinchas.map(pechincha => (  
           <PechinchaCard 
             key={pechincha.id} 
-            pechincha={pechincha} 
-            onDelete={handleDelete}  
+            pechincha={pechincha}  
           />
         ))}
       </div>
