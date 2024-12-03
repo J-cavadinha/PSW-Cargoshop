@@ -1,75 +1,91 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { httpDelete, httpGet, httpPost, httpPut } from '../utils';
 
-const initialState = {
-  status: "not_loaded",
-  pedidos: [],
+const pedidosAdapter = createEntityAdapter();
+
+const initialState = pedidosAdapter.getInitialState({
+  status: 'not_loaded',
   error: null,
-};
-
-function addPedidosReducer(state, action) {
-  let id;
-
-  try {
-    id = 1 + state.pedidos.map(p => p.id).reduce((x, y) => Math.max(x, y));
-  } catch {
-    id = 1;
-  }
-
-  return {
-     ...state, pedidos: state.pedidos.concat({ ...action.payload, id: id }) };
-}
-
-function updatePedidosReducer(state, action) {
-  const pedidos = state.pedidos.slice();
-  const index = pedidos.map(p => p.id).indexOf(action.payload.id);
-
-  pedidos.splice(index, 1, action.payload.updatedPedido);
-
-  return { ...state, pedidos: pedidos };
-}
+});
 
 
-function removePedidosReducer(state, action) {
-  return { ...state, pedidos: state.pedidos.filter((p) => p.id !== action.payload) };
-}
+const baseUrl = "http://localhost:3004/pedidos"; 
 
 
 export const fetchPedidos = createAsyncThunk("pedidos/fetchPedidos", async () => {
-  return await (await fetch("http://localhost:3004/pedidos")).json();
+  return await httpGet(`${baseUrl}`);
 });
 
+export const addPedidoServer = createAsyncThunk("pedidos/addPedidoServer", async (pedido) => {
+  return await httpPost(`${baseUrl}`, pedido);
+});
 
-function fulfillPedidosReducer(state, pedidosFetched) {
-  return {
-    ...state,
-    status: "loaded",
-    pedidos: pedidosFetched,
-  };
-}
+export const updatePedidoServer = createAsyncThunk("pedidos/updatePedidoServer", async (pedido) => {
+  return await httpPut(`${baseUrl}/${pedido.id}`, pedido);
+});
 
+export const removePedidoServer = createAsyncThunk("pedidos/removePedidoServer", async (pedidoId) => {
+  await httpDelete(`${baseUrl}/${pedidoId}`);
+  return pedidoId;
+});
 
-export const pedidosSlice = createSlice({
+const pedidosSlice = createSlice({
   name: 'pedidos',
   initialState,
   reducers: {
-    addPedidos: (state, action) => addPedidosReducer(state, action),
-    updatePedidos: (state, action) => updatePedidosReducer(state, action),
-    removePedidos: (state, action) => removePedidosReducer(state, action),
+    addPedido: pedidosAdapter.addOne,
+    removePedido: pedidosAdapter.removeOne,
+    updatePedido: pedidosAdapter.updateOne,
+    setPedidos: pedidosAdapter.setAll,
+    setStatus: (state, action) => {
+      state.status = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchPedidos.fulfilled, (state, action) => fulfillPedidosReducer(state, action.payload))
-      .addCase(fetchPedidos.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchPedidos.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
+    builder.addCase(fetchPedidos.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(fetchPedidos.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      pedidosAdapter.setAll(state, action.payload);
+    });
+    builder.addCase(fetchPedidos.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
+    });
+    builder.addCase(addPedidoServer.fulfilled, (state, action) => {
+      state.status = 'saved';
+      pedidosAdapter.addOne(state, action.payload);
+    });
+    builder.addCase(addPedidoServer.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(updatePedidoServer.fulfilled, (state, action) => {
+      state.status = 'saved';
+      pedidosAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(updatePedidoServer.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(removePedidoServer.fulfilled, (state, action) => {
+      state.status = 'deleted';
+      pedidosAdapter.removeOne(state, action.payload);
+    });
+    builder.addCase(removePedidoServer.pending, (state) => {
+      state.status = 'loading';
+    });
   },
 });
 
-export const { addPedidos, updatePedidos, removePedidos } = pedidosSlice.actions;
+export const { addPedido, removePedido, updatePedido, setPedidos, setStatus, setError } = pedidosSlice.actions;
 
 export default pedidosSlice.reducer;
 
+export const {
+  selectAll: selectAllPedidos,
+  selectById: selectPedidoById,
+  selectIds: selectPedidosIds,
+} = pedidosAdapter.getSelectors((state) => state.pedidos);
