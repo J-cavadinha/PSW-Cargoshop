@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { addPedidoServer } from "../Pedidos/PedidoSlice";
+import { addPedido} from "../Pedidos/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
@@ -54,20 +54,37 @@ export default function ProductDetails() {
     dispatch(addPechinchaServer(pechincha));
   };
 
-    const ConfirmarPedido = () => {
-      const novoPedido = {
-        id: 0,  
-        name: product.name,  
-        price: product.price,    
-        image: product.image,
-        NomeVendedor: product.seller,
-        status: 'Em andamento',
-      };
-      dispatch(addPedidoServer(novoPedido));
-
-      const message = `O pedido foi adicionado!`;
-      setNotificacao(message);
+  const ConfirmarPedido = async () => {
+    const novoPedido = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      NomeVendedor: product.seller,
+      status: 'Em andamento',
+      endereco: 'Rua A',
     };
+    try {
+      const response = await fetch("http://localhost:3004/pedidos", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(novoPedido),
+      });
+
+      if (response.ok) {
+        dispatch(addPedido(novoPedido));
+
+        const message = `O pedido foi adicionado!`;
+        setNotificacao(message);
+      } else {
+        setNotificacao('Erro ao adicionar o pedido. Tente novamente.');
+      }
+    } catch (error) {
+      setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
+    }
+  };
 
     return (
         <div className="row mt-5">
