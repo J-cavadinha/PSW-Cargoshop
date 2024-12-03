@@ -7,8 +7,6 @@ export default function PechinchaCard({ pechincha }) {
   const dispatch = useDispatch();
   
   const status = useSelector(state => state.products.status);
-
-  
   useEffect(() => {
       if (status === "not_loaded") {
           dispatch(fetchPechinchas());

@@ -25,11 +25,24 @@ function Button({ children, onClick, className }) {
 function UserMain() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Link to="/perfil" style={{ textDecoration: 'none' }}>
-        <Button>Perfil</Button>
+      <br/>
+      <h1>Usuário</h1>
+      <br/>
+      <Link to="/meusprodutos" style={{ textDecoration: 'none' }}>
+        <Button>Produtos</Button>
       </Link>
-      <Button className="secondary" onClick={() => alert('Clicou no botão Configurações')}>Configurações</Button>
-      <Button className="danger" onClick={() => alert('Clicou no botão Relatório')}>Relatórios</Button>
+      <Link to="/pechinchas" style={{ textDecoration: 'none' }}>
+        <Button>Pechinchas</Button>
+      </Link>
+      <Link to="/pedidos" style={{ textDecoration: 'none' }}>
+        <Button>Pedidos</Button>
+      </Link>
+      <Link to="/compras" style={{ textDecoration: 'none' }}>
+        <Button>Compras</Button>
+      </Link>
+      <Link to="/vendas" style={{ textDecoration: 'none' }}>
+        <Button>Vendas</Button>
+      </Link>
     </div>
   );
 }

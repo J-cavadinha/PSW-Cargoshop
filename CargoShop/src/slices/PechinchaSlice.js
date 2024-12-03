@@ -6,6 +6,7 @@ const initialState = {
   error: null,
 };
 
+
 function addPechinchaReducer(state, action) {
   let id;
 
