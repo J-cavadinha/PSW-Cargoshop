@@ -16,10 +16,12 @@ import MyProducts from './user/MyProducts';
 import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
 import { fetchPechinchas } from './slices/PechinchaSlice';
+import { fetchPedidos } from './Pedidos/PedidoSlice';
 
 const App = () => {
 
 store.dispatch(fetchPechinchas());
+store.dispatch(fetchPedidos());
 
 return (
 <Provider store={store}>

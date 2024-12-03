@@ -163,5 +163,47 @@
       "image": "https://images.pexels.com/photos/14808296/pexels-photo-14808296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ],
-  "pechinchas": []
+  "pechinchas": [
+    {
+      "id": "3",
+      "name": "Mountain Bike Aro",
+      "price": 2500,
+      "discount": 500,
+      "image": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "id": "6",
+      "name": "Smartwatch",
+      "price": 1500,
+      "discount": 1412,
+      "image": "https://images.pexels.com/photos/2861929/pexels-photo-2861929.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "id": "5",
+      "name": "Smartphone",
+      "price": 5000,
+      "discount": 32131,
+      "image": "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    }
+  ],
+  "pedidos": [
+    {
+      "id": "8",
+      "name": "Fones de Ouvido Sem Fio",
+      "price": 500,
+      "image": "https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "NomeVendedor": "Leonardo Pinto",
+      "status": "Em andamento",
+      "endereco": "dasda"
+    },
+    {
+      "id": "5",
+      "name": "Smartphone",
+      "price": 5000,
+      "image": "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "NomeVendedor": "Leonardo Pinto",
+      "status": "Em andamento",
+      "endereco": "Rua A"
+    }
+  ]
 }
