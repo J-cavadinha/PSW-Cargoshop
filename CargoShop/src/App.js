@@ -9,7 +9,6 @@ import ProductDetails from './purchase/ProductDetails';
 import Sidebar from './main/Sidebar';
 import SobreNos from './sidebar/SobreNos';
 import Contato from './sidebar/Contatos';
-import PerfilPage from './user/PerfilPage';
 import Pechincha from './user/Pechincha';
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -39,12 +38,10 @@ return (
         <Route path="/produtos/:id" element={<ProductDetails />}></Route>
         <Route path="/sobrenos" element={<SobreNos />}></Route>
         <Route path="/contato" element={<Contato />}></Route>
-        <Route path="/perfil" element={<PerfilPage/>}></Route>
         <Route path="/pechinchas" element={<Pechincha/>}></Route>
         <Route path="/meusprodutos" element={<MyProducts/>}></Route>
         <Route path="/vender" element={<ProductForm/>}></Route>
         <Route path="/vender/:id" element={<ProductForm/>}></Route>
-        <Route exact path="/" component={<UserMain/>}></Route>
         <Route path="/pedidos" element={<Pedidos/>}></Route>
 
       </Routes>

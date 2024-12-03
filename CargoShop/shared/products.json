@@ -127,13 +127,13 @@
       "image": "https://images.pexels.com/photos/131018/pexels-photo-131018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
-      "name": "Caderno Universitário",
-      "id": "15",
+      "image": "https://images.pexels.com/photos/942872/pexels-photo-942872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "seller": "Leonardo Pinto",
+      "category": "Papelaria",
       "price": 20,
       "description": "Caderno para anotações e estudos.",
-      "category": "Papelaria",
-      "seller": "Leonardo Pinto",
-      "image": "https://images.pexels.com/photos/942872/pexels-photo-942872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      "name": "Caderno",
+      "id": "15"
     },
     {
       "name": "Canetas coloridas",
@@ -161,69 +161,6 @@
       "category": "Relógios",
       "seller": "Leonardo Pinto",
       "image": "https://images.pexels.com/photos/14808296/pexels-photo-14808296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      "image": "",
-      "seller": "Leonardo Pinto",
-      "price": 10,
-      "description": "Teste",
-      "name": "Teste 2",
-      "category": "Todas",
-      "id": "19"
-    },
-    {
-      "id": "20",
-      "image": "",
-      "seller": "Leonardo Pinto",
-      "price": 10,
-      "description": "Teste",
-      "name": "Teste",
-      "category": "Todas"
-    },
-    {
-      "id": "21",
-      "image": "",
-      "seller": "Leonardo Pinto",
-      "price": 11,
-      "description": "Vamos",
-      "name": "Teste 3",
-      "category": "Todas"
-    },
-    {
-      "id": "22",
-      "image": "",
-      "seller": "Leonardo Pinto",
-      "price": 15,
-      "description": "Bora",
-      "name": "Teste 4",
-      "category": "Todas"
-    },
-    {
-      "id": "23",
-      "image": "",
-      "seller": "Leonardo Pinto",
-      "price": 20,
-      "description": "Teste",
-      "name": "Teste",
-      "category": "Todas"
-    },
-    {
-      "id": "24",
-      "image": "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png",
-      "seller": "Leonardo Pinto",
-      "price": 1,
-      "description": "Teste",
-      "name": "Teste",
-      "category": "Todas"
-    },
-    {
-      "id": "25",
-      "image": "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png",
-      "seller": "Leonardo Pinto",
-      "price": 122,
-      "description": "AAAA",
-      "name": "PC",
-      "category": "Todas"
     }
   ],
   "pechinchas": []

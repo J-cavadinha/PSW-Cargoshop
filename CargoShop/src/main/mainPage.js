@@ -53,6 +53,7 @@ export default function MainPage() {
             <input
                 type="text"
                 className="form-control mb-3"
+                id="search-bar"
                 placeholder="O que deseja comprar hoje?"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

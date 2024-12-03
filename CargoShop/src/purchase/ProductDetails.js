@@ -77,7 +77,7 @@ export default function ProductDetails() {
           <div className="col-md-6">
             <h2 id="product-name">{product.name}</h2>
             <div id="product-price" className="h4">
-              R${product.price}
+              R${product.price.toFixed(2)}
             </div>
             <div id="product-seller">Vendido por: {product.seller}</div>
             <br/>
