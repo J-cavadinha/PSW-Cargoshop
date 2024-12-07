@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PedidosCard from './PedidosCard';
+import PedidosCard from './PagamentosCard';
 import { fetchPedidos, removePedidoServer, updatePedidoServer, selectAllPedidos } from './PedidoSlice';
+import PagamentosCard from './PagamentosCard';
 
-export default function Pedidos() {
+export default function Pagamento() {
   const dispatch = useDispatch();
   const pedidos = useSelector(selectAllPedidos);
   const status = useSelector((state) => state.pedidos.status);
@@ -15,26 +16,13 @@ export default function Pedidos() {
     }
   }, [status, dispatch]);
 
-  const handleDelete = (id) => {
-    dispatch(removePedidoServer(id));
-  };
-
-  const handleUpdate = (id, updatedData) => {
-    dispatch(updatePedidoServer(updatedData));
-  };
-
   return (
     <div className="container">
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
+      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Pagamento</h1>
       {status === 'loading' && <p>Carregando...</p>}
-      {status === 'failed' && <p>Erro ao carregar os pedidos: {error}</p>}
+      {status === 'failed' && <p>Erro ao carregar o Pagamento: {error}</p>}
       <div className="row g-4">
-        {pedidos.map((pedido) => (
-          <PedidosCard
-            key={pedido.id}
-            pedido={pedido}
-          />
-        ))}
+        
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate  } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addPechinchaServer, selectPechinchasById, fetchPechinchas } from "../slices/PechinchaSlice";
@@ -6,11 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { addPedido} from "../Pedidos/PedidoSlice";
+import { addPedidoServer, selectPedidoById } from "../Pedidos/PedidoSlice";
+
 
 export default function ProductDetails() {
     const location = useLocation();
     const product = location.state.product;
+
     const dispatch = useDispatch();
 
 
@@ -28,12 +30,12 @@ export default function ProductDetails() {
         }
     }, [status, dispatch])
 
-    const [notificacao, setNotificacao] = useState('');
+    const [notificacao] = useState('');
     const [message, setMessage] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-      resolver: yupResolver(pechinchaSchema)
-  });
+      resolver: yupResolver(pechinchaSchema) 
+    });
   
   const [pechinchaOnLoad] = useState(
     id ? pechinchaFound ?? pechinchaSchema.cast({}) : pechinchaSchema.cast({})
@@ -50,41 +52,34 @@ export default function ProductDetails() {
     };
   
     // Agora podemos despachar a ação para salvar no servidor
+    
     setMessage('pechincha Enviada!');
     dispatch(addPechinchaServer(pechincha));
   };
 
-  const ConfirmarPedido = async () => {
-    const novoPedido = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      NomeVendedor: product.seller,
-      status: 'Em andamento',
-      endereco: 'Rua A',
+
+    const pedido = useSelector((state) => selectPedidoById(state, id));
+
+    const navigate = useNavigate();
+    const ConfirmarPagamento = () => {
+      const novoPagamento = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        NomeVendedor: product.seller,
+        status: 'Em andamento',
+        endereco: '',
+      };
+      navigate(`/pagamentosCard/${product.id}`, { state: novoPagamento });
     };
-    try {
-      const response = await fetch("http://localhost:3004/pedidos", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novoPedido),
-      });
+    
 
-      if (response.ok) {
-        dispatch(addPedido(novoPedido));
-
-        const message = `O pedido foi adicionado!`;
-        setNotificacao(message);
-      } else {
-        setNotificacao('Erro ao adicionar o pedido. Tente novamente.');
+    useEffect(() => {
+      if (!pedido) {
+        console.log("Pedido ainda não carregado");
       }
-    } catch (error) {
-      setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
-    }
-  };
+    }, [pedido]);
 
     return (
         <div className="row mt-5">
@@ -152,12 +147,15 @@ export default function ProductDetails() {
             <div id="notificacao" className="alert alert-info mt-3" style={{ display: `${notificacao ? 'block' : 'none'}`}}>
               {notificacao}
             </div>
-    
-            <button className="btn btn-primary btn-lg mt-4 w-100" onClick={ConfirmarPedido} >
+            
+            <button className="btn btn-primary btn-lg mt-4 w-100" onClick={ConfirmarPagamento}>
               Finalizar pedido
+              
             </button>
             
           </div>
+          
         </div>
       );
 }
+
