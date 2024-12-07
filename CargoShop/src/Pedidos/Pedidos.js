@@ -17,6 +17,7 @@ export default function Pedidos() {
 
   return (
     <div className="container">
+      <br/>
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
       {status === 'loading' && <p>Carregando...</p>}
       {status === 'failed' && <p>Erro ao carregar os pedidos: {error}</p>}

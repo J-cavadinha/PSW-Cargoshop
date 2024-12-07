@@ -166,15 +166,6 @@
   "pechinchas": [],
   "pedidos": [
     {
-      "id": "5",
-      "name": "Smartphone",
-      "price": 5000,
-      "image": "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "NomeVendedor": "Leonardo Pinto",
-      "status": "Em andamento",
-      "endereco": "asfasfafaffffasd"
-    },
-    {
       "id": "3",
       "name": "Mountain Bike Aro",
       "price": 2500,

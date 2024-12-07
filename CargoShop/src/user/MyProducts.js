@@ -43,7 +43,7 @@ export default function MyProducts() {
             <br/>
             <div className="text-center">
                 <button className="btn btn-success btn-lg">
-                    <Link to={`/vender`} style={{ color: "#FFFFFF", textDecoration: "none" }}>Listar novo produto</Link>
+                    <Link to={`/vender`} className="text-decoration-none text-white">Listar novo produto</Link>
                 </button>
             </div>
         </div>

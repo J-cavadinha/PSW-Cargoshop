@@ -20,8 +20,10 @@ export default function Pechincha() {
 
 
   return (
-    <div style={{ padding: '100px' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Pechinchas</h1>
+    <div className="container">
+      <br/>
+      <h1 className="text-center">Pechinchas</h1>
+      <br/>
 
       <div className="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-4">       
         {pechinchas.map(pechincha => (  
