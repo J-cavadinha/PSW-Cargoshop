@@ -42,6 +42,9 @@ export default function MainPage() {
     let produtos = null;
     if (status === "loaded") {
         produtos = filteredProducts.map(product => (<ProductCard key={product.id} product={product} />));
+        if (produtos.length <= 0) {
+            produtos = <div>Nenhum produto encontrado.</div>;
+        }
     } else if (status === "loading") {
         produtos = <div>Carregando os produtos...</div>;
     } else if (status === "failed") {
