@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from './PedidosCard';
-import { fetchPedidos, removePedidoServer, updatePedidoServer, selectAllPedidos } from './PedidoSlice';
+import { fetchPedidos, selectAllPedidos } from './PedidoSlice';
 
 export default function Pedidos() {
   const dispatch = useDispatch();
@@ -14,14 +14,6 @@ export default function Pedidos() {
       dispatch(fetchPedidos());
     }
   }, [status, dispatch]);
-
-  const handleDelete = (id) => {
-    dispatch(removePedidoServer(id));
-  };
-
-  const handleUpdate = (id, updatedData) => {
-    dispatch(updatePedidoServer(updatedData));
-  };
 
   return (
     <div className="container">

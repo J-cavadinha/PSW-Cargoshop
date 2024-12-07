@@ -17,11 +17,7 @@ import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
 import { fetchPechinchas } from './slices/PechinchaSlice';
 import { fetchPedidos } from './Pedidos/PedidoSlice';
-
-
 import PagamentosCard from "./Pedidos/PagamentosCard";
-
-
 
 const App = () => {
 
@@ -50,9 +46,7 @@ return (
         <Route path="/vender" element={<ProductForm/>}></Route>
         <Route path="/vender/:id" element={<ProductForm/>}></Route>
         <Route path="/pedidos" element={<Pedidos/>}></Route>
-        
         <Route path="/pagamentosCard/:id" element={<PagamentosCard/>}></Route>
-
       </Routes>
       <footer className="py-3 text-center">&copy; 2024 CargoShop </footer>
     </div>

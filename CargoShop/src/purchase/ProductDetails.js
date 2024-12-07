@@ -6,8 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { addPedidoServer, selectPedidoById } from "../Pedidos/PedidoSlice";
-
+import { selectPedidoById } from "../Pedidos/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
@@ -43,15 +42,13 @@ export default function ProductDetails() {
 
 
   const confirmarValor = (data) => {
-    // O parâmetro `data` contém os valores do formulário
     const pechincha = {
-      descount: data.descount, // valor da pechincha
-      name: product.name, // nome do produto (de `product`)
-      price: product.price, // preço original do produto
-      image: product.image, // imagem do produto
+      descount: data.descount,
+      name: product.name,
+      price: product.price,
+      image: product.image,
     };
-  
-    // Agora podemos despachar a ação para salvar no servidor
+
     
     setMessage('pechincha Enviada!');
     dispatch(addPechinchaServer(pechincha));
