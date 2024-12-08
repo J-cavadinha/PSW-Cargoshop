@@ -12,11 +12,7 @@ export default function PagamentosCard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const {register, handleSubmit,formState: { errors },} = useForm({
     resolver: yupResolver(PedidoSchema),
   });
 
@@ -26,20 +22,22 @@ export default function PagamentosCard() {
     const pedidoAtualizado = {
       ...novoPagamento,
       endereco: data.endereco,
+      opcaoEnvio: data.opcaoEnvio,
+      formaPagamento: data.formaPagamento,
     };
 
     try {
       const resultAction = await dispatch(addPedidoServer(pedidoAtualizado));
       if (addPedidoServer.fulfilled.match(resultAction)) {
         console.log("Pedido finalizado:", pedidoAtualizado);
-        alert('Pedido adicionado com sucesso!');
+        alert("Pedido adicionado com sucesso!");
         navigate("/pedidos");
       } else {
-        alert('Erro: Já existe um pedido com esse ID!');
+        alert("Erro: Já existe um pedido com esse ID!");
         navigate("/");
       }
     } catch (error) {
-      alert('Erro ao adicionar o pedido. Tente novamente!');
+      alert("Erro ao adicionar o pedido. Tente novamente!");
     }
   };
 
@@ -78,6 +76,44 @@ export default function PagamentosCard() {
               <p>Endereço cadastrado: {endereco || "Nenhum endereço informado"}</p>
 
               <form onSubmit={handleSubmit(finalizarPedido)}>
+                <label htmlFor="opcaoEnvio" className="form-label mt-3">
+                  Opção de envio:
+                </label>
+                <select
+                  id="opcaoEnvio"
+                  {...register("opcaoEnvio", { required: "Selecione uma opção de envio." })}
+                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${
+                    errors.opcaoEnvio ? "is-invalid" : ""
+                  }`}
+                >
+                  <option value="" className="text-muted">
+                    Selecione uma opção
+                  </option>
+                  <option value="Entrega simples">Entrega simples</option>
+                  <option value="Entrega rápida">Entrega rápida</option>
+                </select>
+                <div className="invalid-feedback">{errors.opcaoEnvio?.message}</div>
+
+                <label htmlFor="formaPagamento" className="form-label mt-3">
+                  Forma de pagamento:
+                </label>
+                <select
+                  id="formaPagamento"
+                  {...register("formaPagamento", { required: "Selecione uma forma de pagamento." })}
+                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${
+                    errors.formaPagamento ? "is-invalid" : ""
+                  }`}
+                >
+                  <option value="" className="text-muted">
+                    Selecione uma forma de pagamento
+                  </option>
+                  <option value="Cartão de Crédito">Cartão de Crédito</option>
+                  <option value="Cartão de Débito">Cartão de Débito</option>
+                  <option value="Boleto Bancário">Boleto Bancário</option>
+                  <option value="PIX">PIX</option>
+                </select>
+                <div className="invalid-feedback">{errors.formaPagamento?.message}</div>
+
                 <label htmlFor="endereco" className="form-label mt-3">
                   Endereço de entrega:
                 </label>
@@ -88,9 +124,7 @@ export default function PagamentosCard() {
                   className={`form-control ${errors.endereco ? "is-invalid" : ""}`}
                   placeholder="Digite o endereço"
                 />
-                <div className="invalid-feedback">
-                  {errors.endereco?.message}
-                </div>
+                <div className="invalid-feedback">{errors.endereco?.message}</div>
 
                 <button type="submit" className="btn btn-primary mt-4 w-100">
                   Finalizar Pedido

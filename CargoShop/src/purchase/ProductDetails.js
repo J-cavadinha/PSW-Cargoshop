@@ -96,20 +96,6 @@ export default function ProductDetails() {
             <div id="product-seller">Vendido por: {product.seller}</div>
             <br/>
             <p id="product-description">{product.description}</p>
-            <select className="form-select mt-3">
-              <option>Opção de envio</option>
-              <option value="option1">Entrega simples</option>
-              <option value="option2">Entrega rápida</option>
-            </select>
-    
-            <select className="form-select mt-3">
-              <option>Forma de pagamento</option>
-              <option value="option1">Cartão de Crédito</option>
-              <option value="option2">Cartão de Débito</option>
-              <option value="option3">Boleto Bancário</option>
-              <option value="option4">PIX</option>
-            </select>
-    
             <button className="btn btn-danger btn-lg mt-4 w-100" data-bs-toggle="collapse" data-bs-target="#valorOptions">PECHINCHAR!</button>
     
             <div className="collapse" id="valorOptions">

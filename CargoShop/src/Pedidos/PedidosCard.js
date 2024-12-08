@@ -48,6 +48,7 @@ export default function PedidosCard({ pedido }) {
         <p className="card-text">Valor Total: <strong>R$ {pedido.price}</strong></p>
         <p className="card-text">Vendedor: {pedido.NomeVendedor}</p>
         <p className="card-text">Endereço: {pedido.endereco}</p>
+        <p className="card-text">Opção de Envio: {pedido.opcaoEnvio}</p>
         <p className="card-text">Status: <span className={`badge ${pedido.status === 'Cancelado' ? 'bg-danger' : 'bg-success'}`}>{pedido.status}</span></p>
         
         <div className="d-flex justify-content-between">
