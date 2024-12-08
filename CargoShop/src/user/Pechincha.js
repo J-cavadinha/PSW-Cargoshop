@@ -7,6 +7,7 @@ export default function Pechincha() {
 
   const pechinchas = useSelector(selectAllPechinchas);
   const status = useSelector(state => state.pechinchas.status);
+  const error = useSelector(state => state.pechinchas.error);
 
   const dispatch = useDispatch();
 
@@ -18,18 +19,26 @@ export default function Pechincha() {
       }
   }, [status, dispatch])
 
+  let pechinchasShow = null;
+    if (status === "loaded") {
+        pechinchasShow = pechinchas.map(pechincha => (<PechinchaCard key={pechincha.id} pechincha={pechincha} />));
+        if (pechinchasShow.length <= 0) {
+            pechinchasShow = <div>Nenhuma pechincha encontrada.</div>;
+        }
+    } else if (status === "loading") {
+        pechinchasShow = <div>Carregando as pechinchas...</div>;
+    } else if (status === "failed") {
+        pechinchasShow = <div>Erro: {error}</div>
+    }
 
   return (
-    <div style={{ padding: '100px' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Pechinchas</h1>
+    <div className="container">
+      <br/>
+      <h1 className="text-center">Pechinchas</h1>
+      <br/>
 
       <div className="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-4">       
-        {pechinchas.map(pechincha => (  
-          <PechinchaCard 
-            key={pechincha.id} 
-            pechincha={pechincha}  
-          />
-        ))}
+        {pechinchasShow}
       </div>
     </div>
   );

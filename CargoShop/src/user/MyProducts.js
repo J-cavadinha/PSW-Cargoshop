@@ -26,6 +26,9 @@ export default function MyProducts() {
     let produtos = null;
     if (status === "loaded") {
         produtos = filteredProducts.map(product => (<ProductCard key={product.id} product={product} />));
+        if (produtos.length <= 0) {
+            produtos = <div>Nenhum produto encontrado.</div>;
+        }
     } else if (status === "loading") {
         produtos = <div>Carregando os produtos...</div>;
     } else if (status === "failed") {
@@ -42,9 +45,7 @@ export default function MyProducts() {
             </div>
             <br/>
             <div className="text-center">
-                <button className="btn btn-success btn-lg">
-                    <Link to={`/vender`} style={{ color: "#FFFFFF", textDecoration: "none" }}>Listar novo produto</Link>
-                </button>
+                <Link to={`/vender`} className="text-decoration-none"><button className="btn btn-success btn-lg">Listar novo produto</button></Link>
             </div>
         </div>
     )

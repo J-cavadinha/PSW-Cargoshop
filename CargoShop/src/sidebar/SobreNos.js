@@ -3,6 +3,7 @@ import React from 'react';
 function SobreNos() {
   return (
     <div className="container">
+      <br/><br/><br/><br/>
       <div className="card mt-4">
         <div className="card-body">
           <h1 className="card-title text-center">Sobre Nós</h1>
@@ -17,6 +18,7 @@ function SobreNos() {
           </p>
         </div>
       </div>
+      <br/><br/><br/><br/>
     </div>
   );
 }

@@ -95,8 +95,8 @@ const [pechinchaOnLoad] = useState(
         <div className="modal">
           <div className="modal-content">
             <h4>Tem certeza que deseja cancelar a pechincha?</h4>
-            <button className="btn btn-danger"onClick={handleConfirmCancel}>Confirmar</button>
-            <button className="btn btn-success" onClick={handleCloseCancelModal}>Cancelar</button>
+            <button className="btn btn-danger my-1"onClick={handleConfirmCancel}>Confirmar</button>
+            <button className="btn btn-success my-1" onClick={handleCloseCancelModal}>Cancelar</button>
           </div>
         </div>
       )}
@@ -106,6 +106,7 @@ const [pechinchaOnLoad] = useState(
           <div className="modal-content">
           <form onSubmit={handleSubmit(handleConfirmEdit)}>
             <h4>Insira Valor novo de Pechincha:</h4>
+            <br/>
             <div className="input-group">
                         <span className="input-group-text">R$</span>
                         <input
@@ -120,17 +121,15 @@ const [pechinchaOnLoad] = useState(
                         />
                     </div>
                     {errors.descount && <span>{errors.descount.message}</span>}
-            <button className="btn btn-danger">Confirmar</button>
+                    <br/>
+            <button className="btn btn-danger my-1 mx-1">Confirmar</button>
             {message && (
               <div className="alert alert-success mt-3">
                 {message}
               </div>
             )}
 
-            <button className="btn btn-success" onClick={handleCloseEditModal}>Cancelar</button>
-
-              <button className="btn btn-success" onClick={handleCloseEditModal}>Sair</button>
-
+            <button className="btn btn-success my-1 mx-1" onClick={handleCloseEditModal}>Cancelar</button>
             </form>   
           </div>
           

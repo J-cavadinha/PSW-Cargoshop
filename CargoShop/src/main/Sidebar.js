@@ -20,15 +20,15 @@ function Sidebar() {
             <ul className="nav flex-column">
                 <li className="nav-item">
                     <i className="fs-4 bi-house"></i>
-                    <span className="ms-2"><Link to="/" style={{color: "#000000", textDecoration: "none"}}><h4>- Home</h4></Link></span>
+                    <span className="ms-2"><Link to="/" className="text-decoration-none text-body"><h4>- Home</h4></Link></span>
                 </li>
                 <li className="nav-item">
                     <i className="fs-4 bi-person"></i>
-                    <span className="ms-2"><Link to="/sobrenos" style={{color: "#000000", textDecoration: "none"}}><h4>- Sobre nós</h4></Link></span>
+                    <span className="ms-2"><Link to="/sobrenos" className="text-decoration-none text-body"><h4>- Sobre nós</h4></Link></span>
                 </li>
                 <li className="nav-item">
                     <i className="fs-4 bi-envelope"></i>
-                    <span className="ms-2"><Link to="/contato" style={{color: "#000000", textDecoration: "none"}}><h4>- Contato</h4></Link></span>
+                    <span className="ms-2"><Link to="/contato" className="text-decoration-none text-body"><h4>- Contato</h4></Link></span>
                 </li>
             </ul>
         </div>

@@ -8,15 +8,19 @@ const initialState = pedidosAdapter.getInitialState({
   error: null,
 });
 
-
 const baseUrl = "http://localhost:3004/pedidos"; 
-
 
 export const fetchPedidos = createAsyncThunk("pedidos/fetchPedidos", async () => {
   return await httpGet(`${baseUrl}`);
 });
 
-export const addPedidoServer = createAsyncThunk("pedidos/addPedidoServer", async (pedido) => {
+export const addPedidoServer = createAsyncThunk("pedidos/addPedidoServer", async (pedido, { getState }) => {
+  const state = getState();
+  const existeID = state.pedidos.ids;
+  if (existeID.includes(pedido.id)) {
+    throw new Error()
+  }
+
   return await httpPost(`${baseUrl}`, pedido);
 });
 
@@ -32,18 +36,6 @@ export const removePedidoServer = createAsyncThunk("pedidos/removePedidoServer",
 const pedidosSlice = createSlice({
   name: 'pedidos',
   initialState,
-  reducers: {
-    addPedido: pedidosAdapter.addOne,
-    removePedido: pedidosAdapter.removeOne,
-    updatePedido: pedidosAdapter.updateOne,
-    setPedidos: pedidosAdapter.setAll,
-    setStatus: (state, action) => {
-      state.status = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
-  },
   extraReducers: (builder) => {
     builder.addCase(fetchPedidos.pending, (state) => {
       state.status = 'loading';
@@ -79,8 +71,6 @@ const pedidosSlice = createSlice({
     });
   },
 });
-
-export const { addPedido, removePedido, updatePedido, setPedidos, setStatus, setError } = pedidosSlice.actions;
 
 export default pedidosSlice.reducer;
 

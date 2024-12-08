@@ -26,6 +26,9 @@ function ProductForm() {
     );
 
     function onSubmit(product) {
+        if (product.image === "") {
+            product.image = "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png";
+        }
         if (actionType === "add") {
             dispatch(addProductServer(product));
         } else {
@@ -114,7 +117,7 @@ function ProductForm() {
                     />
                     {errors.image && <span>{errors.image.message}</span>}
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Adicionar</button>
             </form>
         </div>
     );

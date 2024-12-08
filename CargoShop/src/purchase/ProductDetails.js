@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate  } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addPechinchaServer, selectPechinchasById, fetchPechinchas } from "../slices/PechinchaSlice";
@@ -6,13 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { addPedido} from "../Pedidos/PedidoSlice";
+import { selectPedidoById } from "../Pedidos/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
     const product = location.state.product;
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     let { id } = useParams();
   
@@ -28,63 +29,50 @@ export default function ProductDetails() {
         }
     }, [status, dispatch])
 
-    const [notificacao, setNotificacao] = useState('');
+    const [notificacao] = useState('');
     const [message, setMessage] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-      resolver: yupResolver(pechinchaSchema)
-  });
+      resolver: yupResolver(pechinchaSchema) 
+    });
   
   const [pechinchaOnLoad] = useState(
     id ? pechinchaFound ?? pechinchaSchema.cast({}) : pechinchaSchema.cast({})
   );
 
-
   const confirmarValor = (data) => {
-    // O parâmetro `data` contém os valores do formulário
     const pechincha = {
-      descount: data.descount, // valor da pechincha
-      name: product.name, // nome do produto (de `product`)
-      price: product.price, // preço original do produto
-      image: product.image, // imagem do produto
-    };
-  
-    // Agora podemos despachar a ação para salvar no servidor
-    setMessage('pechincha Enviada!');
-    dispatch(addPechinchaServer(pechincha));
-  };
-
-  const ConfirmarPedido = async () => {
-    const novoPedido = {
-      id: product.id,
+      descount: data.descount,
       name: product.name,
       price: product.price,
       image: product.image,
-      NomeVendedor: product.seller,
-      status: 'Em andamento',
-      endereco: 'Rua A',
     };
-    try {
-      const response = await fetch("http://localhost:3004/pedidos", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novoPedido),
-      });
-
-      if (response.ok) {
-        dispatch(addPedido(novoPedido));
-
-        const message = `O pedido foi adicionado!`;
-        setNotificacao(message);
-      } else {
-        setNotificacao('Erro ao adicionar o pedido. Tente novamente.');
-      }
-    } catch (error) {
-      setNotificacao('Erro ao conectar com o servidor. Tente novamente.');
-    }
+    
+    setMessage('Pechincha enviada!');
+    dispatch(addPechinchaServer(pechincha));
+    setTimeout(() => navigate("/pechinchas"), 1000);
   };
+
+    const pedido = useSelector((state) => selectPedidoById(state, id));
+
+    const ConfirmarPagamento = () => {
+      const novoPagamento = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        NomeVendedor: product.seller,
+        status: 'Finalizado',
+        endereco: '',
+      };
+      navigate(`/pagamentosCard/${product.id}`, { state: novoPagamento });
+    };
+
+    useEffect(() => {
+      if (!pedido) {
+        console.log("Pedido ainda não carregado");
+      }
+    }, [pedido]);
 
     return (
         <div className="row mt-5">
@@ -104,25 +92,12 @@ export default function ProductDetails() {
             <div id="product-seller">Vendido por: {product.seller}</div>
             <br/>
             <p id="product-description">{product.description}</p>
-            <select className="form-select mt-3">
-              <option>Opção de envio</option>
-              <option value="option1">Entrega simples</option>
-              <option value="option2">Entrega rápida</option>
-            </select>
-    
-            <select className="form-select mt-3">
-              <option>Forma de pagamento</option>
-              <option value="option1">Cartão de Crédito</option>
-              <option value="option2">Cartão de Débito</option>
-              <option value="option3">Boleto Bancário</option>
-              <option value="option4">PIX</option>
-            </select>
-    
             <button className="btn btn-danger btn-lg mt-4 w-100" data-bs-toggle="collapse" data-bs-target="#valorOptions">PECHINCHAR!</button>
     
             <div className="collapse" id="valorOptions">
               <div className="card card-body mt-3">
                 <h5>Insira o valor que você deseja pechinchar:</h5>
+                <br/>
                 <form onSubmit={handleSubmit(confirmarValor)}>
             <div className="input-group">
                         <span className="input-group-text">R$</span>
@@ -137,6 +112,7 @@ export default function ProductDetails() {
                         />
                     </div>
                     {errors.descount && <span>{errors.descount.message}</span>}
+                    <br/>
                 <button className="btn btn-danger mt-3">
                   Confirmar Pechincha!
                 </button>
@@ -152,12 +128,14 @@ export default function ProductDetails() {
             <div id="notificacao" className="alert alert-info mt-3" style={{ display: `${notificacao ? 'block' : 'none'}`}}>
               {notificacao}
             </div>
-    
-            <button className="btn btn-primary btn-lg mt-4 w-100" onClick={ConfirmarPedido} >
+            
+            <button className="btn btn-primary btn-lg mt-4 w-100" onClick={ConfirmarPagamento}>
               Finalizar pedido
+              
             </button>
             
           </div>
+          
         </div>
       );
 }

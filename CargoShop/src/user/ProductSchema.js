@@ -9,5 +9,5 @@ export let productSchema = object().shape({
     price: number().required().typeError("Informe um preço válido.").default(0),
     category: string(),
     seller: string().default("Leonardo Pinto"),
-    image: string().default("https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png").url("Informe uma URL válida.")
+    image: string().default("").url("Informe uma URL válida.")
 });
