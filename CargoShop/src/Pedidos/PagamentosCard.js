@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { addPedidoServer } from "../Pedidos/PedidoSlice";
 import { useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PedidoSchema } from "./PedidosSchema";
+import { PagamentoSchema } from "./PagamentoSchema";
 import { useForm } from "react-hook-form";
 
 export default function PagamentosCard() {
@@ -13,7 +13,7 @@ export default function PagamentosCard() {
   const dispatch = useDispatch();
 
   const {register, handleSubmit,formState: { errors },} = useForm({
-    resolver: yupResolver(PedidoSchema),
+    resolver: yupResolver(PagamentoSchema),
   });
 
   const [endereco] = useState("");
@@ -25,20 +25,9 @@ export default function PagamentosCard() {
       opcaoEnvio: data.opcaoEnvio,
       formaPagamento: data.formaPagamento,
     };
-
-    try {
-      const resultAction = await dispatch(addPedidoServer(pedidoAtualizado));
-      if (addPedidoServer.fulfilled.match(resultAction)) {
-        console.log("Pedido finalizado:", pedidoAtualizado);
-        navigate("/pedidos");
-      } else {
-        alert("Erro: Já existe um pedido com esse ID!");
-        navigate("/");
-      }
-    } catch (error) {
-      alert("Erro ao adicionar o pedido. Tente novamente!");
-    }
-  };
+    dispatch(addPedidoServer(pedidoAtualizado));
+    navigate("/Pedidos");
+  };  
 
   useEffect(() => {
     if (!novoPagamento) {

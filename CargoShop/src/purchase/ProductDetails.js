@@ -62,7 +62,7 @@ export default function ProductDetails() {
         price: product.price,
         image: product.image,
         NomeVendedor: product.seller,
-        status: 'Em andamento',
+        status: 'Finalizado',
         endereco: '',
       };
       navigate(`/pagamentosCard/${product.id}`, { state: novoPagamento });
