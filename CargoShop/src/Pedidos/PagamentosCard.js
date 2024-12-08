@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PagamentoSchema } from "./PagamentoSchema";
 import { useForm } from "react-hook-form";
+import { removeProductServer } from "../slices/ProductsSlice"
 
 export default function PagamentosCard() {
   const location = useLocation();
@@ -26,6 +27,7 @@ export default function PagamentosCard() {
       formaPagamento: data.formaPagamento,
     };
     dispatch(addPedidoServer(pedidoAtualizado));
+    dispatch(removeProductServer(pedidoAtualizado.id));
     navigate("/Pedidos");
   };  
 
