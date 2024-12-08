@@ -96,7 +96,7 @@ export default function ProductDetails() {
     
             <div className="collapse" id="valorOptions">
               <div className="card card-body mt-3">
-                <h5>Insira o valor que você deseja pechinchar:</h5>
+                <h5>Insira o valor da pechincha(novo valor do produto:):</h5>
                 <br/>
                 <form onSubmit={handleSubmit(confirmarValor)}>
             <div className="input-group">
@@ -107,6 +107,8 @@ export default function ProductDetails() {
                             step="0.01"
                             className="form-control"
                             id="price"
+                            max={0.9*product.price}
+                            min={0.1*product.price}
                             defaultValue={pechinchaOnLoad.descount}
                             {...register("descount")}
                         />

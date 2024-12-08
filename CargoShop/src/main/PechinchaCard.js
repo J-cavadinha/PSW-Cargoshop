@@ -76,8 +76,7 @@ const [pechinchaOnLoad] = useState(
           <h5 className="card-title">{pechincha.name}</h5>
           <p className="card-text">Valor Total: R$ {pechincha.price}</p>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <p className="card-text">Pechincha: R$ {pechincha.descount}</p>
-            <p className="card-text">Valor Pechinchado: R$ {pechincha.price - pechincha.descount}</p>
+            <p className="card-text">Valor Pechinchado: R$ {pechincha.descount}</p>
           </div>
           <div className="button-container">
             <button className="btn btn-danger button" onClick={handleCancelClick}>
@@ -113,23 +112,24 @@ const [pechinchaOnLoad] = useState(
                             placeholder="Insira o valor do produto"
                             type="number"
                             step="0.01"
-                            min={1}
                             className="form-control"
                             id="price"
+                            max={0.9*pechincha.price}
+                            min={0.1*pechincha.price}
                             defaultValue={pechinchaOnLoad.descount}
                             {...register("descount")}
                         />
                     </div>
                     {errors.descount && <span>{errors.descount.message}</span>}
                     <br/>
-            <button className="btn btn-danger my-1 mx-1">Confirmar</button>
+            <button className="btn btn-success my-1 mx-1">Confirmar</button>
             {message && (
               <div className="alert alert-success mt-3">
                 {message}
               </div>
             )}
 
-            <button className="btn btn-success my-1 mx-1" onClick={handleCloseEditModal}>Cancelar</button>
+            <button className="btn btn-danger my-1 mx-1" onClick={handleCloseEditModal}>Cancelar</button>
             </form>   
           </div>
           
