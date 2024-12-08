@@ -13,12 +13,9 @@ export default function ProductCard({ product }) {
             <div className="card-body d-flex flex-column">
               <h5 className="card-title">{product.name}</h5>
               <p className="card-text">R$ {product.price.toFixed(2)}</p>
-              <button className="btn btn-success"><Link to={`/produtos/${product.id}`} className="text-decoration-none text-white" state={{product}}>Comprar</Link></button>
+              <Link to={`/produtos/${product.id}`} className="text-decoration-none" state={{product}}><button className="btn btn-success">Comprar</button></Link>
             </div>
           </div>
         </div>
       );
-      
 }
-
-

@@ -5,6 +5,7 @@ function Contato() {
 
   return (
     <div className="container">
+      <br/><br/><br/><br/>
       <div className="card mt-4">
         <div className="card-body">
           <h1 className="card-title text-center">Contato</h1>
@@ -19,6 +20,7 @@ function Contato() {
           </p>
         </div>
       </div>
+      <br/><br/><br/><br/>
     </div>
   );
 }

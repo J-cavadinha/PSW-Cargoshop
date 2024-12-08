@@ -45,9 +45,7 @@ export default function MyProducts() {
             </div>
             <br/>
             <div className="text-center">
-                <button className="btn btn-success btn-lg">
-                    <Link to={`/vender`} className="text-decoration-none text-white">Listar novo produto</Link>
-                </button>
+                <Link to={`/vender`} className="text-decoration-none"><button className="btn btn-success btn-lg">Listar novo produto</button></Link>
             </div>
         </div>
     )

@@ -30,7 +30,6 @@ export default function PagamentosCard() {
       const resultAction = await dispatch(addPedidoServer(pedidoAtualizado));
       if (addPedidoServer.fulfilled.match(resultAction)) {
         console.log("Pedido finalizado:", pedidoAtualizado);
-        alert("Pedido adicionado com sucesso!");
         navigate("/pedidos");
       } else {
         alert("Erro: Já existe um pedido com esse ID!");

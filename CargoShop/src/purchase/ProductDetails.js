@@ -13,7 +13,7 @@ export default function ProductDetails() {
     const product = location.state.product;
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
 
     let { id } = useParams();
   
@@ -40,7 +40,6 @@ export default function ProductDetails() {
     id ? pechinchaFound ?? pechinchaSchema.cast({}) : pechinchaSchema.cast({})
   );
 
-
   const confirmarValor = (data) => {
     const pechincha = {
       descount: data.descount,
@@ -48,16 +47,14 @@ export default function ProductDetails() {
       price: product.price,
       image: product.image,
     };
-
     
-    setMessage('pechincha Enviada!');
+    setMessage('Pechincha enviada!');
     dispatch(addPechinchaServer(pechincha));
+    setTimeout(() => navigate("/pechinchas"), 1000);
   };
-
 
     const pedido = useSelector((state) => selectPedidoById(state, id));
 
-    const navigate = useNavigate();
     const ConfirmarPagamento = () => {
       const novoPagamento = {
         id: product.id,
@@ -70,7 +67,6 @@ export default function ProductDetails() {
       };
       navigate(`/pagamentosCard/${product.id}`, { state: novoPagamento });
     };
-    
 
     useEffect(() => {
       if (!pedido) {
@@ -101,6 +97,7 @@ export default function ProductDetails() {
             <div className="collapse" id="valorOptions">
               <div className="card card-body mt-3">
                 <h5>Insira o valor que você deseja pechinchar:</h5>
+                <br/>
                 <form onSubmit={handleSubmit(confirmarValor)}>
             <div className="input-group">
                         <span className="input-group-text">R$</span>
@@ -115,6 +112,7 @@ export default function ProductDetails() {
                         />
                     </div>
                     {errors.descount && <span>{errors.descount.message}</span>}
+                    <br/>
                 <button className="btn btn-danger mt-3">
                   Confirmar Pechincha!
                 </button>
@@ -141,4 +139,3 @@ export default function ProductDetails() {
         </div>
       );
 }
-

@@ -163,48 +163,6 @@
       "image": "https://images.pexels.com/photos/14808296/pexels-photo-14808296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ],
-  "pechinchas": [
-    {
-      "id": "0492",
-      "descount": 10,
-      "name": "Rímel",
-      "price": 15,
-      "image": "https://images.pexels.com/photos/2637820/pexels-photo-2637820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    }
-  ],
-  "pedidos": [
-    {
-      "id": "1",
-      "name": "Batom",
-      "price": 25,
-      "image": "https://images.pexels.com/photos/2587370/pexels-photo-2587370.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "NomeVendedor": "Leonardo Pinto",
-      "status": "Em andamento",
-      "endereco": "rua dasopdkasodkasodkasodkasa",
-      "opcaoEnvio": "Entrega simples",
-      "formaPagamento": "Cartão de Débito"
-    },
-    {
-      "id": "4",
-      "name": "Bicicleta Speed",
-      "price": 3000,
-      "image": "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "NomeVendedor": "Leonardo Pinto",
-      "status": "Em andamento",
-      "endereco": "rua kasokdaoskdas",
-      "opcaoEnvio": "Entrega simples",
-      "formaPagamento": "Cartão de Débito"
-    },
-    {
-      "id": "5",
-      "name": "Smartphone",
-      "price": 5000,
-      "image": "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      "NomeVendedor": "Leonardo Pinto",
-      "status": "Em andamento",
-      "endereco": "rua oalsdoasldoaslda",
-      "opcaoEnvio": "Entrega rápida",
-      "formaPagamento": "Cartão de Crédito"
-    }
-  ]
+  "pechinchas": [],
+  "pedidos": []
 }
