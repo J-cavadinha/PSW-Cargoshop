@@ -12,9 +12,9 @@ function Button({ children }) {
 function UserMain() {
   return (
     <div className="d-flex flex-column align-items-center">
-      <br/>
+      <br />
       <h1>Usuário</h1>
-      <br/>
+      <br />
       <Link to="/meusprodutos" className="text-decoration-none">
         <Button>Produtos</Button>
       </Link>
@@ -29,6 +29,9 @@ function UserMain() {
       </Link>
       <Link to="/vendas" className="text-decoration-none">
         <Button>Vendas</Button>
+      </Link>
+      <Link to="/avaliacoes" className="text-decoration-none">
+        <Button>Avaliações</Button>
       </Link>
     </div>
   );
