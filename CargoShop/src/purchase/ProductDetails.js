@@ -50,7 +50,6 @@ export default function ProductDetails() {
 
         if (pechinchaFound) {
             setMessage('Já existe uma pechincha neste produto! Você pode alterá-la na página de pechinchas.');
-            console.log('Pechincha já existente:', pechinchaFound);
             return; 
         }
         
@@ -73,12 +72,6 @@ export default function ProductDetails() {
         };
         navigate(`/pagamentosCard/${product.id}`, { state: novoPagamento });
     };
-
-    useEffect(() => {
-        if (!pedido) {
-            console.log("Pedido ainda não carregado");
-        }
-    }, [pedido]);
 
     return (
         <div className="row mt-5">

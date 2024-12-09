@@ -21,26 +21,21 @@ export default function Pechincha() {
   }, [status, dispatch])
 
   let pechinchasShow = null;
+  let pechinchasOwnShow = null;
     if (status === "loaded") {
         pechinchasShow = pechinchas.map(pechincha => (<PechinchaCard key={pechincha.id} pechincha={pechincha} />));
         if (pechinchasShow.length <= 0) {
             pechinchasShow = <div>Nenhuma pechincha encontrada.</div>;
         }
-    } else if (status === "loading") {
-        pechinchasShow = <div>Carregando as pechinchas...</div>;
-    } else if (status === "failed") {
-        pechinchasShow = <div>Erro: {error}</div>
-    }
-
-    let pechinchasOwnShow = null;
-    if (status === "loaded") {
         pechinchasOwnShow = pechinchas.map(pechincha => ( <PechinchaCardOwn key={pechincha.id} pechincha={pechincha}/> ));
         if (pechinchasOwnShow.length <= 0) {
-            pechinchasOwnShow = <div>Nenhuma avaliação encontrada</div>;
+            pechinchasOwnShow = <div>Nenhuma pechincha encontrada.</div>;
         }
     } else if (status === "loading") {
-        pechinchasOwnShow = <div>Carregando as avaliações...</div>;
+        pechinchasShow = <div>Carregando as pechinchas...</div>;
+        pechinchasOwnShow = <div>Carregando as pechinchas...</div>;
     } else if (status === "failed") {
+        pechinchasShow = <div>Erro: {error}</div>
         pechinchasOwnShow = <div>Erro: {error}</div>
     }
 
