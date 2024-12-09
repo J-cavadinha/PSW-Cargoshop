@@ -36,7 +36,7 @@ export default function ProductDetails() {
         resolver: yupResolver(pechinchaSchema) 
     });
 
-    const pechinchaFound = pechinchas.find(p => p.idtest === product.id);
+    const pechinchaFound = pechinchas.find(p => p.idProduct === product.id);
 
     const confirmarValor = (data) => {
         const pechincha = {
