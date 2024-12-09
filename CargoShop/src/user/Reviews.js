@@ -5,7 +5,6 @@ import ReviewCard from "./ReviewCard";
 import { useEffect } from "react";
 import ReviewCardOwn from "./ReviewCardOwn";
 
-
 export default function Reviews() {
 
     const reviews = useSelector(selectAllReviews);
@@ -48,6 +47,9 @@ export default function Reviews() {
 
     return (
         <div>
+            <br/>
+            <h2 className="text-center">Avaliações</h2>
+            <br/>
             <br/>
             <h2>Recebidas</h2>
             <br/>

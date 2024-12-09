@@ -19,6 +19,15 @@
       "image": "https://images.pexels.com/photos/2637820/pexels-photo-2637820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
+      "image": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "seller": "Leonardo Pinto",
+      "category": "Bicicletas",
+      "price": 2500,
+      "description": "Bicicleta ideal para trilhas e terrenos acidentados.",
+      "name": "Mountain Bike Aro",
+      "id": "3"
+    },
+    {
       "name": "Bicicleta Speed",
       "id": "4",
       "price": 3000,
@@ -35,6 +44,15 @@
       "category": "Compras",
       "seller": "Leonardo Pinto",
       "image": "https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "name": "Smartwatch",
+      "id": "6",
+      "price": 1500,
+      "description": "Relógio inteligente para monitorar atividades físicas.",
+      "category": "Compras",
+      "seller": "Leonardo Pinto",
+      "image": "https://images.pexels.com/photos/2861929/pexels-photo-2861929.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "name": "Notebook",

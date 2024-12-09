@@ -13,7 +13,7 @@ export default function PagamentosCard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {register, handleSubmit,formState: { errors },} = useForm({
+  const {register, handleSubmit, formState: { errors }} = useForm({
     resolver: yupResolver(PagamentoSchema),
   });
 
@@ -28,7 +28,7 @@ export default function PagamentosCard() {
     };
     dispatch(addPedidoServer(pedidoAtualizado));
     dispatch(removeProductServer(pedidoAtualizado.id));
-    navigate("/Pedidos");
+    navigate("/pedidos");
   };  
 
   useEffect(() => {
