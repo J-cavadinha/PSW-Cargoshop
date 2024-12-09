@@ -22,26 +22,22 @@ export default function Reviews() {
     }, [status, dispatch]);
 
     let showReviews = null;
+    let showReviewsOwn = null;
+
     if (status === "loaded") {
         showReviews = reviews.map(review => ( <ReviewCard key={review.id} review={review}/> ));
         if (showReviews.length <= 0) {
             showReviews = <div>Nenhuma avaliação encontrada</div>;
         }
-    } else if (status === "loading") {
-        showReviews = <div>Carregando as avaliações...</div>;
-    } else if (status === "failed") {
-        showReviews = <div>Erro: {error}</div>
-    }
-
-    let showReviewsOwn = null;
-    if (status === "loaded") {
         showReviewsOwn = reviews.map(review => ( <ReviewCardOwn key={review.id} review={review}/> ));
         if (showReviewsOwn.length <= 0) {
             showReviewsOwn = <div>Nenhuma avaliação encontrada</div>;
         }
     } else if (status === "loading") {
+        showReviews = <div>Carregando as avaliações...</div>;
         showReviewsOwn = <div>Carregando as avaliações...</div>;
     } else if (status === "failed") {
+        showReviews = <div>Erro: {error}</div>
         showReviewsOwn = <div>Erro: {error}</div>
     }
 

@@ -10,6 +10,15 @@
       "id": "1"
     },
     {
+      "name": "Rímel",
+      "id": "2",
+      "price": 15,
+      "description": "Bom rímel",
+      "category": "Beleza",
+      "seller": "Leonardo Pinto",
+      "image": "https://images.pexels.com/photos/2637820/pexels-photo-2637820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
       "image": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "seller": "Leonardo Pinto",
       "category": "Bicicletas",

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { selectAllPedidos } from "../Pedidos/PedidoSlice"
+import { selectAllPedidos } from "../slices/PedidoSlice"
 import SaleCard from "./SaleCard";
 import { useEffect } from "react";
 import { fetchReviews } from "../slices/ReviewsSlice";

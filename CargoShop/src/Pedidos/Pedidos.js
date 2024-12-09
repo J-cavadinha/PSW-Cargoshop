@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from './PedidosCard';
-import { fetchPedidos, selectAllPedidos } from './PedidoSlice';
+import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice";
 
 export default function Pedidos() {
   const dispatch = useDispatch();

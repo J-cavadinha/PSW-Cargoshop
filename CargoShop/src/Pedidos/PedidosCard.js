@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removePedidoServer, updatePedidoServer } from "./PedidoSlice";
+import { removePedidoServer, updatePedidoServer } from "../slices/PedidoSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PedidoSchema } from "./PedidosSchema";

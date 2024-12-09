@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { selectPedidoById } from "../Pedidos/PedidoSlice";
+import { selectPedidoById } from "../slices/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();

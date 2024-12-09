@@ -51,6 +51,13 @@ export default function MainPage() {
         produtos = <div>Erro: {error}</div>
     }
 
+    let categoriesShow;
+    if (!showCategories) {
+        categoriesShow = "Categorias ▷";
+    } else {
+        categoriesShow = "Categorias ▼";
+    }
+
     return (
         <div>
             <input
@@ -62,7 +69,7 @@ export default function MainPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
-            <h2 onClick={() => setShowCategories(!showCategories)}>Categorias</h2>
+            <h2 onClick={() => setShowCategories(!showCategories)}>{categoriesShow}</h2>
             {
                 showCategories && (
                     <div className="categories d-flex flex-wrap justify-content-center">

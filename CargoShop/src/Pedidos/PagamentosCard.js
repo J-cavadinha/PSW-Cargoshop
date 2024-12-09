@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { addPedidoServer } from "../Pedidos/PedidoSlice";
+import { addPedidoServer } from "../slices/PedidoSlice";
 import { useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PagamentoSchema } from "./PagamentoSchema";

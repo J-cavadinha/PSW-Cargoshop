@@ -16,7 +16,7 @@ import MyProducts from './user/MyProducts';
 import ProductForm from './user/AddProduct';
 import Pedidos from './Pedidos/Pedidos';
 import { fetchPechinchas } from './slices/PechinchaSlice';
-import { fetchPedidos } from './Pedidos/PedidoSlice';
+import { fetchPedidos } from "./slices/PedidoSlice";
 import PagamentosCard from "./Pedidos/PagamentosCard";
 import Sales from './user/Sales';
 import Purchases from './user/Purchases';
