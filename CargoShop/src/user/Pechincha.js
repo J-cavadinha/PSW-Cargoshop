@@ -1,6 +1,7 @@
 import { useEffect, React } from 'react';
 import { useDispatch, useSelector  } from 'react-redux';  
 import PechinchaCard from '../main/PechinchaCard';
+import PechinchaCardOwn from '../main/PechinchaCardOwn';
 import {selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice'; 
 
 export default function Pechincha() {
@@ -31,15 +32,36 @@ export default function Pechincha() {
         pechinchasShow = <div>Erro: {error}</div>
     }
 
-  return (
-    <div className="container">
-      <br/>
-      <h1 className="text-center">Pechinchas</h1>
-      <br/>
+    let pechinchasOwnShow = null;
+    if (status === "loaded") {
+        pechinchasOwnShow = pechinchas.map(pechincha => ( <PechinchaCardOwn key={pechincha.id} pechincha={pechincha}/> ));
+        if (pechinchasOwnShow.length <= 0) {
+            pechinchasOwnShow = <div>Nenhuma avaliação encontrada</div>;
+        }
+    } else if (status === "loading") {
+        pechinchasOwnShow = <div>Carregando as avaliações...</div>;
+    } else if (status === "failed") {
+        pechinchasOwnShow = <div>Erro: {error}</div>
+    }
 
-      <div className="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-4">       
-        {pechinchasShow}
-      </div>
-    </div>
+  return (
+<div>
+<br/>
+<h2 className="text-center">Pechinchas</h2>
+<br/>
+<br/>
+<h2>Feitas</h2>
+<br/>
+<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> 
+    {pechinchasShow}
+</div>
+<br/>
+<h2>Recebidas</h2>
+<br/>
+<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> 
+    {pechinchasOwnShow}
+</div>
+</div>
   );
 }
+
