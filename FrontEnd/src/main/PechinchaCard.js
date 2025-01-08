@@ -8,7 +8,6 @@ import { pechinchaSchema } from '../user/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import '../PechinchaCard.css';
 
-
 export default function PechinchaCard({ pechincha }) {
 
   let { id } = useParams();
@@ -73,9 +72,9 @@ const [pechinchaOnLoad] = useState(
   return (
     <div className="col-md-3 mb-4">
       <div className="card pechincha" style={{ position: 'relative' }}>
-        <img src={pechincha.image} className="card-img-top" alt={productFound.name} style={{ objectFit: "cover", height: "200px" }}  />
+        <img src={productFound.image} className="card-img-top" alt={productFound.name} style={{ objectFit: "cover", height: "200px" }}  />
         <div className="card-body">
-          <h5 className="card-title">{pechincha.name}</h5>
+          <h5 className="card-title">{productFound.name}</h5>
           <p className="card-text">Valor Total: R$ {productFound.price}</p>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <p className="card-text">Valor Pechinchado: R$ {pechincha.descount}</p>
@@ -116,8 +115,8 @@ const [pechinchaOnLoad] = useState(
                             step="0.01"
                             className="form-control"
                             id="price"
-                            max={0.9*pechincha.price}
-                            min={0.1*pechincha.price}
+                            max={0.9*productFound.price}
+                            min={0.1*productFound.price}
                             defaultValue={pechinchaOnLoad.descount}
                             {...register("descount")}
                         />
