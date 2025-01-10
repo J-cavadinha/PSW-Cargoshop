@@ -14,16 +14,16 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async ()
     return await httpGet(`${baseUrl}/products`);
 });
 
-export const addProductServer = createAsyncThunk("products/addProductServer", async (product) => {
-    return await httpPost(`${baseUrl}/products`, product);
+export const addProductServer = createAsyncThunk("products/addProductServer", async (product, { getState }) => {
+    return await httpPost(`${baseUrl}/products`, product, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const updateProductServer = createAsyncThunk("products/updateProductServer", async (product) => {
-    return await httpPut(`${baseUrl}/products/${product.id}`, product);
+export const updateProductServer = createAsyncThunk("products/updateProductServer", async (product, { getState }) => {
+    return await httpPut(`${baseUrl}/products/${product.id}`, product, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const removeProductServer = createAsyncThunk("products/removeProductServer", async (productId) => {
-    await httpDelete(`${baseUrl}/products/${productId}`);
+export const removeProductServer = createAsyncThunk("products/removeProductServer", async (productId, { getState }) => {
+    await httpDelete(`${baseUrl}/products/${productId}`, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
     return productId;
 });
 

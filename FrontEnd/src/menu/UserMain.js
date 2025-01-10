@@ -1,5 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutServer } from '../slices/LoginSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Button({ children }) {
   return (
@@ -10,6 +12,17 @@ function Button({ children }) {
 }
 
 function UserMain() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const status = useSelector(state => state.logins.status);
+
+  useEffect(() => {
+    if (status === "not_logged_in") {
+      navigate("/");
+    }
+  }, [status, navigate]);
+
   return (
     <div className="d-flex flex-column align-items-center">
       <br />
@@ -33,6 +46,11 @@ function UserMain() {
       <Link to="/avaliacoes" className="text-decoration-none">
         <Button>Avaliações</Button>
       </Link>
+      <button 
+        className={`btn btn-danger btn-lg my-2`}
+        style={{ padding: '1rem 2rem' }}
+        onClick={() => dispatch(logoutServer())}
+      >Sair</button>
     </div>
   );
 }

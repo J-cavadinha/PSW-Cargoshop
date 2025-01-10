@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addPechinchaServer, selectAllPechinchas, fetchPechinchas } from "../slices/PechinchaSlice";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { pechinchaSchema } from '../user/PechinchaSchema';
+import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { selectPedidoById } from "../slices/PedidoSlice";
 
 export default function ProductDetails() {
     const location = useLocation();
@@ -14,10 +12,9 @@ export default function ProductDetails() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    let { id } = useParams();
   
     const status = useSelector(state => state.pechinchas.status);
+    const buyer = useSelector(state => state.logins.username);
   
     const pechinchas = useSelector(selectAllPechinchas);
   
@@ -41,10 +38,9 @@ export default function ProductDetails() {
     const confirmarValor = (data) => {
         const pechincha = {
             descount: data.descount,
-            name: product.name,
-            price: product.price,
-            image: product.image,
             idProduct: product.id,
+            seller: product.seller,
+            buyer: buyer
         };
         
 
@@ -57,8 +53,6 @@ export default function ProductDetails() {
         dispatch(addPechinchaServer(pechincha));
         setTimeout(() => navigate("/pechinchas"), 1000);
     };
-
-    const pedido = useSelector((state) => selectPedidoById(state, id));
 
     const ConfirmarPagamento = () => {
         const novoPagamento = {

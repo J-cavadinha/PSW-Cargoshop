@@ -10,20 +10,20 @@ const initialState = reviewsAdapter.getInitialState({
 
 const baseUrl = "http://localhost:3004";
 
-export const fetchReviews = createAsyncThunk("reviews/fetchReviews", async () => {
-    return await httpGet(`${baseUrl}/reviews`);
+export const fetchReviews = createAsyncThunk("reviews/fetchReviews", async (_, { getState }) => {
+    return await httpGet(`${baseUrl}/reviews`, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const addReviewServer = createAsyncThunk("reviews/addReviewServer", async (review) => {
-    return await httpPost(`${baseUrl}/reviews`, review);
+export const addReviewServer = createAsyncThunk("reviews/addReviewServer", async (review, { getState }) => {
+    return await httpPost(`${baseUrl}/reviews`, review, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const updateReviewServer = createAsyncThunk("reviews/updateReviewServer", async (review) => {
-    return await httpPut(`${baseUrl}/reviews/${review.id}`, review);
+export const updateReviewServer = createAsyncThunk("reviews/updateReviewServer", async (review, { getState }) => {
+    return await httpPut(`${baseUrl}/reviews/${review.id}`, review, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const removeReviewServer = createAsyncThunk("reviews/removeReviewServer", async (reviewId) => {
-    await httpDelete(`${baseUrl}/reviews/${reviewId}`);
+export const removeReviewServer = createAsyncThunk("reviews/removeReviewServer", async (reviewId, { getState }) => {
+    await httpDelete(`${baseUrl}/reviews/${reviewId}`, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
     return reviewId;
 });
 

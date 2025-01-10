@@ -9,6 +9,7 @@ export default function Pechincha() {
   const pechinchas = useSelector(selectAllPechinchas);
   const status = useSelector(state => state.pechinchas.status);
   const error = useSelector(state => state.pechinchas.error);
+  const buyer = useSelector(state => state.logins.username);
 
   const dispatch = useDispatch();
 
@@ -20,14 +21,22 @@ export default function Pechincha() {
       }
   }, [status, dispatch])
 
+    const filteredPechinchas = pechinchas.filter(pechincha => {
+        return pechincha.buyer === buyer;
+    });
+
+    const filteredPechinchasOwn = pechinchas.filter(pechincha => {
+        return pechincha.seller === buyer;
+    });
+
   let pechinchasShow = null;
   let pechinchasOwnShow = null;
     if (status === "loaded") {
-        pechinchasShow = pechinchas.map(pechincha => (<PechinchaCard key={pechincha.id} pechincha={pechincha} />));
+        pechinchasShow = filteredPechinchas.map(pechincha => (<PechinchaCard key={pechincha.id} pechincha={pechincha} />));
         if (pechinchasShow.length <= 0) {
             pechinchasShow = <div>Nenhuma pechincha encontrada.</div>;
         }
-        pechinchasOwnShow = pechinchas.map(pechincha => ( <PechinchaCardOwn key={pechincha.id} pechincha={pechincha}/> ));
+        pechinchasOwnShow = filteredPechinchasOwn.map(pechincha => ( <PechinchaCardOwn key={pechincha.id} pechincha={pechincha}/> ));
         if (pechinchasOwnShow.length <= 0) {
             pechinchasOwnShow = <div>Nenhuma pechincha encontrada.</div>;
         }
@@ -59,4 +68,3 @@ export default function Pechincha() {
 </div>
   );
 }
-

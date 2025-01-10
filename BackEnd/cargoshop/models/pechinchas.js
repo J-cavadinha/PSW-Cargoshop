@@ -6,6 +6,14 @@ const pechinchaSchema = new Schema({
         type: Number,
         required: false
     },
+    buyer: {
+        type: String,
+        required: false
+    },
+    seller: {
+        type: String,
+        required: false
+    },
     idProduct: {
         type: Schema.Types.ObjectId,
         ref: 'Product'

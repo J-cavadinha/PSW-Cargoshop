@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('passport');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var productsRouter = require('./routes/products');
@@ -14,6 +15,7 @@ var usersRouter = require('./routes/users');
 var config = require('./config');
 
 const mongoose = require('mongoose');
+const cors = require('./routes/cors');
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
@@ -26,6 +28,15 @@ connect.then((db) => {
 
 var app = express();
 
+app.use(session({
+    secret: config.secretKey, // Replace with a strong secret
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+app.use(cors.corsWithOptions);
+app.options('*', cors.corsWithOptions); // Enable preflight for all routes
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -8,6 +8,7 @@ export default function MyProducts() {
     const products = useSelector(selectAllProducts);
     const status = useSelector(state => state.products.status);
     const error =  useSelector(state => state.products.error);
+    const seller = useSelector(state => state.logins.username);
 
     const dispatch = useDispatch();
 
@@ -20,8 +21,8 @@ export default function MyProducts() {
     }, [status, dispatch])
 
     const filteredProducts = products.filter(product => {
-        return product.seller.toLowerCase().includes("leonardo");
-        });
+        return product.seller === seller;
+    });
 
     let produtos = null;
     if (status === "loaded") {

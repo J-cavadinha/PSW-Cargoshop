@@ -4,7 +4,7 @@ import { fetchPechinchas, removePechinchaServer, updatePechinchaServer, selectPe
 import { selectProductsById} from '../slices/ProductsSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useParams } from 'react-router-dom';
-import { pechinchaSchema } from '../user/PechinchaSchema';
+import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import '../PechinchaCard.css';
 

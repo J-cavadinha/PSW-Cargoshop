@@ -10,25 +10,22 @@ const initialState =  pechinchasAdapter.getInitialState({
 
 const baseUrl = "http://localhost:3004";
 
-
-export const fetchPechinchas = createAsyncThunk("pechinchas/fetchPechinchas", async () => {
-  return await httpGet(`${baseUrl}/pechinchas`);
+export const fetchPechinchas = createAsyncThunk("pechinchas/fetchPechinchas", async (_, { getState }) => {
+  return await httpGet(`${baseUrl}/pechinchas`, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const addPechinchaServer = createAsyncThunk("pechinchas/addPechinchaServer", async (pechincha) => {
-  return await httpPost(`${baseUrl}/pechinchas`, pechincha);
+export const addPechinchaServer = createAsyncThunk("pechinchas/addPechinchaServer", async (pechincha, { getState }) => {
+  return await httpPost(`${baseUrl}/pechinchas`, pechincha, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const updatePechinchaServer = createAsyncThunk("pechinchas/updatePechinchaServer", async (pechincha) => {
-  return await httpPut(`${baseUrl}/pechinchas/${pechincha.id}`, pechincha);
+export const updatePechinchaServer = createAsyncThunk("pechinchas/updatePechinchaServer", async (pechincha, { getState }) => {
+  return await httpPut(`${baseUrl}/pechinchas/${pechincha.id}`, pechincha, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
 });
 
-export const removePechinchaServer = createAsyncThunk("pechinchas/removePechinchaServer", async (pechinchaId) => {
-  await httpDelete(`${baseUrl}/pechinchas/${pechinchaId}`);
+export const removePechinchaServer = createAsyncThunk("pechinchas/removePechinchaServer", async (pechinchaId, { getState }) => {
+  await httpDelete(`${baseUrl}/pechinchas/${pechinchaId}`, {headers: { 'Authorization': `Bearer ${getState().logins.token}`}});
   return pechinchaId;
 });
-
-
 
 export const pechinchaSlice = createSlice({
   name: 'pechinchas',

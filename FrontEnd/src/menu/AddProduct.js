@@ -10,6 +10,7 @@ function ProductForm() {
     let { id } = useParams();
 
     const productFound = useSelector(state => selectProductsById(state, id));
+    const seller = useSelector(state => state.logins.username);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -26,10 +27,11 @@ function ProductForm() {
     );
 
     function onSubmit(product) {
-        if (product.image === "") {
-            product.image = "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png";
-        }
         if (actionType === "add") {
+            product.seller = seller;
+            if (product.image === "") {
+                product.image = "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png";
+            }
             dispatch(addProductServer(product));
         } else {
             dispatch(updateProductServer({ ...product, id: productFound.id }));

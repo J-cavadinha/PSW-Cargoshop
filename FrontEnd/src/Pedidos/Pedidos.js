@@ -32,7 +32,6 @@ export default function Pedidos() {
       <br/>
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
       {status === 'loading' && <p>Carregando...</p>}
-      {status === 'failed' && <p>Erro ao carregar os pedidos: {error}</p>}
       <div className="row g-4">
         {pedidosShow}
       </div>

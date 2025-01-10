@@ -24,6 +24,7 @@ export default function MainPage() {
     const products = useSelector(selectAllProducts);
     const status = useSelector(state => state.products.status);
     const error =  useSelector(state => state.products.error);
+    const seller = useSelector(state => state.logins.username);
 
     const dispatch = useDispatch();
 
@@ -36,7 +37,8 @@ export default function MainPage() {
     }, [status, dispatch])
 
     const filteredProducts = products.filter(product => {
-        return product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory);
+        return (product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory)
+    && product.seller !== seller);
     });
 
     let produtos = null;
