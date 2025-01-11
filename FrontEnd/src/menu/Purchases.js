@@ -10,6 +10,7 @@ export default function Purchases() {
 
     const status = useSelector(state => state.reviews.status);
     const error =  useSelector(state => state.reviews.error);
+    const seller = useSelector(state => state.logins.username);
 
     useEffect(() => {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
@@ -19,9 +20,13 @@ export default function Purchases() {
         }
     }, [status, dispatch]);
 
+    const filteredOrders = orders.filter(order => {
+        return order.comprador === seller;
+    });
+
     let purchases = null;
     if (status === "loaded") {
-        purchases = orders.map(order => (<PurchaseCard key={order.id} order={order}/>));
+        purchases = filteredOrders.map(order => (<PurchaseCard key={order.id} order={order}/>));
         if (purchases.length <= 0) {
             purchases = <div>Nenhuma compra encontrada</div>
         }

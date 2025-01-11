@@ -14,9 +14,37 @@ const pedidoSchema = new Schema({
         type: String,
         required: true
     },
-    produto: {
+    idProduto: {
         type: Schema.Types.ObjectId,
         ref: 'Product'
+    },
+    name: {
+        type: String,
+        required: false
+    },
+    price: {
+        type: Number,
+        required: false
+    },
+    image: {
+        type: String,
+        required: false
+    },
+    NomeVendedor: {
+        type: String,
+        required: false
+    },     
+    comprador: {
+        type: String,
+        required: false
+    },
+    status: {
+        type: String,
+        required: false,
+    },
+    endereco: {
+        type: String,
+        required: false
     }
 })
 

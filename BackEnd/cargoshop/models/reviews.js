@@ -13,6 +13,14 @@ const reviewSchema = new Schema({
     orderId: {
         type: Schema.Types.ObjectId,
         ref: 'Pedido'
+    },
+    seller: {
+        type: String,
+        required: true
+    },
+    buyer: {
+        type: String,
+        required: true
     }
 })
 

@@ -1,17 +1,20 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { addPedidoServer } from "../slices/PedidoSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PagamentoSchema } from "./PagamentoSchema";
 import { useForm } from "react-hook-form";
 import { removeProductServer } from "../slices/ProductsSlice"
+import { removePechinchaServer, selectAllPechinchas } from "../slices/PechinchaSlice";
 
 export default function PagamentosCard() {
   const location = useLocation();
   const novoPagamento = location.state || null;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const pechinchas = useSelector(selectAllPechinchas);
 
   const {register, handleSubmit, formState: { errors }} = useForm({
     resolver: yupResolver(PagamentoSchema),
@@ -28,6 +31,11 @@ export default function PagamentosCard() {
     };
     dispatch(addPedidoServer(pedidoAtualizado));
     dispatch(removeProductServer(pedidoAtualizado.id));
+
+    const filteredPechinchas = pechinchas.filter(pechincha => pechincha.idProduct === pedidoAtualizado.id);
+    filteredPechinchas.forEach(pechincha => {
+      dispatch(removePechinchaServer(pechincha.id));
+    })
     navigate("/pedidos");
   };  
 

@@ -72,8 +72,9 @@ router.route('/:id')
   res.setHeader('Content-Type', 'application/json');
   try {
     const response = await Reviews.findByIdAndDelete(req.params.id)
+    console.log(response);
     res.statusCode = 200;
-    res.json(response.id);
+    res.json(response);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;

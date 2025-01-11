@@ -4,19 +4,23 @@ import normalize from 'normalize-mongoose';
 const pechinchaSchema = new Schema({
     descount: {
         type: Number,
-        required: false
+        required: true
     },
     buyer: {
         type: String,
-        required: false
+        required: true
     },
     seller: {
         type: String,
-        required: false
+        required: true
     },
     idProduct: {
         type: Schema.Types.ObjectId,
         ref: 'Product'
+    },
+    image: {
+        type: String,
+        required: true
     }
 })
 

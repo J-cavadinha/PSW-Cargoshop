@@ -12,6 +12,7 @@ export default function Reviews() {
 
     const status = useSelector(state => state.reviews.status);
     const error =  useSelector(state => state.reviews.error);
+    const seller = useSelector(state => state.logins.username);
 
     useEffect(() => {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
@@ -21,15 +22,23 @@ export default function Reviews() {
         }
     }, [status, dispatch]);
 
+    const filteredReviews = reviews.filter(review => {
+        return review.seller === seller;
+    });
+
+    const filteredReviewsOwn = reviews.filter(review => {
+        return review.buyer === seller;
+    });
+
     let showReviews = null;
     let showReviewsOwn = null;
 
     if (status === "loaded") {
-        showReviews = reviews.map(review => ( <ReviewCard key={review.id} review={review}/> ));
+        showReviews = filteredReviews.map(review => ( <ReviewCard key={review.id} review={review}/> ));
         if (showReviews.length <= 0) {
             showReviews = <div>Nenhuma avaliação encontrada</div>;
         }
-        showReviewsOwn = reviews.map(review => ( <ReviewCardOwn key={review.id} review={review}/> ));
+        showReviewsOwn = filteredReviewsOwn.map(review => ( <ReviewCardOwn key={review.id} review={review}/> ));
         if (showReviewsOwn.length <= 0) {
             showReviewsOwn = <div>Nenhuma avaliação encontrada</div>;
         }

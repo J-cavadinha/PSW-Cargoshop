@@ -5,5 +5,7 @@ setLocale(ptForm);
 
 export let reviewSchema = object().shape({
     rate: number().required().min(0).max(10).default(0).typeError("Insira uma nota válida."),
-    message: string().required().max(300).default("")
+    message: string().required().max(300).default(""),
+    seller: string().default(""),
+    buyer: string().default("")
 });

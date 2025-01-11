@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginServer, signupServer } from '../slices/LoginSlice';
-import { loginSchema }from './LoginSchema';
+import { loginSchema } from './LoginSchema';
 
 function LoginForm() {
     const dispatch = useDispatch();
@@ -35,7 +35,6 @@ function LoginForm() {
                 navigate("/");
             } else if (status === "signed_in") {
                 dispatch(loginServer(data.current));
-                data.current = null;
             }
         }
     }, [status, navigate, dispatch]);
@@ -81,8 +80,8 @@ function LoginForm() {
                     />
                     {errors.password && <span>{errors.password.message}</span>}
                 </div>
-                <button onClick={() => handleSubmit(handleLogin)} className="btn btn-primary mx-2">Entrar</button>
-                <button onClick={() => handleSubmit(handleSignin)} className="btn btn-primary mx-2">Criar conta</button>
+                <button type="button" onClick={handleSubmit(handleLogin)} className="btn btn-primary mx-2">Entrar</button>
+                <button type="button" onClick={handleSubmit(handleSignin)} className="btn btn-primary mx-2">Criar conta</button>
             </form>
         </div>
     );

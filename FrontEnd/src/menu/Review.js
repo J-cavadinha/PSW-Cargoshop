@@ -5,11 +5,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { reviewSchema } from "./ReviewSchema";
+import { selectPedidoById } from "../slices/PedidoSlice";
 
 export default function ReviewForm() {
     let {orderId, reviewId} = useParams();
 
     const reviewFound = useSelector(state => selectReviewsById(state, reviewId));
+    const order = useSelector(state => selectPedidoById(state, orderId));
+    const buyer = useSelector(state => state.logins.username);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -26,11 +29,14 @@ export default function ReviewForm() {
     );
 
     function onSubmit(review) {
+        review.seller = order.NomeVendedor;
+        review.buyer = buyer;
         if (actionType === "add") {
             review.orderId = orderId;
             dispatch(addReviewServer(review));
         } else {
-            dispatch(updateReviewServer({ ...review, id: reviewFound.id }));
+            console.log(review);
+            dispatch(updateReviewServer({ ...review, id: reviewFound.id}));
         }
 
         navigate('/avaliacoes');

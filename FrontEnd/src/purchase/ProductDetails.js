@@ -40,9 +40,9 @@ export default function ProductDetails() {
             descount: data.descount,
             idProduct: product.id,
             seller: product.seller,
+            image: product.image,
             buyer: buyer
         };
-        
 
         if (pechinchaFound) {
             setMessage('Já existe uma pechincha neste produto! Você pode alterá-la na página de pechinchas.');
@@ -56,11 +56,12 @@ export default function ProductDetails() {
 
     const ConfirmarPagamento = () => {
         const novoPagamento = {
-            id: product.id,
+            idProduto: product.id,
             name: product.name,
             price: product.price,
             image: product.image,
             NomeVendedor: product.seller,
+            comprador: buyer,
             status: 'Finalizado',
             endereco: '',
         };

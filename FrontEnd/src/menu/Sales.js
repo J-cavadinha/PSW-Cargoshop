@@ -10,6 +10,7 @@ export default function Sales() {
     const dispatch = useDispatch();
     const status = useSelector(state => state.reviews.status);
     const error =  useSelector(state => state.reviews.error);
+    const seller = useSelector(state => state.logins.username);
 
     useEffect(() => {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
@@ -19,9 +20,13 @@ export default function Sales() {
         }
     }, [status, dispatch]);
 
+    const filteredOrders = orders.filter(order => {
+        return order.NomeVendedor === seller;
+    });
+
     let sales = null;
     if (status === "loaded") {
-        sales = orders.map(order => (<SaleCard key={order.id} order={order}/>));
+        sales = filteredOrders.map(order => (<SaleCard key={order.id} order={order}/>));
         if (sales.length <= 0) {
             sales = <div>Nenhuma venda encontrada</div>
         }

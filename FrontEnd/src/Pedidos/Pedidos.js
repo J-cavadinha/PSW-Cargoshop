@@ -8,6 +8,7 @@ export default function Pedidos() {
   const pedidos = useSelector(selectAllPedidos);
   const status = useSelector((state) => state.pedidos.status);
   const error = useSelector((state) => state.pedidos.error);
+  const buyer = useSelector(state => state.logins.username);
 
   useEffect(() => {
     if (status === "not_loaded" || status === "saved" || status === "deleted") {
@@ -15,9 +16,13 @@ export default function Pedidos() {
     }
   }, [status, dispatch]);
 
+  const filteredPedidos = pedidos.filter(pedido => {
+    return pedido.comprador === buyer;
+  });
+
   let pedidosShow = null;
   if (status === "succeeded") {
-    pedidosShow = pedidos.map((pedido) => (<PedidosCard key={pedido.id} pedido={pedido} />));
+    pedidosShow = filteredPedidos.map((pedido) => (<PedidosCard key={pedido.id} pedido={pedido} />));
     if (pedidosShow.length <= 0) {
         pedidosShow = <div>Nenhum pedido encontrado.</div>;
     }
