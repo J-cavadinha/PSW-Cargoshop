@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
-import normalize from 'normalize-mongoose';
+var mongoose = require('mongoose');
+var normalize = require('normalize-mongoose');
 
-const productSchema = new Schema({
+const productSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -27,10 +27,10 @@ const productSchema = new Schema({
         required: true,
         default: "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png"
     }
-})
+});
 
-productSchema.plugin(normalize)
+productSchema.plugin(normalize);
 
-var Products = model('Product', productSchema);
+var Products = mongoose.model('Product', productSchema);
 
-export default Products;
+module.exports = Products;

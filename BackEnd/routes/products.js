@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const bodyParser = require('body-parser');
-const Reviews = require('../models/reviews').default;
+const Products = require('../models/products');
 var authenticate = require('../authenticate');
 
 router.use(bodyParser.json());
 
 /* GET users listing. */
 router.route('/')
-.get(authenticate.verifyUser, async (req, res, next) => {
+.get(async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const review = await Reviews.find({});
+    const product = await Products.find({});
     res.statusCode = 200;
-    res.json(review);
+    res.json(product);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -23,9 +23,9 @@ router.route('/')
 .post(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const review = await Reviews.create(req.body);
+    const product = await Products.create(req.body);
     res.statusCode = 200;
-    res.json(review);
+    res.json(product);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -37,10 +37,10 @@ router.route('/:id')
 .get(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const review = await Reviews.findById(req.params.id);
-    if (review != null) {
+    const product = await Products.findById(req.params.id);
+    if (product != null) {
       res.statusCode = 200;
-      res.json(review);
+      res.json(product);
     } else {
       let err = {};
       res.statusCode = 404;
@@ -55,13 +55,13 @@ router.route('/:id')
 .put(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const review = await Reviews.findByIdAndUpdate(req.params.id, {
+    const product = await Products.findByIdAndUpdate(req.params.id, {
       $set: req.body
     }, {
       new: true
     })
     res.statusCode = 200;
-    res.json(review);
+    res.json(product);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -71,10 +71,9 @@ router.route('/:id')
 .delete(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const response = await Reviews.findByIdAndDelete(req.params.id)
-    console.log(response);
+    const response = await Products.findByIdAndDelete(req.params.id)
     res.statusCode = 200;
-    res.json(response);
+    res.json(response.id);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;

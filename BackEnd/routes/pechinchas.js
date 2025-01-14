@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const bodyParser = require('body-parser');
-const Pedidos = require('../models/pedidos').default;
+const Pechinchas = require('../models/pechinchas');
 var authenticate = require('../authenticate');
 
 router.use(bodyParser.json());
@@ -11,9 +11,9 @@ router.route('/')
 .get(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const pedido = await Pedidos.find({});
+    const pechincha = await Pechinchas.find({});
     res.statusCode = 200;
-    res.json(pedido);
+    res.json(pechincha);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -23,9 +23,9 @@ router.route('/')
 .post(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const pedido = await Pedidos.create(req.body);
+    const pechincha = await Pechinchas.create(req.body);
     res.statusCode = 200;
-    res.json(pedido);
+    res.json(pechincha);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -37,10 +37,10 @@ router.route('/:id')
 .get(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const pedido = await Pedidos.findById(req.params.id);
-    if (pedido != null) {
+    const pechincha = await Pechinchas.findById(req.params.id);
+    if (pechincha != null) {
       res.statusCode = 200;
-      res.json(pedido);
+      res.json(pechincha);
     } else {
       let err = {};
       res.statusCode = 404;
@@ -55,13 +55,13 @@ router.route('/:id')
 .put(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const pedido = await Pedidos.findByIdAndUpdate(req.params.id, {
+    const pechincha = await Pechinchas.findByIdAndUpdate(req.params.id, {
       $set: req.body
     }, {
       new: true
     })
     res.statusCode = 200;
-    res.json(pedido);
+    res.json(pechincha);
   } catch(err) {
       console.log(err)
       res.statusCode = 404;
@@ -71,7 +71,7 @@ router.route('/:id')
 .delete(authenticate.verifyUser, async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const response = await Pedidos.findByIdAndDelete(req.params.id)
+    const response = await Pechinchas.findByIdAndDelete(req.params.id)
     res.statusCode = 200;
     res.json(response.id);
   } catch(err) {

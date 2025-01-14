@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
-import normalize from 'normalize-mongoose';
+var mongoose = require('mongoose');
+var normalize = require('normalize-mongoose');
 
-const pedidoSchema = new Schema({
+const pedidoSchema = new mongoose.Schema({
     endereco: {
         type: String,
         required: true
@@ -15,7 +15,7 @@ const pedidoSchema = new Schema({
         required: true
     },
     idProduto: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     },
     name: {
@@ -46,10 +46,10 @@ const pedidoSchema = new Schema({
         type: String,
         required: false
     }
-})
+});
 
-pedidoSchema.plugin(normalize)
+pedidoSchema.plugin(normalize);
 
-var Pedidos = model('Pedido', pedidoSchema);
+var Pedidos = mongoose.model('Pedido', pedidoSchema);
 
-export default Pedidos;
+module.exports = Pedidos;

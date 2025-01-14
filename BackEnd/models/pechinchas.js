@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
-import normalize from 'normalize-mongoose';
+var mongoose = require('mongoose');
+var normalize = require('normalize-mongoose');
 
-const pechinchaSchema = new Schema({
+const pechinchaSchema = new mongoose.Schema({
     descount: {
         type: Number,
         required: true
@@ -15,17 +15,17 @@ const pechinchaSchema = new Schema({
         required: true
     },
     idProduct: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     },
     image: {
         type: String,
         required: true
     }
-})
+});
 
-pechinchaSchema.plugin(normalize)
+pechinchaSchema.plugin(normalize);
 
-var Pechinchas = model('Pechincha', pechinchaSchema);
+var Pechinchas = mongoose.model('Pechincha', pechinchaSchema);
 
-export default Pechinchas;
+module.exports = Pechinchas;

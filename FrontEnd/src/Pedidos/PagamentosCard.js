@@ -30,9 +30,9 @@ export default function PagamentosCard() {
       formaPagamento: data.formaPagamento,
     };
     dispatch(addPedidoServer(pedidoAtualizado));
-    dispatch(removeProductServer(pedidoAtualizado.id));
+    dispatch(removeProductServer(pedidoAtualizado.idProduto));
 
-    const filteredPechinchas = pechinchas.filter(pechincha => pechincha.idProduct === pedidoAtualizado.id);
+    const filteredPechinchas = pechinchas.filter(pechincha => pechincha.idProduct === pedidoAtualizado.idProduto);
     filteredPechinchas.forEach(pechincha => {
       dispatch(removePechinchaServer(pechincha.id));
     })

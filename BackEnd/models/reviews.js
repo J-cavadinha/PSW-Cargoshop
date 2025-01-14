@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
-import normalize from 'normalize-mongoose';
+var mongoose = require('mongoose');
+var normalize = require('normalize-mongoose');
 
-const reviewSchema = new Schema({
+const reviewSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true
@@ -11,7 +11,7 @@ const reviewSchema = new Schema({
         required: true
     },
     orderId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Pedido'
     },
     seller: {
@@ -22,10 +22,10 @@ const reviewSchema = new Schema({
         type: String,
         required: true
     }
-})
+});
 
-reviewSchema.plugin(normalize)
+reviewSchema.plugin(normalize);
 
-var Reviews = model('Review', reviewSchema);
+var Reviews = mongoose.model('Review', reviewSchema);
 
-export default Reviews;
+module.exports = Reviews;
