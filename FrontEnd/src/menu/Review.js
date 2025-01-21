@@ -35,7 +35,6 @@ export default function ReviewForm() {
             review.orderId = orderId;
             dispatch(addReviewServer(review));
         } else {
-            console.log(review);
             dispatch(updateReviewServer({ ...review, id: reviewFound.id}));
         }
 

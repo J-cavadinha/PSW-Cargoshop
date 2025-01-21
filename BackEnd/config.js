@@ -1,4 +1,4 @@
 module.exports = {
     "secretKey": '72345-96235-37101-28430',
-    "mongoUrl": 'mongodb://127.0.0.1:27017/cargoshop'
+    "mongoUrl": 'mongodb+srv://fred:qwermnbv@cluster0.kpc1h.mongodb.net/cargoshop?retryWrites=true&w=majority&appName=Cluster0'
 }

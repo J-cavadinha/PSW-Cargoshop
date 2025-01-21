@@ -35,12 +35,18 @@ export const loginSlice = createSlice({
             state.token = action.payload.token;
             state.username = action.payload.username;
         });
+        builder.addCase(loginServer.pending, (state, action) => {
+            state.error = 0;
+        });
         builder.addCase(loginServer.rejected, (state, action) => {
             state.status = "not_logged_in";
             state.error = 2;
         });
         builder.addCase(signupServer.fulfilled, (state, action) => {
-            state.status = "signed_in";
+            state.status = "logged_in";
+        });
+        builder.addCase(signupServer.pending, (state, action) => {
+            state.error = 0;
         });
         builder.addCase(signupServer.rejected, (state, action) => {
             state.error = 1;

@@ -29,7 +29,7 @@ function ProductForm() {
     function onSubmit(product) {
         product.seller = seller;
         if (product.image === "") {
-            product.image = "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png";
+            product.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJQeJyzgAzTEVqXiGe90RGBFhfp_4RcJJMQ&s";
         }
         if (actionType === "add") {
             dispatch(addProductServer(product));

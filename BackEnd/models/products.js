@@ -24,8 +24,7 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true,
-        default: "https://escoladegoverno.rs.gov.br/wp-content/uploads/2023/05/placeholder-1.png"
+        required: true
     }
 });
 

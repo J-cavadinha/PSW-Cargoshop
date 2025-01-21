@@ -33,11 +33,9 @@ function LoginForm() {
             if (status === "logged_in") {
                 data.current = null;
                 navigate("/");
-            } else if (status === "signed_in") {
-                dispatch(loginServer(data.current));
             }
         }
-    }, [status, navigate, dispatch]);
+    }, [status, navigate]);
 
     useEffect(() => {
         if (data.current) {

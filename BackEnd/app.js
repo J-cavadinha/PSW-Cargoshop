@@ -28,13 +28,6 @@ connect.then((db) => {
 
 var app = express();
 
-app.use(session({
-    secret: config.secretKey, // Replace with a strong secret
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
-}));
-
 app.use(cors.corsWithOptions);
 app.options('*', cors.corsWithOptions); // Enable preflight for all routes
 app.use(logger('dev'));
