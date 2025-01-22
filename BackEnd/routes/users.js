@@ -17,7 +17,7 @@ router.post('/signup', (req, res, next) => {
             const token = authenticate.getToken({ _id: user._id });
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({ success: true, token: token });
+            res.json({ username: user.username, id: user._id, token: token });
         }
     });
 });

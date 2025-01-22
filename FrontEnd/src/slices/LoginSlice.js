@@ -39,11 +39,14 @@ export const loginSlice = createSlice({
             state.error = 0;
         });
         builder.addCase(loginServer.rejected, (state, action) => {
-            state.status = "not_logged_in";
             state.error = 2;
         });
         builder.addCase(signupServer.fulfilled, (state, action) => {
             state.status = "logged_in";
+            loginAdapter.addOne(state, action.payload);
+            state.error = 0;
+            state.token = action.payload.token;
+            state.username = action.payload.username;
         });
         builder.addCase(signupServer.pending, (state, action) => {
             state.error = 0;
