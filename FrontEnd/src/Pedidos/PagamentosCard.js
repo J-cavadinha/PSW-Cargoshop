@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { addPedidoServer } from "../slices/PedidoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,11 +16,11 @@ export default function PagamentosCard() {
 
   const pechinchas = useSelector(selectAllPechinchas);
 
-  const {register, handleSubmit, formState: { errors }} = useForm({
+  const {register, handleSubmit, formState: { errors }, watch } = useForm({
     resolver: yupResolver(PagamentoSchema),
   });
-
-  const [endereco] = useState("");
+  
+  const formaPagamentoSelecionada = watch("formaPagamento");
 
   const finalizarPedido = async (data) => {
     const pedidoAtualizado = {
@@ -71,47 +71,8 @@ export default function PagamentosCard() {
               <h5 className="card-title">{novoPagamento.name}</h5>
               <p>Preço: R$ {novoPagamento.price}</p>
               <p>Vendedor: {novoPagamento.NomeVendedor}</p>
-              <p>Endereço cadastrado: {endereco || "Nenhum endereço informado"}</p>
 
               <form onSubmit={handleSubmit(finalizarPedido)}>
-                <label htmlFor="opcaoEnvio" className="form-label mt-3">
-                  Opção de envio:
-                </label>
-                <select
-                  id="opcaoEnvio"
-                  {...register("opcaoEnvio", { required: "Selecione uma opção de envio." })}
-                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${
-                    errors.opcaoEnvio ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="" className="text-muted">
-                    Selecione uma opção
-                  </option>
-                  <option value="Entrega simples">Entrega simples</option>
-                  <option value="Entrega rápida">Entrega rápida</option>
-                </select>
-                <div className="invalid-feedback">{errors.opcaoEnvio?.message}</div>
-
-                <label htmlFor="formaPagamento" className="form-label mt-3">
-                  Forma de pagamento:
-                </label>
-                <select
-                  id="formaPagamento"
-                  {...register("formaPagamento", { required: "Selecione uma forma de pagamento." })}
-                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${
-                    errors.formaPagamento ? "is-invalid" : ""
-                  }`}
-                >
-                  <option value="" className="text-muted">
-                    Selecione uma forma de pagamento
-                  </option>
-                  <option value="Cartão de Crédito">Cartão de Crédito</option>
-                  <option value="Cartão de Débito">Cartão de Débito</option>
-                  <option value="Boleto Bancário">Boleto Bancário</option>
-                  <option value="PIX">PIX</option>
-                </select>
-                <div className="invalid-feedback">{errors.formaPagamento?.message}</div>
-
                 <label htmlFor="endereco" className="form-label mt-3">
                   Endereço de entrega:
                 </label>
@@ -124,6 +85,93 @@ export default function PagamentosCard() {
                 />
                 <div className="invalid-feedback">{errors.endereco?.message}</div>
 
+                <label htmlFor="opcaoEnvio" className="form-label mt-3">
+                  Opção de envio:
+                </label>
+                <select
+                  id="opcaoEnvio"
+                  {...register("opcaoEnvio", { required: "Selecione uma opção de envio." })}
+                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${errors.opcaoEnvio ? "is-invalid" : ""}`}
+                >
+                  <option value="" className="text-muted">Selecione uma opção</option>
+                  <option value="Entrega simples">Entrega simples</option>
+                  <option value="Entrega rápida">Entrega rápida</option>
+                </select>
+                <div className="invalid-feedback">{errors.opcaoEnvio?.message}</div>
+
+                <label htmlFor="formaPagamento" className="form-label mt-3">
+                  Forma de pagamento:
+                </label>
+                <select
+                  id="formaPagamento"
+                  {...register("formaPagamento", { required: "Selecione uma forma de pagamento." })}
+                  className={`form-select form-select-lg mt-3 border-primary shadow-sm ${errors.formaPagamento ? "is-invalid" : ""}`}
+                >
+                  <option value="" className="text-muted">Selecione uma forma de pagamento</option>
+                  <option value="Cartão de Crédito">Cartão de Crédito</option>
+                  <option value="Cartão de Débito">Cartão de Débito</option>
+                  <option value="Boleto Bancário">Boleto Bancário</option>
+                  <option value="PIX">PIX</option>
+                </select>
+                <div className="invalid-feedback">{errors.formaPagamento?.message}</div>
+
+
+                {formaPagamentoSelecionada === "Cartão de Crédito" && (
+                  <div className="mb-3">
+
+            <label htmlFor="numeroCartao" className="form-label">
+              Número do Cartão:
+            </label>
+            <input type="text" id="numeroCartao"{...register("numeroCartao")}
+            minlength="14" maxlength="16" required
+              className={`form-control `}
+              placeholder="Digite o número do cartão"
+            />
+
+            <label htmlFor="parcelas" className="form-label">
+              Parcelamento:
+            </label>
+            <select id="parcelas"{...register("parcelas")}
+              className={`form-select ${errors.parcelas ? "is-invalid" : ""}`}
+            >
+              <option value="" className="text-muted">Selecione o número de parcelas</option>
+              <option value="1">À vista</option>
+              <option value="2">2x</option>
+              <option value="3">3x</option>
+              <option value="4">4x</option>
+              <option value="5">5x</option>
+              <option value="6">6x</option>
+            </select>
+                  </div>
+                )}
+
+
+                {formaPagamentoSelecionada === "Cartão de Débito" && (
+                  <div className="mb-3">
+                    <label htmlFor="numeroCartao" className="form-label">
+                      Número do Cartão:
+                    </label>
+                    <input type="text" id="numeroCartao"{...register("numeroCartao")}
+                    minlength="14" maxlength="16" required
+                      className={`form-control`}
+                      placeholder="Digite o número do cartão"
+                    />
+                  </div>
+                )}
+
+                {formaPagamentoSelecionada === "Boleto Bancário" && (
+                  <div className="mt-3">
+                    <p>O boleto será gerado após a confirmação do pedido.</p>
+                  </div>
+                )}
+
+                {formaPagamentoSelecionada === "PIX" && (
+                  <div className="mt-3">
+                    <p>Chave PIX: {`pix${Math.random().toString(36).substring(2, 18)}@exemplo.com`}</p>
+                    <p>Realize o pagamento e envie o comprovante.</p>
+                  </div>
+                )}
+              
                 <button type="submit" className="btn btn-primary mt-4 w-100">
                   Finalizar Pedido
                 </button>
