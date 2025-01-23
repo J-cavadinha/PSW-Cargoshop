@@ -21,6 +21,10 @@ const pechinchaSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    status: { 
+        type: String,  
+        default: 'pendente' 
     }
 });
 
