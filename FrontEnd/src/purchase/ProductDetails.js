@@ -1,3 +1,9 @@
+/**
+ * Componente React que exibe os detalhes de um produto, permitindo ao usuário fazer uma "pechincha" (oferta de desconto)
+ * e redireciona para finalizar o pedido.
+ *
+ * @module purchase/ProductDetails
+ */
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
@@ -6,18 +12,28 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 
+/**
+ * Componente que exibe os detalhes de um produto e gerencia a funcionalidade de pechinchar e finalizar compra.
+ *
+ * @component
+ * @returns {JSX.Element} O componente de detalhes do produto.
+ */
 export default function ProductDetails() {
     const location = useLocation();
-    const product = location.state.product;
+    const product = location.state.product; // Produto obtido do estado da localização.
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-  
+
+    // Status do carregamento das pechinchas.
     const status = useSelector(state => state.pechinchas.status);
+
+    // Nome do usuário logado.
     const buyer = useSelector(state => state.logins.username);
-  
+
+    // Lista de todas as pechinchas obtidas do estado global.
     const pechinchas = useSelector(selectAllPechinchas);
-  
+
     useEffect(() => {
         if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
             dispatch(fetchPechinchas());
@@ -26,15 +42,24 @@ export default function ProductDetails() {
         }
     }, [status, dispatch]);
 
-    const [notificacao] = useState('');
-    const [message, setMessage] = useState('');
+    const [notificacao] = useState(''); // Notificação opcional para o usuário.
+    const [message, setMessage] = useState(''); // Mensagem de feedback ao usuário.
 
+    // Configuração do formulário utilizando react-hook-form e validação com Yup.
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(pechinchaSchema) 
     });
 
-    const pechinchaFound = pechinchas.find(p => p.idProduct === product.id && p.buyer === buyer); // Verificar se o comprador já fez uma pechincha
+    /**
+     * Verifica se já existe uma pechincha para o produto pelo comprador atual.
+     * @type {Object|undefined}
+     */
+    const pechinchaFound = pechinchas.find(p => p.idProduct === product.id && p.buyer === buyer);
 
+    /**
+     * Função para confirmar o valor da pechincha e enviá-la ao servidor.
+     * @param {Object} data Dados do formulário contendo o desconto desejado.
+     */
     const confirmarValor = (data) => {
         const pechincha = {
             descount: data.descount,
@@ -55,6 +80,9 @@ export default function ProductDetails() {
         setTimeout(() => navigate("/pechinchas"), 1000);
     };
 
+    /**
+     * Navega para a página de pagamentos com os detalhes do pedido finalizado.
+     */
     const ConfirmarPagamento = () => {
         const novoPagamento = {
             idProduto: product.id,

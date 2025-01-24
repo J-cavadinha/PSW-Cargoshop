@@ -1,8 +1,9 @@
+/**
+ * Adaptador de pedidos que gerencia o estado normalizado de pedidos no Redux
+ * @module slices/PedidoSlice
+ */
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { httpDelete, httpGet, httpPost, httpPut } from '../utils';
-/**
- * @module slice/PedidoSlice
- */
 
 /**
  * Adaptador de pedidos que gerencia o estado normalizado de pedidos no Redux.

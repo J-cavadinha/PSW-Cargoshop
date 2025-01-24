@@ -1,3 +1,9 @@
+/**
+ * Permite que o usuário finalize o pedido e escolha o método de pagamento.
+ * Ele exibe as informações do produto e as opções de endereço, envio e pagamento.
+ * 
+ * @module Pedidos/PagamentosCard
+ */
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect} from "react";
 import { addPedidoServer } from "../slices/PedidoSlice";
@@ -7,15 +13,10 @@ import { PagamentoSchema } from "./PagamentoSchema";
 import { useForm } from "react-hook-form";
 import { removeProductServer } from "../slices/ProductsSlice"
 import { removePechinchaServer, selectAllPechinchas } from "../slices/PechinchaSlice";
-/**
- * @module Pagamentos/PagamentosCard
- */
+
 
 /**
  * Exibe o cartão de pagamento do pedido.
- *
- * Permite que o usuário finalize o pedido e escolha o método de pagamento.
- * Ele exibe as informações do produto e as opções de endereço, envio e pagamento.
  *
  * @component
  * @returns {JSX.Element} O componente que renderiza o formulário de pagamento.

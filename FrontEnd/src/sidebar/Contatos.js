@@ -1,7 +1,18 @@
+/**
+ * Exibe as informações de contato
+ * @module sidebar/Contatos
+ */
 import React from 'react';
 
+/**
+ * Componente funcional que exibe as informações de contato.
+ * 
+ * @component
+ * @returns {JSX.Element} Um JSX contendo o layout da página de contato com telefone e e-mail.
+ */
 function Contato() {
-    const number = "(21) 97910-7108";
+  /** Número de telefone exibido na página de contato */
+  const number = "(21) 97910-7108";
 
   return (
     <div className="container">

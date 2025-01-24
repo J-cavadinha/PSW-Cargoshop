@@ -1,15 +1,15 @@
+/**
+ * Exibe os pedidos do usuário logado.
+ * @module Pedidos/Pedidos
+ */
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from './PedidosCard';
 import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice";
 
-/**
- * @module Pedidos/Pedidos
- */
+
 
 /**
- * Exibe os pedidos do usuário logado.
- *
  * Utiliza o Redux para gerenciar o estado dos pedidos,
  * filtrando e exibindo apenas aqueles pertencentes ao comprador logado.
  *

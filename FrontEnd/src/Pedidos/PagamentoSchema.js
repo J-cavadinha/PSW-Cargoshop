@@ -1,14 +1,12 @@
+/**
+ * Esquema de validação para os dados do pagamento.
+ * @module Pedidos/PagamentoSchema
+ */
 import { object, setLocale, string } from "yup";
 import { ptForm } from "yup-locale-pt";
 setLocale(ptForm);
 
 /**
- * @module Pedidos/PagamentoSchema
- */
-
-/**
- * Esquema de validação para os dados do pagamento.
- * 
  * Este esquema valida os dados relacionados ao pagamento, incluindo
  * o endereço, a opção de envio e a forma de pagamento.
  * 

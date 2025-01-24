@@ -1,13 +1,13 @@
+/**
+ * Esquema de validação para os dados do pedido.
+ * @module Pedidos/PedidoSchema
+ */
 import { object, setLocale, string } from "yup";
 import { ptForm } from "yup-locale-pt";
 setLocale(ptForm);
-/**
- * @module Pedidos/PedidoSchema
- */
+
 
 /**
- * Esquema de validação para os dados do pedido.
- * 
  * Este esquema valida os dados relacionados ao endereço do pedido
  * 
  * @type {object} 

@@ -1,12 +1,14 @@
+/**
+ * Renderiza um card de pedido.
+ * @module Pedidos/PedidosCard
+ */
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { removePedidoServer, updatePedidoServer } from "../slices/PedidoSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PedidoSchema } from "./PedidosSchema";
-/**
- * @module Pedidos/PedidosCard
- */
+
 
 /**
  * Renderiza um card de pedido.

@@ -1,3 +1,7 @@
+/**
+ * Exibe as informações de uma pechincha e oferece ações de cancelar ou editar.
+ * @module main/PechinchaCard
+ */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,18 +13,44 @@ import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import '../PechinchaCard.css';
 
+/**
+ * Componente `PechinchaCard` exibe as informações de uma pechincha e oferece ações de cancelar ou editar.
+ * Se a pechincha foi aceita, exibe a opção de pagamento.
+ * 
+ * @component
+ * 
+ * @param {Object} props - Propriedades do componente.
+ * @param {Object} props.pechincha - Objeto contendo as informações da pechincha.
+ * 
+ * @returns {JSX.Element} O card com as opções de interação com a pechincha.
+ */
 export default function PechinchaCard({ pechincha }) {
+  /** ID da pechincha extraído dos parâmetros da URL */
   let { id } = useParams();
+  
+  /** Estado de status das pechinchas, obtido do Redux */
   const status = useSelector(state => state.pechinchas.status);
+  
+  /** Detalhes da pechincha encontrada pelo ID */
   const pechinchaFound = useSelector(state => selectPechinchasById(state, id));
+  
+  /** Detalhes do produto associado à pechincha */
   const productFound = useSelector(state => selectProductsById(state, pechincha.idProduct));
 
+  /** Nome do comprador, obtido do estado de login */
   const buyer = useSelector(state => state.logins.username);
 
+  /** Função para navegar entre as páginas */
   const navigate = useNavigate();
 
+  /** Função para despachar ações do Redux */
   const dispatch = useDispatch();
 
+  /**
+   * Efeito colateral para carregar as pechinchas dependendo do status.
+   * Realiza o fetch de pechinchas quando o status é 'not_loaded', 'saved', ou 'deleted'.
+   * Tenta novamente em 5 segundos se o status for 'failed'.
+   */
   useEffect(() => {
     if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
       dispatch(fetchPechinchas());
@@ -29,44 +59,75 @@ export default function PechinchaCard({ pechincha }) {
     }
   }, [status, dispatch]);
 
+  /** Controle de exibição de modais */
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [message, setMessage] = useState('');
 
+  /** Hook de formulários com validação do Yup */
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(pechinchaSchema)
   });
 
+  /** Estado inicial de pechincha ou valor padrão do schema */
   const [pechinchaOnLoad] = useState(
     id ? pechinchaFound ?? pechinchaSchema.cast({}) : pechinchaSchema.cast({})
   );
 
+  /**
+   * Função chamada quando o usuário clica em "Cancelar Pechincha".
+   * Exibe o modal de confirmação para cancelar.
+   */
   const handleCancelClick = () => {
     setShowCancelModal(true);
   };
 
+  /**
+   * Função chamada quando o usuário clica em "Editar Pechincha".
+   * Exibe o modal para editar o valor da pechincha.
+   */
   const handleEditClick = () => {
     setShowEditModal(true);
   };
 
+  /**
+   * Função chamada para confirmar a edição da pechincha com o novo valor.
+   * Despacha a atualização para o servidor.
+   * 
+   * @param {Object} data - Dados do formulário com o novo valor da pechincha.
+   */
   const handleConfirmEdit = async (data) => {
     dispatch(updatePechinchaServer({ ...pechincha, descount: data.descount }));
     setMessage('Pechincha editada com sucesso!');
   };
 
+  /**
+   * Função chamada para confirmar o cancelamento da pechincha.
+   * Despacha a remoção da pechincha no servidor.
+   */
   const handleConfirmCancel = async () => {
     dispatch(removePechinchaServer(pechincha.id));
     setShowCancelModal(false);
   };
 
+  /**
+   * Função chamada para fechar o modal de cancelamento sem confirmar.
+   */
   const handleCloseCancelModal = () => {
     setShowCancelModal(false);
   };
 
+  /**
+   * Função chamada para fechar o modal de edição sem salvar as mudanças.
+   */
   const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
 
+  /**
+   * Função chamada quando o usuário clica em "Pagar!".
+   * Cria uma nova transação de pagamento e navega para a página de pagamento.
+   */
   const handlepayClick = () => {
     const novoPagamento = {
       idProduto: productFound.id,
@@ -77,12 +138,10 @@ export default function PechinchaCard({ pechincha }) {
       comprador: buyer,
       status: 'Finalizado',
       endereco: '',
-  };
-  navigate(`/pagamentosCard/${productFound.id}`, { state: novoPagamento });
+    };
+    navigate(`/pagamentosCard/${productFound.id}`, { state: novoPagamento });
     dispatch(removePechinchaServer(pechincha.id));
-  
-};
-
+  };
 
   return (
     <div className="col-md-3 mb-4">
@@ -96,24 +155,23 @@ export default function PechinchaCard({ pechincha }) {
           </div>
 
           {pechincha.status === 'pendente' && (
-          <div className="button-container">
-            <button className="btn btn-danger button" onClick={handleCancelClick}>
-              Cancelar Pechincha
-            </button>
-            <button className="btn btn-success" onClick={handleEditClick}>
-              Editar Pechincha
-            </button>
-          </div>)}
-
+            <div className="button-container">
+              <button className="btn btn-danger button" onClick={handleCancelClick}>
+                Cancelar Pechincha
+              </button>
+              <button className="btn btn-success" onClick={handleEditClick}>
+                Editar Pechincha
+              </button>
+            </div>
+          )}
 
           {pechincha.status === 'aceito' && (
-          <div>  
-          <button className="btn btn-success my-2" onClick={handlepayClick}>
-            Pagar!
-          </button>
-          <h5 className="card-title text-danger">PECHINCHA ACEITA!</h5>
-        </div>
-            
+            <div>
+              <button className="btn btn-success my-2" onClick={handlepayClick}>
+                Pagar!
+              </button>
+              <h5 className="card-title text-danger">PECHINCHA ACEITA!</h5>
+            </div>
           )}
         </div>
       </div>
@@ -156,7 +214,6 @@ export default function PechinchaCard({ pechincha }) {
                   {message}
                 </div>
               )}
-
               <button className="btn btn-danger my-1 mx-1" onClick={handleCloseEditModal}>Cancelar</button>
             </form>
           </div>

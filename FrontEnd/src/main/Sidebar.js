@@ -1,14 +1,32 @@
+/**
+ * Componente Sidebar exibe um menu lateral que pode ser aberto e fechado.
+ * @module main/sidebar
+ */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../sidebar/SideBar.css';
 
+/** 
+ * O componente permite a navegação entre diferentes páginas, como "Home", "Sobre nós" e "Contato", e exibe um menu lateral com opções de navegação. O menu pode ser aberto ou fechado ao clicar no ícone de menu ou ao mover o mouse para fora do menu.
+ * 
+ * @component
+ * 
+ * @returns {JSX.Element} Um menu lateral com links para navegação.
+ */
 function Sidebar() {
+  /** Estado que controla a abertura e fechamento do sidebar */
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  /**
+   * Função que alterna o estado de abertura do sidebar.
+   */
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  /**
+   * Função que fecha o sidebar.
+   */
   const hideSidebar = () => {
     setIsSidebarOpen(false);
   };
