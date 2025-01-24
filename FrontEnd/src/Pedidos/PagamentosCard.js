@@ -7,7 +7,19 @@ import { PagamentoSchema } from "./PagamentoSchema";
 import { useForm } from "react-hook-form";
 import { removeProductServer } from "../slices/ProductsSlice"
 import { removePechinchaServer, selectAllPechinchas } from "../slices/PechinchaSlice";
+/**
+ * @module Pagamentos/PagamentosCard
+ */
 
+/**
+ * Exibe o cartão de pagamento do pedido.
+ *
+ * Permite que o usuário finalize o pedido e escolha o método de pagamento.
+ * Ele exibe as informações do produto e as opções de endereço, envio e pagamento.
+ *
+ * @component
+ * @returns {JSX.Element} O componente que renderiza o formulário de pagamento.
+ */
 export default function PagamentosCard() {
   const location = useLocation();
   const novoPagamento = location.state || null;
@@ -22,6 +34,17 @@ export default function PagamentosCard() {
   
   const formaPagamentoSelecionada = watch("formaPagamento");
 
+  /**
+   * Função chamada para finalizar o pedido após o preenchimento do formulário de pagamento.
+   * Atualiza o pedido com as informações fornecidas pelo usuário e faz a remoção do produto da lista de pechinchas.
+   * 
+   * @async
+   * @function finalizarPedido
+   * @param {Object} data - Os dados do formulário preenchidos pelo usuário.
+   * @param {string} data.endereco - O novo endereço de entrega.
+   * @param {string} data.opcaoEnvio - A opção de envio selecionada.
+   * @param {string} data.formaPagamento - A forma de pagamento escolhida.
+   */
   const finalizarPedido = async (data) => {
     const pedidoAtualizado = {
       ...novoPagamento,
@@ -37,8 +60,11 @@ export default function PagamentosCard() {
       dispatch(removePechinchaServer(pechincha.id));
     })
     navigate("/pedidos");
-  };  
+  };
 
+  /**
+   * Verifica se os dados de pagamento estão disponíveis e, em caso negativo, redireciona o usuário de volta à página inicial.
+   */
   useEffect(() => {
     if (!novoPagamento) {
       console.log("Erro: Dados de pagamento não encontrados");
@@ -47,6 +73,7 @@ export default function PagamentosCard() {
     }
   }, [novoPagamento, navigate]);
 
+  // Se não houver dados de pagamento, exibe a mensagem de carregamento.
   if (!novoPagamento) {
     return <p>Carregando...</p>;
   }
@@ -115,43 +142,39 @@ export default function PagamentosCard() {
                 </select>
                 <div className="invalid-feedback">{errors.formaPagamento?.message}</div>
 
-
                 {formaPagamentoSelecionada === "Cartão de Crédito" && (
                   <div className="mb-3">
-
-            <label htmlFor="numeroCartao" className="form-label">
-              Número do Cartão:
-            </label>
-            <input type="text" id="numeroCartao"{...register("numeroCartao")}
-            minlength="14" maxlength="16" required
-              className={`form-control `}
-              placeholder="Digite o número do cartão"
-            />
-
-            <label htmlFor="parcelas" className="form-label">
-              Parcelamento:
-            </label>
-            <select id="parcelas"{...register("parcelas")}
-              className={`form-select ${errors.parcelas ? "is-invalid" : ""}`}
-            >
-              <option value="" className="text-muted">Selecione o número de parcelas</option>
-              <option value="1">À vista</option>
-              <option value="2">2x</option>
-              <option value="3">3x</option>
-              <option value="4">4x</option>
-              <option value="5">5x</option>
-              <option value="6">6x</option>
-            </select>
+                    <label htmlFor="numeroCartao" className="form-label">
+                      Número do Cartão:
+                    </label>
+                    <input type="text" id="numeroCartao" {...register("numeroCartao")}
+                    minlength="14" maxlength="16" required
+                      className={`form-control`}
+                      placeholder="Digite o número do cartão"
+                    />
+                    <label htmlFor="parcelas" className="form-label">
+                      Parcelamento:
+                    </label>
+                    <select id="parcelas" {...register("parcelas")}
+                      className={`form-select ${errors.parcelas ? "is-invalid" : ""}`}
+                    >
+                      <option value="" className="text-muted">Selecione o número de parcelas</option>
+                      <option value="1">À vista</option>
+                      <option value="2">2x</option>
+                      <option value="3">3x</option>
+                      <option value="4">4x</option>
+                      <option value="5">5x</option>
+                      <option value="6">6x</option>
+                    </select>
                   </div>
                 )}
-
 
                 {formaPagamentoSelecionada === "Cartão de Débito" && (
                   <div className="mb-3">
                     <label htmlFor="numeroCartao" className="form-label">
                       Número do Cartão:
                     </label>
-                    <input type="text" id="numeroCartao"{...register("numeroCartao")}
+                    <input type="text" id="numeroCartao" {...register("numeroCartao")}
                     minlength="14" maxlength="16" required
                       className={`form-control`}
                       placeholder="Digite o número do cartão"
@@ -171,7 +194,7 @@ export default function PagamentosCard() {
                     <p>Realize o pagamento e envie o comprovante.</p>
                   </div>
                 )}
-              
+
                 <button type="submit" className="btn btn-primary mt-4 w-100">
                   Finalizar Pedido
                 </button>

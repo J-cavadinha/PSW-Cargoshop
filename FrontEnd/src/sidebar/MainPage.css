@@ -26,3 +26,13 @@ h2 {
         display: block;
     }
 }
+/* Aplica o cursor de mãozinha aos cartões de categoria */
+.category-card {
+    cursor: pointer; /* Mostra a mãozinha quando o mouse passa sobre o card */
+    transition: transform 0.3s ease; /* Adiciona um efeito suave ao passar o mouse */
+}
+
+/* Efeito de leve aumento no tamanho do card ao passar o mouse */
+.category-card:hover {
+    transform: scale(1.05); /* Aumenta levemente o tamanho do card */
+}
