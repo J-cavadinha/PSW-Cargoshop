@@ -1,8 +1,8 @@
 import { useEffect, React } from 'react';
-import { useDispatch, useSelector  } from 'react-redux';  
+import { useDispatch, useSelector } from 'react-redux';
 import PechinchaCard from '../main/PechinchaCard';
 import PechinchaCardOwn from '../main/PechinchaCardOwn';
-import {selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice'; 
+import { selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice';
 
 export default function Pechincha() {
 
@@ -19,52 +19,54 @@ export default function Pechincha() {
       } else if (status === "failed") {
           setTimeout(() => dispatch(fetchPechinchas()), 5000);
       }
-  }, [status, dispatch])
+  }, [status, dispatch]);
 
-    const filteredPechinchas = pechinchas.filter(pechincha => {
-        return pechincha.buyer === buyer;
-    });
+  // Filtrando as pechinchas feitas pelo comprador
+  const filteredPechinchas = pechinchas.filter(pechincha => {
+    return pechincha.buyer === buyer && pechincha.pstatus !== 'aceito'; // Excluindo as pechinchas aceitas
+  });
 
-    const filteredPechinchasOwn = pechinchas.filter(pechincha => {
-        return pechincha.seller === buyer;
-    });
+  // Filtrando as pechinchas recebidas pelo vendedor
+  const filteredPechinchasOwn = pechinchas.filter(pechincha => {
+    return pechincha.seller === buyer && pechincha.pstatus !== 'aceito'; // Excluindo as pechinchas aceitas
+  });
 
   let pechinchasShow = null;
   let pechinchasOwnShow = null;
-    if (status === "loaded") {
-        pechinchasShow = filteredPechinchas.map(pechincha => (<PechinchaCard key={pechincha.id} pechincha={pechincha} />));
-        if (pechinchasShow.length <= 0) {
-            pechinchasShow = <div>Nenhuma pechincha encontrada.</div>;
-        }
-        pechinchasOwnShow = filteredPechinchasOwn.map(pechincha => ( <PechinchaCardOwn key={pechincha.id} pechincha={pechincha}/> ));
-        if (pechinchasOwnShow.length <= 0) {
-            pechinchasOwnShow = <div>Nenhuma pechincha encontrada.</div>;
-        }
-    } else if (status === "loading") {
-        pechinchasShow = <div>Carregando as pechinchas...</div>;
-        pechinchasOwnShow = <div>Carregando as pechinchas...</div>;
-    } else if (status === "failed") {
-        pechinchasShow = <div>Erro: {error}</div>
-        pechinchasOwnShow = <div>Erro: {error}</div>
-    }
+
+  if (status === "loaded") {
+    pechinchasShow = filteredPechinchas.length > 0 ? filteredPechinchas.map(pechincha => (
+      <PechinchaCard key={pechincha.id} pechincha={pechincha} />
+    )) : <div>Nenhuma pechincha encontrada.</div>;
+
+    pechinchasOwnShow = filteredPechinchasOwn.length > 0 ? filteredPechinchasOwn.map(pechincha => (
+      <PechinchaCardOwn key={pechincha.id} id={pechincha.id} />
+    )) : <div>Nenhuma pechincha encontrada.</div>;
+  } else if (status === "loading") {
+    pechinchasShow = <div>Carregando as pechinchas...</div>;
+    pechinchasOwnShow = <div>Carregando as pechinchas...</div>;
+  } else if (status === "failed") {
+    pechinchasShow = <div>Erro: {error}</div>;
+    pechinchasOwnShow = <div>Erro: {error}</div>;
+  }
 
   return (
-<div>
-<br/>
-<h2 className="text-center">Pechinchas</h2>
-<br/>
-<br/>
-<h2>Feitas</h2>
-<br/>
-<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> 
-    {pechinchasShow}
-</div>
-<br/>
-<h2>Recebidas</h2>
-<br/>
-<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> 
-    {pechinchasOwnShow}
-</div>
-</div>
+    <div>
+      <br />
+      <h2 className="text-center">Pechinchas</h2>
+      <br />
+      <br />
+      <h2>Feitas</h2>
+      <br />
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {pechinchasShow}
+      </div>
+      <br />
+      <h2>Recebidas</h2>
+      <br />
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {pechinchasOwnShow}
+      </div>
+    </div>
   );
 }

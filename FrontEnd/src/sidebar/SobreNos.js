@@ -1,5 +1,18 @@
+/**
+ * Exibe informações sobre a empresa
+ * @module sidebar/SobreNos
+ */
+
 import React from 'react';
 
+/**
+ * Componente funcional que exibe informações sobre a empresa.
+ * 
+ * Este componente descreve a missão e os valores da plataforma, oferecendo uma visão geral da empresa.
+ * 
+ * @component
+ * @returns {JSX.Element} Um JSX contendo o layout da página "Sobre Nós", com a descrição da plataforma e informações de contato.
+ */
 function SobreNos() {
   return (
     <div className="container">

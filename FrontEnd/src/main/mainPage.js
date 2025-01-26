@@ -1,12 +1,26 @@
-import { useEffect, useState } from 'react';
+/**
+ * Exibe a página principal com uma lista de produtos filtráveis por nome e categoria.
+ * @module main/mainPage
+ */
+import { useEffect, useState, useRef } from 'react';
 import ProductCard from './ProductCard';
 import ProductCardAdmin from './ProductCardAdmin';
 import CategoryCard from './CategoryCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
 
+/**
+ * Componente `MainPage` exibe a página principal com uma lista de produtos filtráveis por nome e categoria.
+ * Também permite alternar entre categorias e realizar uma busca por nome de produto.
+ * 
+ * @component
+ * 
+ * @returns {JSX.Element} A página principal com barra de pesquisa e lista de categorias e produtos.
+ */
 export default function MainPage() {
+    /** Estado que controla se as categorias estão visíveis ou não */
     const [showCategories, setShowCategories] = useState(false);
+<<<<<<< HEAD
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Todas');
     const [categories] = useState([
@@ -20,26 +34,67 @@ export default function MainPage() {
             '⌚ Relógios',
             '🛒 Todas'
             ]);
+=======
+>>>>>>> 0a6b29cc95c4720622adcc395ca2374c7dfc32b2
 
+    /** Estado que armazena o termo de pesquisa */
+    const [searchTerm, setSearchTerm] = useState('');
+
+    /** Estado que armazena a categoria selecionada */
+    const [selectedCategory, setSelectedCategory] = useState('Todas');
+
+    /** Lista de categorias disponíveis para o filtro */
+    const [categories] = useState([
+        '💄 Beleza',
+        '🚲 Bicicletas',
+        '🛍️ Compras',
+        '💻 Eletrônicos',
+        '🔧 Ferramentas',
+        '💎 Joalheria',
+        '👓 Óculos',
+        '✏️ Papelaria',
+        '⌚ Relógios',
+        '🛒 Todas'
+    ]);
+
+    /** Referência para a seção de produtos, usada para rolar para a lista de produtos */
+    const productsSectionRef = useRef(null);
+
+    /** Lista de produtos obtidos do Redux */
     const products = useSelector(selectAllProducts);
+    
+    /** Status do carregamento dos produtos */
     const status = useSelector(state => state.products.status);
-    const error =  useSelector(state => state.products.error);
+
+    /** Erro de carregamento, se houver */
+    const error = useSelector(state => state.products.error);
+
+    /** Nome do vendedor, para evitar que o vendedor veja seus próprios produtos */
     const seller = useSelector(state => state.logins.username);
     const admin = useSelector(state => state.logins.admin);
 
+    /** Função para despachar ações do Redux */
     const dispatch = useDispatch();
 
+    /**
+     * Efeito colateral que realiza o fetch dos produtos dependendo do status.
+     * Tenta novamente em 5 segundos se o status for 'failed'.
+     */
     useEffect(() => {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchProducts());
         } else if (status === "failed") {
             setTimeout(() => dispatch(fetchProducts()), 5000);
         }
-    }, [status, dispatch])
+    }, [status, dispatch]);
 
+    /** Filtra os produtos com base no termo de busca e na categoria selecionada */
     const filteredProducts = products.filter(product => {
-        return (product.name.toLowerCase().includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || product.category === selectedCategory)
-    && product.seller !== seller);
+        return (
+            product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (selectedCategory === 'Todas' || product.category === selectedCategory) &&
+            product.seller !== seller
+        );
     });
 
     let produtos = null;
@@ -55,15 +110,24 @@ export default function MainPage() {
     } else if (status === "loading") {
         produtos = <div>Carregando os produtos...</div>;
     } else if (status === "failed") {
-        produtos = <div>Erro: {error}</div>
+        produtos = <div>Erro: {error}</div>;
     }
 
-    let categoriesShow;
-    if (!showCategories) {
-        categoriesShow = "Categorias ▷";
-    } else {
-        categoriesShow = "Categorias ▼";
-    }
+    /** Texto do botão de categorias, que muda de acordo com o estado de visibilidade */
+    let categoriesShow = showCategories ? "▼ Categorias " : "▷ Categorias ";
+
+    /**
+     * Função chamada quando uma categoria é clicada.
+     * Define a categoria selecionada e rola para a seção de produtos.
+     * 
+     * @param {string} category - A categoria clicada.
+     */
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category.split(' ')[1]);
+        if (productsSectionRef.current) {
+            productsSectionRef.current.scrollIntoView({ behavior: 'smooth' }); // Rola para a seção de produtos
+        }
+    };
 
     return (
         <div>
@@ -76,20 +140,26 @@ export default function MainPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
-            <h2 onClick={() => setShowCategories(!showCategories)}>{categoriesShow}</h2>
-            {
-                showCategories && (
-                    <div className="categories d-flex flex-wrap justify-content-center">
-                    {
-                        categories.map(category => (<CategoryCard key={category} categoryName={category} onClick={() => setSelectedCategory(category.split(' ')[1])}/>))
-                    }
+            <h2 onClick={() => setShowCategories(!showCategories)}>
+                {categoriesShow}
+            </h2>
+
+            {showCategories && (
+                <div className="categories d-flex flex-wrap justify-content-center">
+                    {categories.map(category => (
+                        <CategoryCard
+                            key={category}
+                            categoryName={category}
+                            onClick={() => handleCategoryClick(category)}
+                        />
+                    ))}
                 </div>
             )}
 
-            <br/>
+            <br />
             <h2>Produtos</h2>
-            <br/>
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <br />
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" ref={productsSectionRef}>
                 {produtos}
             </div>
         </div>

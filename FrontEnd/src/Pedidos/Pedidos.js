@@ -1,7 +1,21 @@
+/**
+ * Exibe os pedidos do usuário logado.
+ * @module Pedidos/Pedidos
+ */
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from './PedidosCard';
 import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice";
+
+
+
+/**
+ * Utiliza o Redux para gerenciar o estado dos pedidos,
+ * filtrando e exibindo apenas aqueles pertencentes ao comprador logado.
+ *
+ * @component
+ * @returns {JSX.Element} O componente que renderiza os pedidos do usuário.
+ */
 
 export default function Pedidos() {
   const dispatch = useDispatch();
@@ -12,19 +26,19 @@ export default function Pedidos() {
 
   useEffect(() => {
     if (status === "not_loaded" || status === "saved" || status === "deleted") {
-        dispatch(fetchPedidos());
+      dispatch(fetchPedidos());
     }
   }, [status, dispatch]);
-
   const filteredPedidos = pedidos.filter(pedido => {
     return pedido.comprador === buyer;
   });
 
   let pedidosShow = null;
+
   if (status === "succeeded") {
     pedidosShow = filteredPedidos.map((pedido) => (<PedidosCard key={pedido.id} pedido={pedido} />));
     if (pedidosShow.length <= 0) {
-        pedidosShow = <div>Nenhum pedido encontrado.</div>;
+      pedidosShow = <div>Nenhum pedido encontrado.</div>;
     }
   } else if (status === "loading") {
     pedidosShow = <div>Carregando os pedidos...</div>;
@@ -34,7 +48,7 @@ export default function Pedidos() {
 
   return (
     <div className="container">
-      <br/>
+      <br />
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Meus Pedidos</h1>
       {status === 'loading' && <p>Carregando...</p>}
       <div className="row g-4">

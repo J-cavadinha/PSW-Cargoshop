@@ -1,4 +1,8 @@
-import React, { useEffect, useRef} from 'react';
+/**
+ * Componente funcional que exibe o formulário de login e criação de conta.
+ * @module users/LoginForm
+ */
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -6,6 +10,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginServer, signupServer } from '../slices/LoginSlice';
 import { loginSchema } from './LoginSchema';
 
+/**
+ * O componente permite que o usuário faça login ou crie uma nova conta, usando validação de formulário e integração com o Redux.
+ * 
+ * @component
+ * @returns {JSX.Element} Um formulário de login com opções para entrar ou criar uma conta.
+ */
 function LoginForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -16,13 +26,24 @@ function LoginForm() {
         resolver: yupResolver(loginSchema)
     });
 
+    /** Referência para armazenar os dados do formulário */
     let data = useRef(null);
 
+    /**
+     * Função responsável por enviar os dados de login para o servidor.
+     * 
+     * @param {Object} login - Dados do usuário para login (nome de usuário e senha).
+     */
     function handleLogin(login) {
         data.current = login;
         dispatch(loginServer(login));
     }
 
+    /**
+     * Função responsável por enviar os dados de registro para o servidor.
+     * 
+     * @param {Object} login - Dados do usuário para registro (nome de usuário e senha).
+     */
     function handleSignin(login) {
         data.current = login;
         dispatch(signupServer(login));
@@ -32,7 +53,7 @@ function LoginForm() {
         if (data.current) {
             if (status === "logged_in") {
                 data.current = null;
-                navigate("/");
+                navigate("/"); // Redireciona para a página inicial após login
             }
         }
     }, [status, navigate]);
