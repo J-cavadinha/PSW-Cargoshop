@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
 
         const token = authenticate.getToken({ _id: user._id });
 
-        res.status(200).json({ username: user.username, id: user._id, token: token });
+        res.status(200).json({ username: user.username, id: user._id, token: token, admin: user.admin });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });

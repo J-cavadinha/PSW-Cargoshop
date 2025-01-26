@@ -13,8 +13,9 @@ function ProductForm() {
     const seller = useSelector(state => state.logins.username);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const token = useSelector(state => state.logins.token);
 
-    const [actionType, ] = useState(
+    const [actionType] = useState(
         id ? productFound ? 'update' : 'add' : 'add'
     );
 
@@ -26,14 +27,50 @@ function ProductForm() {
         id ? productFound ?? productSchema.cast({}) : productSchema.cast({})
     );
 
-    function onSubmit(product) {
+    async function onSubmit(product) {
         product.seller = seller;
-        if (product.image === "") {
-            product.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJQeJyzgAzTEVqXiGe90RGBFhfp_4RcJJMQ&s";
+
+        let flag = false;
+        let uploadData;
+
+        if (product.image && product.image.length > 0) {
+            const formData = new FormData();
+            formData.append('imageFile', product.image[0]);
+            formData.append('name', product.name);
+            formData.append('description', product.description);
+            formData.append('price', product.price);
+            formData.append('category', product.category);
+            formData.append('seller', seller);
+
+            const uploadResponse = await fetch('http://localhost:3004/imageUpload', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (uploadResponse.ok) {
+                flag = true;
+                uploadData = await uploadResponse.json();
+            } else {
+                console.log("Erro no envio da imagem.");
+            }
         }
+
+        if (flag) {
+            product.image = `http://localhost:3004/images/${uploadData.filename}`;
+        }
+
         if (actionType === "add") {
+            if (!flag) {
+                product.image = `http://localhost:3004/images/template.png`;
+            }
             dispatch(addProductServer(product));
         } else {
+            if (!flag) {
+                product.image = productFound.image;
+            }
             dispatch(updateProductServer({ ...product, id: productFound.id }));
         }
 
@@ -89,7 +126,7 @@ function ProductForm() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="category" className="form-label">Categoria</label>
-                    <select
+ <select
                         className="form-select"
                         id="category"
                         defaultValue={productOnLoad.category}
@@ -98,7 +135,6 @@ function ProductForm() {
                         <option value="Todas">Geral</option>
                         <option value="Beleza">Beleza</option>
                         <option value="Bicicletas">Bicicletas</option>
-                        <option value="Compras">Compras</option>
                         <option value="Eletrônicos">Eletrônicos</option>
                         <option value="Ferramentas">Ferramentas</option>
                         <option value="Joalheria">Joalheria</option>
@@ -111,10 +147,10 @@ function ProductForm() {
                 <div className="mb-3">
                     <label htmlFor="image" className="form-label">Imagem</label>
                     <input
-                        type="text"
+                        type="file"
                         className="form-control"
                         id="image"
-                        defaultValue={productOnLoad.image}
+                        accept="image/png, image/gif, image/jpeg, image/jpg"
                         {...register("image")}
                     />
                     {errors.image && <span>{errors.image.message}</span>}

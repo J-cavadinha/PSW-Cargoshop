@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import ProductCardAdmin from './ProductCardAdmin';
 import CategoryCard from './CategoryCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
@@ -11,7 +12,6 @@ export default function MainPage() {
     const [categories] = useState([
             '💄 Beleza',
             '🚲 Bicicletas',
-            '🛍️ Compras',
             '💻 Eletrônicos',
             '🔧 Ferramentas',
             '💎 Joalheria',
@@ -25,6 +25,7 @@ export default function MainPage() {
     const status = useSelector(state => state.products.status);
     const error =  useSelector(state => state.products.error);
     const seller = useSelector(state => state.logins.username);
+    const admin = useSelector(state => state.logins.admin);
 
     const dispatch = useDispatch();
 
@@ -43,7 +44,11 @@ export default function MainPage() {
 
     let produtos = null;
     if (status === "loaded") {
-        produtos = filteredProducts.map(product => (<ProductCard key={product.id} product={product} />));
+        if (admin) {
+            produtos = filteredProducts.map(product => (<ProductCardAdmin key={product.id} product={product} />));
+        } else {
+            produtos = filteredProducts.map(product => (<ProductCard key={product.id} product={product} />));
+        }
         if (produtos.length <= 0) {
             produtos = <div>Nenhum produto encontrado.</div>;
         }

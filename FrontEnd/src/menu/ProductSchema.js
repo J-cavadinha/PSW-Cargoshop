@@ -8,6 +8,5 @@ export let productSchema = object().shape({
     description: string().required().max(300).default(""),
     price: number().required().typeError("Informe um preço válido.").default(0),
     category: string(),
-    seller: string().default(""),
-    image: string().default("").url("Informe uma URL válida.")
+    seller: string().default("")
 });

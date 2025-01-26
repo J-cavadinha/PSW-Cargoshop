@@ -6,6 +6,7 @@ const loginAdapter = createEntityAdapter();
 const initialState = loginAdapter.getInitialState({
     status: "not_logged_in",
     error: 0,
+    admin: false,
     token: null,
     username: null
 });
@@ -34,6 +35,7 @@ export const loginSlice = createSlice({
             state.error = 0;
             state.token = action.payload.token;
             state.username = action.payload.username;
+            state.admin = action.payload.admin;
         });
         builder.addCase(loginServer.pending, (state, action) => {
             state.error = 0;
@@ -57,6 +59,7 @@ export const loginSlice = createSlice({
         builder.addCase(logoutServer.fulfilled, (state) => {
             state.status = "not_logged_in";
             loginAdapter.removeOne(state);
+            state.admin = false;
             state.token = null;
             state.username = null;
         });

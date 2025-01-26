@@ -34,3 +34,13 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, async (jwt_payload, don
 }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+
+exports.verifyAdmin = (req, res, next) => {
+    if(req.user && req.user.admin) {
+        next();
+    } else {
+        var err = new Error('Apenas administradores podem realizar esta ação!');
+        err.status = 403;
+        return next(err);
+    }
+};

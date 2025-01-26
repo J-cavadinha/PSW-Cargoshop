@@ -11,6 +11,7 @@ var pechinchasRouter = require('./routes/pechinchas');
 var pedidosRouter = require('./routes/pedidos');
 var reviewsRouter = require('./routes/reviews');
 var usersRouter = require('./routes/users');
+const uploadRouter = require('./routes/uploadRouter');
 
 var config = require('./config');
 
@@ -29,7 +30,7 @@ connect.then((db) => {
 var app = express();
 
 app.use(cors.corsWithOptions);
-app.options('*', cors.corsWithOptions); // Enable preflight for all routes
+app.options('*', cors.corsWithOptions);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,10 +42,12 @@ app.use(passport.initialize());
 app.use('/users', usersRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.use('/products', productsRouter);
 app.use('/pechinchas', pechinchasRouter);
 app.use('/pedidos', pedidosRouter);
 app.use('/reviews', reviewsRouter);
+app.use('/imageUpload', uploadRouter);
 
 module.exports = app;
