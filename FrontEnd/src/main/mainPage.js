@@ -20,22 +20,6 @@ import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
 export default function MainPage() {
     /** Estado que controla se as categorias estão visíveis ou não */
     const [showCategories, setShowCategories] = useState(false);
-<<<<<<< HEAD
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('Todas');
-    const [categories] = useState([
-            '💄 Beleza',
-            '🚲 Bicicletas',
-            '💻 Eletrônicos',
-            '🔧 Ferramentas',
-            '💎 Joalheria',
-            '👓 Óculos',
-            '✏️ Papelaria',
-            '⌚ Relógios',
-            '🛒 Todas'
-            ]);
-=======
->>>>>>> 0a6b29cc95c4720622adcc395ca2374c7dfc32b2
 
     /** Estado que armazena o termo de pesquisa */
     const [searchTerm, setSearchTerm] = useState('');
@@ -47,7 +31,6 @@ export default function MainPage() {
     const [categories] = useState([
         '💄 Beleza',
         '🚲 Bicicletas',
-        '🛍️ Compras',
         '💻 Eletrônicos',
         '🔧 Ferramentas',
         '💎 Joalheria',

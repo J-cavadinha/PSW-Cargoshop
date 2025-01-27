@@ -14,7 +14,7 @@ import "../sidebar/MainPage.css";
  * @param {string} props.categoryName - O nome da categoria a ser exibido no cartão.
  * @param {Function} props.onClick - Função que será chamada quando o cartão for clicado.
  * 
- * @returns {JSX.Element} Um cartão de categoria que exibe o nome da categoria e responde a cliques.
+ * @returns {JSX.Element} Um cartão de categoria que exibe o nome da categoria
  */
 export default function CategoryCard({ categoryName, onClick }) {
   return (

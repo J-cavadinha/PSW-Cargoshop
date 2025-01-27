@@ -27,6 +27,8 @@ export default function Pedidos() {
   useEffect(() => {
     if (status === "not_loaded" || status === "saved" || status === "deleted") {
       dispatch(fetchPedidos());
+    }else if (status === 'failed') {
+      setTimeout(() => dispatch(fetchPedidos()), 5000);    
     }
   }, [status, dispatch]);
   const filteredPedidos = pedidos.filter(pedido => {

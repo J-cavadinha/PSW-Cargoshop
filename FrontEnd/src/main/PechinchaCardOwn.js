@@ -5,7 +5,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPechinchas, selectPechinchasById, updatePechinchaServer, removePechinchaServer } from '../slices/PechinchaSlice';
-import { selectProductsById, updateProductServer, removeProductServer } from '../slices/ProductsSlice';
+import { selectProductsById} from '../slices/ProductsSlice';
 import '../PechinchaCard.css';
 
 /**
