@@ -45,7 +45,6 @@ var corsOptionsDelegate = (req, callback) => {
 /**
  * Middleware que permite todas as requisições CORS.
  * 
- * @exports cors
  * @type {Function}
  */
 exports.cors = cors();
@@ -53,7 +52,6 @@ exports.cors = cors();
 /**
  * Middleware que permite requisições CORS somente para origens na lista de permissões.
  * 
- * @exports corsWithOptions
  * @type {Function}
  */
 exports.corsWithOptions = cors(corsOptionsDelegate);
