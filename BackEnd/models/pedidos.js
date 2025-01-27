@@ -62,7 +62,7 @@ const pedidoSchema = new mongoose.Schema({
     NomeVendedor: {
         type: String,
         required: false
-    },     
+    },
     comprador: {
         type: String,
         required: false
