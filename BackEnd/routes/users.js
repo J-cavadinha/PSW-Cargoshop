@@ -1,12 +1,29 @@
-var express = require('express');
-var router = express.Router();
+/**
+ * Roteador de autenticação para registro, login e logout de usuários.
+ * 
+ * @module routes/users
+ */
+
+const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const authenticate = require('../authenticate');
 const Users = require('../models/users');
 
+// Middleware para uso do bodyParser
 router.use(bodyParser.json());
 
+/**
+ * Rota para o registro de um novo usuário.
+ * 
+ * @name POST /signup
+ * @function
+ * @memberof module:routes/users
+ * @param {Object} req - O objeto de requisição HTTP contendo os dados do novo usuário (username e password).
+ * @param {Object} res - O objeto de resposta HTTP.
+ * @returns {Object} Retorna um JSON contendo o nome de usuário, ID e token de autenticação.
+ */
 router.post('/signup', (req, res, next) => {
     Users.register(new Users({ username: req.body.username }), req.body.password, (err, user) => {
         if (err) {
@@ -22,6 +39,16 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
+/**
+ * Rota para realizar o login de um usuário.
+ * 
+ * @name POST /login
+ * @function
+ * @memberof module:routes/users
+ * @param {Object} req - O objeto de requisição HTTP com o nome de usuário e senha.
+ * @param {Object} res - O objeto de resposta HTTP.
+ * @returns {Object} Retorna um JSON contendo o nome de usuário, ID, token de autenticação e se o usuário é administrador.
+ */
 router.post('/login', async (req, res) => {
     try {
         const user = await Users.findOne({ username: req.body.username });
@@ -35,10 +62,20 @@ router.post('/login', async (req, res) => {
         res.status(200).json({ username: user.username, id: user._id, token: token, admin: user.admin });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Erro interno do servidor' });
     }
 });
 
+/**
+ * Rota para realizar o logout de um usuário.
+ * 
+ * @name GET /logout
+ * @function
+ * @memberof module:routes/users
+ * @param {Object} req - O objeto de requisição HTTP.
+ * @param {Object} res - O objeto de resposta HTTP.
+ * @returns {Object} Retorna uma mensagem de sucesso de logout.
+ */
 router.get('/logout', (req, res) => {
     res.status(200).json({ message: "Deslogado com sucesso!" });
 });

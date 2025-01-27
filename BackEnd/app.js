@@ -1,3 +1,9 @@
+/**
+ * Arquivo principal da aplicação Express que configura as rotas, middlewares e a conexão com o banco de dados.
+ * 
+ * @module app
+ */
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -14,13 +20,14 @@ var usersRouter = require('./routes/users');
 const uploadRouter = require('./routes/uploadRouter');
 
 var config = require('./config');
-
 const mongoose = require('mongoose');
 const cors = require('./routes/cors');
 
+// Configuração da URL de conexão do MongoDB
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
+// Conexão com o MongoDB
 connect.then((db) => {
     console.log("Conectado corretamente ao servidor");
 }, (err) => {
@@ -29,21 +36,24 @@ connect.then((db) => {
 
 var app = express();
 
+// Configuração de CORS
 app.use(cors.corsWithOptions);
 app.options('*', cors.corsWithOptions);
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser('53982-13486-42972-47623'));
 
+// Configuração de middlewares
+app.use(logger('dev')); // Logger de requisições HTTP
+app.use(express.json()); // Parser para dados JSON
+app.use(express.urlencoded({ extended: false })); // Parser para dados URL-encoded
+
+// Inicialização do Passport (para autenticação)
 app.use(passport.initialize());
 
-//app.use('/', indexRouter);
+// Configuração de rotas
 app.use('/users', usersRouter);
+app.use(express.static(path.join(__dirname, 'public'))); // Pasta pública para arquivos estáticos
+app.use('/images', express.static(path.join(__dirname, 'public/images'))); // Rota para imagens
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
+// Definição das rotas principais
 app.use('/products', productsRouter);
 app.use('/pechinchas', pechinchasRouter);
 app.use('/pedidos', pedidosRouter);

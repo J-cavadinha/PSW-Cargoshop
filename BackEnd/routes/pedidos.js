@@ -1,3 +1,10 @@
+/**
+ * Define as rotas de manipulação de pedidos, permitindo operações CRUD (Create, Read, Update, Delete) em pedidos.
+ * As rotas são protegidas por autenticação, sendo necessário que o usuário esteja autenticado para acessar os endpoints.
+ * 
+ * @module routes/pedidos
+ */
+
 var express = require('express');
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -6,79 +13,133 @@ var authenticate = require('../authenticate');
 
 router.use(bodyParser.json());
 
-/* GET users listing. */
+/**
+ * Rota para listar todos os pedidos ou criar um novo pedido.
+ * 
+ * @name GET /pedidos
+ * @function
+ * @memberof module:routes/pedidos
+ * @param {Object} req - O objeto de requisição HTTP.
+ * @param {Object} res - O objeto de resposta HTTP.
+ * @param {Function} next - Função de callback para o próximo middleware.
+ * @returns {void} Retorna todos os pedidos ou uma mensagem de erro.
+ */
 router.route('/')
-.get(authenticate.verifyUser, async (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  try {
-    const pedido = await Pedidos.find({});
-    res.statusCode = 200;
-    res.json(pedido);
-  } catch(err) {
-      console.log(err)
-      res.statusCode = 404;
-      res.json({});
-  };
-})
-.post(authenticate.verifyUser, async (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  try {
-    const pedido = await Pedidos.create(req.body);
-    res.statusCode = 200;
-    res.json(pedido);
-  } catch(err) {
-      console.log(err)
-      res.statusCode = 404;
-      res.json({});
-  };
-});
-
-router.route('/:id')
-.get(authenticate.verifyUser, async (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  try {
-    const pedido = await Pedidos.findById(req.params.id);
-    if (pedido != null) {
+  .get(authenticate.verifyUser, async (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    try {
+      const pedido = await Pedidos.find({});
       res.statusCode = 200;
       res.json(pedido);
-    } else {
-      let err = {};
+    } catch (err) {
+      console.log(err);
       res.statusCode = 404;
-      res.json(err);
+      res.json({});
     }
-  } catch(err) {
-      console.log(err)
+  })
+  /**
+   * Rota para criar um novo pedido.
+   * 
+   * @name POST /pedidos
+   * @function
+   * @memberof module:routes/pedidos
+   * @param {Object} req - O objeto de requisição HTTP que contém os dados do novo pedido.
+   * @param {Object} res - O objeto de resposta HTTP.
+   * @param {Function} next - Função de callback para o próximo middleware.
+   * @returns {void} Retorna o pedido criado ou uma mensagem de erro.
+   */
+  .post(authenticate.verifyUser, async (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    try {
+      const pedido = await Pedidos.create(req.body);
+      res.statusCode = 200;
+      res.json(pedido);
+    } catch (err) {
+      console.log(err);
       res.statusCode = 404;
       res.json({});
-  };
-})
-.put(authenticate.verifyUser, async (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  try {
-    const pedido = await Pedidos.findByIdAndUpdate(req.params.id, {
-      $set: req.body
-    }, {
-      new: true
-    })
-    res.statusCode = 200;
-    res.json(pedido);
-  } catch(err) {
-      console.log(err)
+    }
+  });
+
+/**
+ * Rota para acessar, atualizar ou excluir um pedido específico.
+ * 
+ * @name GET /pedidos/:id
+ * @function
+ * @memberof module:routes/pedidos
+ * @param {Object} req - O objeto de requisição HTTP.
+ * @param {Object} res - O objeto de resposta HTTP.
+ * @param {Function} next - Função de callback para o próximo middleware.
+ * @returns {void} Retorna o pedido encontrado ou uma mensagem de erro.
+ */
+router.route('/:id')
+  .get(authenticate.verifyUser, async (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    try {
+      const pedido = await Pedidos.findById(req.params.id);
+      if (pedido != null) {
+        res.statusCode = 200;
+        res.json(pedido);
+      } else {
+        let err = {};
+        res.statusCode = 404;
+        res.json(err);
+      }
+    } catch (err) {
+      console.log(err);
       res.statusCode = 404;
       res.json({});
-  };
-})
-.delete(authenticate.verifyUser, async (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  try {
-    const response = await Pedidos.findByIdAndDelete(req.params.id)
-    res.statusCode = 200;
-    res.json(response.id);
-  } catch(err) {
-      console.log(err)
+    }
+  })
+  /**
+   * Rota para atualizar um pedido específico.
+   * 
+   * @name PUT /pedidos/:id
+   * @function
+   * @memberof module:routes/pedidos
+   * @param {Object} req - O objeto de requisição HTTP que contém os dados do pedido a ser atualizado.
+   * @param {Object} res - O objeto de resposta HTTP.
+   * @param {Function} next - Função de callback para o próximo middleware.
+   * @returns {void} Retorna o pedido atualizado ou uma mensagem de erro.
+   */
+  .put(authenticate.verifyUser, async (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    try {
+      const pedido = await Pedidos.findByIdAndUpdate(req.params.id, {
+        $set: req.body
+      }, {
+        new: true
+      });
+      res.statusCode = 200;
+      res.json(pedido);
+    } catch (err) {
+      console.log(err);
       res.statusCode = 404;
       res.json({});
-  }
-});
+    }
+  })
+  /**
+   * Rota para excluir um pedido específico.
+   * 
+   * @name DELETE /pedidos/:id
+   * @function
+   * @memberof module:routes/pedidos
+   * @param {Object} req - O objeto de requisição HTTP.
+   * @param {Object} res - O objeto de resposta HTTP.
+   * @param {Function} next - Função de callback para o próximo middleware.
+   * @returns {void} Retorna o id do pedido excluído ou uma mensagem de erro.
+   */
+  .delete(authenticate.verifyUser, async (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    try {
+      const response = await Pedidos.findByIdAndDelete(req.params.id);
+      res.statusCode = 200;
+      res.json(response.id);
+    } catch (err) {
+      console.log(err);
+      res.statusCode = 404;
+      res.json({});
+    }
+  });
 
 module.exports = router;
