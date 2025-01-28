@@ -1,10 +1,21 @@
+/**
+ * Exibe as avaliações recebidas e enviadas pelo usuário logado.
+ * @module menu/Reviews
+ */
 import React from "react";
-import { useDispatch, useSelector } from "react-redux"
-import { fetchReviews, selectAllReviews } from "../slices/ReviewsSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews, selectAllReviews } from "../slices/ReviewsSlice";
 import ReviewCard from "./ReviewCard";
 import { useEffect } from "react";
 import ReviewCardOwn from "./ReviewCardOwn";
 
+/**
+ * Componente que exibe todas as avaliações recebidas e enviadas pelo usuário logado.
+ * As avaliações são divididas em duas categorias: "Recebidas" e "Enviadas".
+ *
+ * @component
+ * @returns {JSX.Element} O componente que renderiza as avaliações recebidas e enviadas.
+ */
 export default function Reviews() {
 
     const reviews = useSelector(selectAllReviews);
@@ -22,10 +33,12 @@ export default function Reviews() {
         }
     }, [status, dispatch]);
 
+    // Filtra as avaliações recebidas pelo vendedor
     const filteredReviews = reviews.filter(review => {
         return review.seller === seller;
     });
 
+    // Filtra as avaliações enviadas pelo comprador
     const filteredReviewsOwn = reviews.filter(review => {
         return review.buyer === seller;
     });
@@ -33,6 +46,7 @@ export default function Reviews() {
     let showReviews = null;
     let showReviewsOwn = null;
 
+    // Renderiza as avaliações de acordo com o status
     if (status === "loaded") {
         showReviews = filteredReviews.map(review => ( <ReviewCard key={review.id} review={review}/> ));
         if (showReviews.length <= 0) {

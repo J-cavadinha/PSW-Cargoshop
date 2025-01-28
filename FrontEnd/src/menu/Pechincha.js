@@ -1,9 +1,20 @@
+/**
+ * Exibe as pechinchas feitas e recebidas pelo comprador.
+ * @module menu/Pechincha
+ */
 import { useEffect, React } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PechinchaCard from '../main/PechinchaCard';
 import PechinchaCardOwn from '../main/PechinchaCardOwn';
 import { selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice';
 
+/**
+ * Componente que renderiza as pechinchas feitas e recebidas pelo comprador logado.
+ * As pechinchas feitas pelo comprador são listadas em uma seção, e as recebidas são listadas em outra.
+ * 
+ * @component
+ * @returns {JSX.Element} O componente que exibe as pechinchas do comprador.
+ */
 export default function Pechincha() {
 
   const pechinchas = useSelector(selectAllPechinchas);
@@ -13,6 +24,11 @@ export default function Pechincha() {
 
   const dispatch = useDispatch();
 
+  /**
+   * Realiza a busca pelas pechinchas sempre que o status mudar.
+   * 
+   * @effect
+   */
   useEffect(() => {
       if (status === "not_loaded" || status === "saved" || status === "deleted") {
           dispatch(fetchPechinchas());
@@ -21,19 +37,33 @@ export default function Pechincha() {
       }
   }, [status, dispatch]);
 
-  // Filtrando as pechinchas feitas pelo comprador
+  /**
+   * Filtra as pechinchas feitas pelo comprador e que ainda não foram aceitas.
+   * 
+   * @returns {Array} Lista de pechinchas feitas pelo comprador.
+   */
   const filteredPechinchas = pechinchas.filter(pechincha => {
-    return pechincha.buyer === buyer && pechincha.pstatus !== 'aceito'; // Excluindo as pechinchas aceitas
+    return pechincha.buyer === buyer && pechincha.pstatus !== 'aceito'; // Exclui as pechinchas aceitas
   });
 
-  // Filtrando as pechinchas recebidas pelo vendedor
+  /**
+   * Filtra as pechinchas recebidas pelo vendedor e que ainda não foram aceitas.
+   * 
+   * @returns {Array} Lista de pechinchas recebidas pelo comprador.
+   */
   const filteredPechinchasOwn = pechinchas.filter(pechincha => {
-    return pechincha.seller === buyer && pechincha.pstatus !== 'aceito'; // Excluindo as pechinchas aceitas
+    return pechincha.seller === buyer && pechincha.pstatus !== 'aceito'; // Exclui as pechinchas aceitas
   });
 
   let pechinchasShow = null;
   let pechinchasOwnShow = null;
 
+  /**
+   * Condicionalmente exibe o conteúdo com base no status das pechinchas.
+   * - Se "loaded", exibe as pechinchas feitas e recebidas.
+   * - Se "loading", exibe uma mensagem de carregamento.
+   * - Se "failed", exibe uma mensagem de erro.
+   */
   if (status === "loaded") {
     pechinchasShow = filteredPechinchas.length > 0 ? filteredPechinchas.map(pechincha => (
       <PechinchaCard key={pechincha.id} pechincha={pechincha} />
@@ -50,6 +80,11 @@ export default function Pechincha() {
     pechinchasOwnShow = <div>Erro: {error}</div>;
   }
 
+  /**
+   * Retorna o JSX que exibe as pechinchas feitas e recebidas, incluindo o título das seções.
+   * 
+   * @returns {JSX.Element} O JSX que renderiza as seções de pechinchas feitas e recebidas.
+   */
   return (
     <div>
       <br />

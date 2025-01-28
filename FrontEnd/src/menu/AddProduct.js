@@ -1,3 +1,7 @@
+/**
+ * Formulário para adicionar ou editar um produto.
+ * @module menu/AddProduct
+ */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductServer, selectProductsById, updateProductServer } from '../slices/ProductsSlice';
@@ -6,33 +10,60 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { productSchema } from './ProductSchema';
 
+/**
+ * Componente `ProductForm` permite a adição ou edição de produtos.
+ * Exibe um formulário com campos como nome, descrição, preço, categoria e imagem do produto.
+ * O comportamento do formulário é alterado dependendo se um produto está sendo editado ou adicionado.
+ * 
+ * @component
+ * 
+ * @returns {JSX.Element} O formulário para adicionar ou editar um produto.
+ */
 function ProductForm() {
+    /** ID do produto extraído dos parâmetros da URL */
     let { id } = useParams();
 
+    /** Produto encontrado, obtido do Redux */
     const productFound = useSelector(state => selectProductsById(state, id));
+
+    /** Nome do vendedor, obtido do estado de login */
     const seller = useSelector(state => state.logins.username);
+
+    /** Função para despachar ações do Redux */
     const dispatch = useDispatch();
+
+    /** Função para navegação entre páginas */
     const navigate = useNavigate();
+
+    /** Token de autenticação do usuário, obtido do estado de login */
     const token = useSelector(state => state.logins.token);
 
-    const [actionType] = useState(
-        id ? productFound ? 'update' : 'add' : 'add'
-    );
+    /** Estado para determinar se a ação é de 'adicionar' ou 'editar' */
+    const [actionType] = useState(id ? (productFound ? 'update' : 'add') : 'add');
 
+    /** Hook de formulários com validação do Yup */
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(productSchema)
     });
 
+    /** Estado inicial do produto ou valor padrão do schema */
     const [productOnLoad] = useState(
         id ? productFound ?? productSchema.cast({}) : productSchema.cast({})
     );
 
+    /**
+     * Função chamada quando o formulário é submetido.
+     * Realiza o upload da imagem e despacha a ação de adicionar ou atualizar o produto no servidor.
+     * 
+     * @param {Object} product - Dados do produto com informações como nome, descrição, preço, categoria e imagem.
+     */
     async function onSubmit(product) {
         product.seller = seller;
 
         let flag = false;
         let uploadData;
 
+        /** Se houver imagem, realiza o upload */
         if (product.image && product.image.length > 0) {
             const formData = new FormData();
             formData.append('imageFile', product.image[0]);
@@ -58,10 +89,12 @@ function ProductForm() {
             }
         }
 
+        /** Se a imagem foi carregada, atualiza a URL da imagem */
         if (flag) {
             product.image = `http://localhost:3004/images/${uploadData.filename}`;
         }
 
+        /** Ação para adicionar ou atualizar o produto */
         if (actionType === "add") {
             if (!flag) {
                 product.image = `http://localhost:3004/images/template.png`;
@@ -74,14 +107,15 @@ function ProductForm() {
             dispatch(updateProductServer({ ...product, id: productFound.id }));
         }
 
+        /** Navega para a página principal após a operação */
         navigate('/');
     };
 
     return (
         <div className="container">
-            <br/>
+            <br />
             <div className="text-center"><h1>Produto</h1></div>
-            <br/>
+            <br />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Nome</label>
@@ -126,7 +160,7 @@ function ProductForm() {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="category" className="form-label">Categoria</label>
- <select
+                    <select
                         className="form-select"
                         id="category"
                         defaultValue={productOnLoad.category}

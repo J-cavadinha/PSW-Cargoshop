@@ -1,38 +1,55 @@
-import { useDispatch, useSelector } from "react-redux"
-import { selectAllPedidos } from "../slices/PedidoSlice"
+/**
+ * Componente funcional que exibe as vendas realizadas por um vendedor.
+ * 
+ * Este componente utiliza os dados de pedidos (vendas) filtrados pelo vendedor logado
+ * e exibe um cartão com as informações de cada venda. O componente também faz a requisição
+ * das avaliações feitas pelos compradores para garantir que as avaliações estão atualizadas.
+ * 
+ * @module menu/Sales
+ * @returns {JSX.Element} - Retorna o JSX para exibir as vendas realizadas pelo vendedor.
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllPedidos } from "../slices/PedidoSlice";
 import SaleCard from "./SaleCard";
 import { useEffect } from "react";
 import { fetchReviews } from "../slices/ReviewsSlice";
 
 export default function Sales() {
-    const orders = useSelector(selectAllPedidos);
+    const orders = useSelector(selectAllPedidos); // Obtém todos os pedidos (vendas) do estado global.
 
-    const dispatch = useDispatch();
-    const status = useSelector(state => state.reviews.status);
-    const error =  useSelector(state => state.reviews.error);
-    const seller = useSelector(state => state.logins.username);
+    const dispatch = useDispatch(); // Função de despacho para disparar ações Redux.
+    const status = useSelector(state => state.reviews.status); // Status da requisição de avaliações.
+    const error = useSelector(state => state.reviews.error); // Erro, caso a requisição falhe.
+    const seller = useSelector(state => state.logins.username); // Nome do vendedor logado.
 
     useEffect(() => {
+        // Quando as avaliações não foram carregadas, estão salvas ou foram excluídas, realiza o fetch.
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchReviews());
         } else if (status === "failed") {
+            // Se a requisição falhou, tenta novamente após 5 segundos.
             setTimeout(() => dispatch(fetchReviews()), 5000);
         }
     }, [status, dispatch]);
 
+    // Filtra os pedidos para exibir apenas os realizados pelo vendedor logado.
     const filteredOrders = orders.filter(order => {
         return order.NomeVendedor === seller;
     });
 
     let sales = null;
     if (status === "loaded") {
+        // Se as avaliações foram carregadas com sucesso, exibe os cartões de venda.
         sales = filteredOrders.map(order => (<SaleCard key={order.id} order={order}/>));
         if (sales.length <= 0) {
+            // Caso não haja vendas para exibir.
             sales = <div>Nenhuma venda encontrada</div>
         }
     } else if (status === "loading") {
+        // Caso as avaliações ainda estejam sendo carregadas.
         sales = <div>Carregando as vendas...</div>;
     } else if (status === "failed") {
+        // Caso haja um erro ao carregar as avaliações.
         sales = <div>Erro: {error}</div>
     }
 

@@ -1,4 +1,21 @@
-import React from 'react'; 
+/**
+ * Componente funcional que exibe informações sobre uma venda.
+ * 
+ * Este componente recebe os detalhes de uma venda via `props` e exibe essas informações dentro de um cartão.
+ * Ele é usado para representar as vendas realizadas por um usuário no sistema.
+ * 
+ * @module menu/SaleCard
+ * @param {Object} props - As propriedades recebidas pelo componente.
+ * @param {Object} props.order - Objeto contendo as informações sobre a venda.
+ * @param {string} props.order.image - URL da imagem do produto.
+ * @param {string} props.order.name - Nome do produto.
+ * @param {number} props.order.price - Preço total do produto.
+ * @param {string} props.order.NomeVendedor - Nome do vendedor.
+ * @param {string} props.order.endereco - Endereço relacionado à venda.
+ * 
+ * @returns {JSX.Element} - Retorna o JSX para exibir as informações da venda.
+ */
+import React from 'react';
 
 export default function SaleCard({ order }) {
 
