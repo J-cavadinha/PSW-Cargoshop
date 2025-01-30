@@ -140,7 +140,6 @@ export default function PechinchaCard({ pechincha }) {
       endereco: '',
     };
     navigate(`/pagamentosCard/${productFound.id}`, { state: novoPagamento });
-    dispatch(removePechinchaServer(pechincha.id));
   };
 
   return (
