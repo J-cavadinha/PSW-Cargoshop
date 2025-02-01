@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import PechinchaCard from '../main/PechinchaCard';
 import PechinchaCardOwn from '../main/PechinchaCardOwn';
 import { selectAllPechinchas, fetchPechinchas } from '../slices/PechinchaSlice';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 /**
  * Componente que renderiza as pechinchas feitas e recebidas pelo comprador logado.
@@ -33,9 +36,20 @@ export default function Pechincha() {
       if (status === "not_loaded" || status === "saved" || status === "deleted") {
           dispatch(fetchPechinchas());
       } else if (status === "failed") {
-          setTimeout(() => dispatch(fetchPechinchas()), 5000);
+          setTimeout(() => dispatch(fetchPechinchas()), 1000);
       }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    socket.on('pechinchaUpdated', (data) => {
+
+        dispatch(fetchPechinchas());
+        });
+
+        return () => {
+            socket.off('pechinchaUpdated');
+        };
+    }, [dispatch]);
 
   /**
    * Filtra as pechinchas feitas pelo comprador e que ainda não foram aceitas.

@@ -9,28 +9,40 @@
  * @returns {JSX.Element} - Retorna o JSX para exibir as vendas realizadas pelo vendedor.
  */
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllPedidos } from "../slices/PedidoSlice";
+import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice";
 import SaleCard from "./SaleCard";
 import { useEffect } from "react";
-import { fetchReviews } from "../slices/ReviewsSlice";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 export default function Sales() {
     const orders = useSelector(selectAllPedidos); // Obtém todos os pedidos (vendas) do estado global.
 
     const dispatch = useDispatch(); // Função de despacho para disparar ações Redux.
-    const status = useSelector(state => state.reviews.status); // Status da requisição de avaliações.
-    const error = useSelector(state => state.reviews.error); // Erro, caso a requisição falhe.
+    const status = useSelector(state => state.pedidos.status); // Status da requisição de avaliações.
+    const error = useSelector(state => state.pedidos.error); // Erro, caso a requisição falhe.
     const seller = useSelector(state => state.logins.username); // Nome do vendedor logado.
 
     useEffect(() => {
         // Quando as avaliações não foram carregadas, estão salvas ou foram excluídas, realiza o fetch.
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
-            dispatch(fetchReviews());
+            dispatch(fetchPedidos());
         } else if (status === "failed") {
-            // Se a requisição falhou, tenta novamente após 5 segundos.
-            setTimeout(() => dispatch(fetchReviews()), 5000);
+            // Se a requisição falhou, tenta novamente após 1 segundo.
+            setTimeout(() => dispatch(fetchPedidos()), 1000);
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+            socket.on('pedidoUpdated', (data) => {
+                dispatch(fetchPedidos());
+                });
+        
+                return () => {
+                    socket.off('pedidoUpdated');
+                };
+        }, [dispatch]);
 
     // Filtra os pedidos para exibir apenas os realizados pelo vendedor logado.
     const filteredOrders = orders.filter(order => {
@@ -38,7 +50,7 @@ export default function Sales() {
     });
 
     let sales = null;
-    if (status === "loaded") {
+    if (status === "succeeded") {
         // Se as avaliações foram carregadas com sucesso, exibe os cartões de venda.
         sales = filteredOrders.map(order => (<SaleCard key={order.id} order={order}/>));
         if (sales.length <= 0) {

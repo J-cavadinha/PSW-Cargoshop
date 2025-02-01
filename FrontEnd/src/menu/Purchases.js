@@ -3,10 +3,13 @@
  * @module menu/Purchases
  */
 import { useDispatch, useSelector } from "react-redux"
-import { selectAllPedidos } from "../slices/PedidoSlice"
+import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice"
 import PurchaseCard from "./PurchaseCard";
 import { fetchReviews } from "../slices/ReviewsSlice";
 import { useEffect } from "react";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 /**
  * Utiliza o Redux para gerenciar o estado das compras do vendedor logado e exibe essas compras
@@ -31,11 +34,24 @@ export default function Purchases() {
      */
     useEffect(() => {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
+            dispatch(fetchPedidos());
             dispatch(fetchReviews());
         } else if (status === "failed") {
-            setTimeout(() => dispatch(fetchReviews()), 5000);
+            setTimeout(() => dispatch(fetchPedidos()), 1000);
+            setTimeout(() => dispatch(fetchReviews()), 1000);
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+            socket.on('pedidoUpdated', (data) => {
+                dispatch(fetchPedidos());
+                dispatch(fetchReviews());
+                });
+        
+                return () => {
+                    socket.off('pedidoUpdated');
+                };
+        }, [dispatch]);
 
     /**
      * Filtra as compras para exibir apenas aquelas feitas pelo vendedor logado.

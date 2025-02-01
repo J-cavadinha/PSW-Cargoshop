@@ -10,6 +10,9 @@ var router = express.Router();
 const bodyParser = require('body-parser');
 const Pedidos = require('../models/pedidos');
 var authenticate = require('../authenticate');
+const { getIo } = require('../socket');
+
+const io = getIo();
 
 router.use(bodyParser.json());
 
@@ -52,6 +55,7 @@ router.route('/')
     res.setHeader('Content-Type', 'application/json');
     try {
       const pedido = await Pedidos.create(req.body);
+      io.emit('pedidoUpdated');
       res.statusCode = 200;
       res.json(pedido);
     } catch (err) {
@@ -110,6 +114,7 @@ router.route('/:id')
       }, {
         new: true
       });
+      io.emit('pedidoUpdated');
       res.statusCode = 200;
       res.json(pedido);
     } catch (err) {
@@ -133,6 +138,7 @@ router.route('/:id')
     res.setHeader('Content-Type', 'application/json');
     try {
       const response = await Pedidos.findByIdAndDelete(req.params.id);
+      io.emit('pedidoUpdated');
       res.statusCode = 200;
       res.json(response.id);
     } catch (err) {

@@ -10,6 +10,9 @@ var router = express.Router();
 const bodyParser = require('body-parser');
 const Reviews = require('../models/reviews');
 var authenticate = require('../authenticate');
+const { getIo } = require('../socket');
+
+const io = getIo();
 
 router.use(bodyParser.json());
 
@@ -52,6 +55,7 @@ router.route('/')
     res.setHeader('Content-Type', 'application/json');
     try {
       const review = await Reviews.create(req.body);
+      io.emit('reviewUpdated');
       res.statusCode = 200;
       res.json(review);
     } catch (err) {
@@ -110,6 +114,7 @@ router.route('/:id')
       }, {
         new: true
       });
+      io.emit('reviewUpdated');
       res.statusCode = 200;
       res.json(review);
     } catch (err) {
@@ -133,7 +138,7 @@ router.route('/:id')
     res.setHeader('Content-Type', 'application/json');
     try {
       const response = await Reviews.findByIdAndDelete(req.params.id);
-      console.log(response);
+      io.emit('reviewUpdated');
       res.statusCode = 200;
       res.json(response);
     } catch (err) {

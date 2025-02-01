@@ -14,6 +14,9 @@ import ProductCard from './ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 export default function MyProducts() {
     // Obtenção dos produtos e status do Redux
@@ -29,9 +32,19 @@ export default function MyProducts() {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchProducts()); // Buscar produtos se necessário
         } else if (status === "failed") {
-            setTimeout(() => dispatch(fetchProducts()), 5000); // Tentar novamente após erro
+            setTimeout(() => dispatch(fetchProducts()), 1000); // Tentar novamente após erro
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+            socket.on('productUpdated', (data) => {
+                dispatch(fetchProducts());
+                });
+        
+                return () => {
+                    socket.off('productUpdated');
+                };
+        }, [dispatch]);
 
     // Filtra os produtos do vendedor logado
     const filteredProducts = products.filter(product => {

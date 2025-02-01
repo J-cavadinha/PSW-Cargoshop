@@ -8,6 +8,9 @@ import { fetchReviews, selectAllReviews } from "../slices/ReviewsSlice";
 import ReviewCard from "./ReviewCard";
 import { useEffect } from "react";
 import ReviewCardOwn from "./ReviewCardOwn";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 /**
  * Componente que exibe todas as avaliações recebidas e enviadas pelo usuário logado.
@@ -29,9 +32,19 @@ export default function Reviews() {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchReviews());
         } else if (status === "failed") {
-            setTimeout(() => dispatch(fetchReviews()), 5000);
+            setTimeout(() => dispatch(fetchReviews()), 1000);
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+            socket.on('reviewUpdated', (data) => {
+                dispatch(fetchReviews());
+                });
+        
+                return () => {
+                    socket.off('reviewUpdated');
+                };
+        }, [dispatch]);
 
     // Filtra as avaliações recebidas pelo vendedor
     const filteredReviews = reviews.filter(review => {

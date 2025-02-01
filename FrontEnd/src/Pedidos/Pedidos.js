@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PedidosCard from './PedidosCard';
 import { fetchPedidos, selectAllPedidos } from "../slices/PedidoSlice";
+import io from 'socket.io-client';
 
-
+const socket = io('http://localhost:5000');
 
 /**
  * Utiliza o Redux para gerenciar o estado dos pedidos,
@@ -27,10 +28,21 @@ export default function Pedidos() {
   useEffect(() => {
     if (status === "not_loaded" || status === "saved" || status === "deleted") {
       dispatch(fetchPedidos());
-    }else if (status === 'failed') {
-      setTimeout(() => dispatch(fetchPedidos()), 5000);    
+    } else if (status === 'failed') {
+      setTimeout(() => dispatch(fetchPedidos()), 1000);    
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+          socket.on('pedidoUpdated', (data) => {
+              dispatch(fetchPedidos());
+              });
+      
+              return () => {
+                  socket.off('pedidoUpdated');
+              };
+      }, [dispatch]);
+
   const filteredPedidos = pedidos.filter(pedido => {
     return pedido.comprador === buyer;
   });

@@ -8,6 +8,9 @@ import ProductCardAdmin from './ProductCardAdmin';
 import CategoryCard from './CategoryCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, selectAllProducts } from '../slices/ProductsSlice';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 /**
  * Componente `MainPage` exibe a página principal com uma lista de produtos filtráveis por nome e categoria.
@@ -67,9 +70,19 @@ export default function MainPage() {
         if (status === "not_loaded" || status === "saved" || status === "deleted") {
             dispatch(fetchProducts());
         } else if (status === "failed") {
-            setTimeout(() => dispatch(fetchProducts()), 5000);
+            setTimeout(() => dispatch(fetchProducts()), 1000);
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+        socket.on('productUpdated', (data) => {
+            dispatch(fetchProducts());
+            });
+    
+            return () => {
+                socket.off('productUpdated');
+            };
+    }, [dispatch]);
 
     /** Filtra os produtos com base no termo de busca e na categoria selecionada */
     const filteredProducts = products.filter(product => {

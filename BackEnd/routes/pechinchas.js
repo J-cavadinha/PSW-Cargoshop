@@ -10,6 +10,9 @@ var router = express.Router();
 const bodyParser = require('body-parser');
 const Pechinchas = require('../models/pechinchas');
 var authenticate = require('../authenticate');
+const { getIo } = require('../socket');
+
+const io = getIo();
 
 router.use(bodyParser.json());
 
@@ -52,6 +55,7 @@ router.route('/')
     res.setHeader('Content-Type', 'application/json');
     try {
       const pechincha = await Pechinchas.create(req.body);
+      io.emit('pechinchaUpdated');
       res.statusCode = 200;
       res.json(pechincha);
     } catch (err) {
@@ -110,6 +114,7 @@ router.route('/:id')
       }, {
         new: true
       });
+      io.emit('pechinchaUpdated');
       res.statusCode = 200;
       res.json(pechincha);
     } catch (err) {
@@ -133,6 +138,7 @@ router.route('/:id')
     res.setHeader('Content-Type', 'application/json');
     try {
       const response = await Pechinchas.findByIdAndDelete(req.params.id);
+      io.emit('pechinchaUpdated');
       res.statusCode = 200;
       res.json(response.id);
     } catch (err) {

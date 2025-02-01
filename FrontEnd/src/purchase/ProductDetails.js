@@ -11,6 +11,9 @@ import { addPechinchaServer, selectAllPechinchas, fetchPechinchas } from "../sli
 import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 /**
  * Componente que exibe os detalhes de um produto e gerencia a funcionalidade de pechinchar e finalizar compra.
@@ -38,9 +41,19 @@ export default function ProductDetails() {
         if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
             dispatch(fetchPechinchas());
         } else if (status === 'failed') {
-            setTimeout(() => dispatch(fetchPechinchas()), 5000);    
+            setTimeout(() => dispatch(fetchPechinchas()), 1000);    
         }
     }, [status, dispatch]);
+
+    useEffect(() => {
+            socket.on('pechinchaUpdated', (data) => {
+                dispatch(fetchPechinchas());
+                });
+        
+                return () => {
+                    socket.off('pechinchaUpdated');
+                };
+        }, [dispatch]);
 
     const [notificacao] = useState(''); // Notificação opcional para o usuário.
     const [message, setMessage] = useState(''); // Mensagem de feedback ao usuário.

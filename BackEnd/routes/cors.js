@@ -15,7 +15,7 @@ const cors = require('cors');
  * 
  * @constant {string[]} whitelist
  */
-const whitelist = ['http://localhost:3000', 'https://localhost:3443', 'http://localhost:3004'];
+const whitelist = ['http://localhost:3000', 'https://localhost:3443', 'http://localhost:3004', 'http://localhost:5000'];
 
 /**
  * Função de delegação que configura as opções de CORS com base na origem da requisição.
