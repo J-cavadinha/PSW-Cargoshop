@@ -27,13 +27,17 @@ export default function Pechincha() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+          dispatch(fetchPechinchas());
+      }, [dispatch]);
+
   /**
    * Realiza a busca pelas pechinchas sempre que o status mudar.
    * 
    * @effect
    */
   useEffect(() => {
-      if (status === "not_loaded" || status === "saved" || status === "deleted") {
+      if (status === "not_loaded") {
           dispatch(fetchPechinchas());
       } else if (status === "failed") {
           setTimeout(() => dispatch(fetchPechinchas()), 1000);
@@ -57,7 +61,7 @@ export default function Pechincha() {
    * @returns {Array} Lista de pechinchas feitas pelo comprador.
    */
   const filteredPechinchas = pechinchas.filter(pechincha => {
-    return pechincha.buyer === buyer && pechincha.pstatus !== 'aceito'; // Exclui as pechinchas aceitas
+    return pechincha.buyer === buyer; // Exclui as pechinchas aceitas
   });
 
   /**
@@ -66,7 +70,7 @@ export default function Pechincha() {
    * @returns {Array} Lista de pechinchas recebidas pelo comprador.
    */
   const filteredPechinchasOwn = pechinchas.filter(pechincha => {
-    return pechincha.seller === buyer && pechincha.pstatus !== 'aceito'; // Exclui as pechinchas aceitas
+    return pechincha.seller === buyer; // Exclui as pechinchas aceitas
   });
 
   let pechinchasShow = null;

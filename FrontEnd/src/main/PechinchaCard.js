@@ -2,10 +2,10 @@
  * Exibe as informações de uma pechincha e oferece ações de cancelar ou editar.
  * @module main/PechinchaCard
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPechinchas, removePechinchaServer, updatePechinchaServer, selectPechinchasById } from '../slices/PechinchaSlice';
+import { removePechinchaServer, updatePechinchaServer, selectPechinchasById } from '../slices/PechinchaSlice';
 import { selectProductsById } from '../slices/ProductsSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useParams } from 'react-router-dom';
@@ -28,9 +28,6 @@ export default function PechinchaCard({ pechincha }) {
   /** ID da pechincha extraído dos parâmetros da URL */
   let { id } = useParams();
   
-  /** Estado de status das pechinchas, obtido do Redux */
-  const status = useSelector(state => state.pechinchas.status);
-  
   /** Detalhes da pechincha encontrada pelo ID */
   const pechinchaFound = useSelector(state => selectPechinchasById(state, id));
   
@@ -45,19 +42,6 @@ export default function PechinchaCard({ pechincha }) {
 
   /** Função para despachar ações do Redux */
   const dispatch = useDispatch();
-
-  /**
-   * Efeito colateral para carregar as pechinchas dependendo do status.
-   * Realiza o fetch de pechinchas quando o status é 'not_loaded', 'saved', ou 'deleted'.
-   * Tenta novamente em 5 segundos se o status for 'failed'.
-   */
-  useEffect(() => {
-    if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
-      dispatch(fetchPechinchas());
-    } else if (status === 'failed') {
-      setTimeout(() => dispatch(fetchPechinchas()), 5000);
-    }
-  }, [status, dispatch]);
 
   /** Controle de exibição de modais */
   const [showCancelModal, setShowCancelModal] = useState(false);

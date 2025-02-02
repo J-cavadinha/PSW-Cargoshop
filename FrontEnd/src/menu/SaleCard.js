@@ -31,7 +31,7 @@ export default function SaleCard({ order }) {
         <div className="card-body">
           <h5 className="card-title">{order.name}</h5>
           <p className="card-text">Valor Total: R$ {order.price}</p>
-          <p className="card-text">Vendedor: {order.NomeVendedor}</p>
+          <p className="card-text">Comprador: {order.comprador}</p>
           <p className="card-text">Endereço: {order.endereco}</p>
         </div>
       </div>

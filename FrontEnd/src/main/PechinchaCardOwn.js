@@ -2,9 +2,9 @@
  * Componente `PechinchaCard` exibe um card com as informações de uma pechincha.
  * @module main/PechinchaCardOwn
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPechinchas, selectPechinchasById, updatePechinchaServer, removePechinchaServer } from '../slices/PechinchaSlice';
+import { selectPechinchasById, updatePechinchaServer, removePechinchaServer } from '../slices/PechinchaSlice';
 import { selectProductsById} from '../slices/ProductsSlice';
 import '../PechinchaCard.css';
 
@@ -20,39 +20,12 @@ import '../PechinchaCard.css';
  * @returns {JSX.Element} Um card contendo as informações da pechincha e botões de ação.
  */
 export default function PechinchaCard({ id }) {
-  /** Estado de status das pechinchas, obtido do Redux */
-  const status = useSelector(state => state.pechinchas.status);
   /** Detalhes da pechincha selecionada, obtido pelo ID */
   const pechincha = useSelector(state => selectPechinchasById(state, id));
   /** Detalhes do produto associado à pechincha */
   const productFound = useSelector(state => selectProductsById(state, pechincha.idProduct));
   /** Função para despachar ações do Redux */
   const dispatch = useDispatch();
-
-  /**
-   * Efeito colateral para carregar as pechinchas dependendo do status.
-   * Realiza o fetch de pechinchas quando o status é 'not_loaded', 'saved', ou 'deleted'.
-   * Tenta novamente em 5 segundos se o status for 'failed'.
-   */
-  useEffect(() => {
-    if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
-      dispatch(fetchPechinchas());
-    } else if (status === 'failed') {
-      setTimeout(() => dispatch(fetchPechinchas()), 5000);    
-    }
-  }, [status, dispatch]);
-
-  /**
-   * Efeito colateral adicional que recarrega as pechinchas quando o status muda para 'aceita', 'saved', ou 'deleted'.
-   * Também tenta novamente em 5 segundos se o status for 'failed'.
-   */
-  useEffect(() => {
-    if (status === "aceita" || status === 'saved' || status === 'deleted') {
-      dispatch(fetchPechinchas());
-    } else if (status === 'failed') {
-      setTimeout(() => dispatch(fetchPechinchas()), 5000);    
-    }
-  }, [status, dispatch]);
 
   /**
    * Função chamada quando o usuário clica para confirmar a pechincha.

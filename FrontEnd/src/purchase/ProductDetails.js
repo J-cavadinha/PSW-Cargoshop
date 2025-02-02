@@ -5,13 +5,14 @@
  * @module purchase/ProductDetails
  */
 import { useLocation, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addPechinchaServer, selectAllPechinchas, fetchPechinchas } from "../slices/PechinchaSlice";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { pechinchaSchema } from '../menu/PechinchaSchema';
 import { useForm } from 'react-hook-form';
 import io from 'socket.io-client';
+import { selectProductsById } from "../slices/ProductsSlice";
 
 const socket = io('http://localhost:5000');
 
@@ -38,7 +39,11 @@ export default function ProductDetails() {
     const pechinchas = useSelector(selectAllPechinchas);
 
     useEffect(() => {
-        if (status === "not_loaded" || status === 'saved' || status === 'deleted') {
+            dispatch(fetchPechinchas());
+        }, [dispatch]);
+
+    useEffect(() => {
+        if (status === "not_loaded") {
             dispatch(fetchPechinchas());
         } else if (status === 'failed') {
             setTimeout(() => dispatch(fetchPechinchas()), 1000);    
@@ -68,6 +73,48 @@ export default function ProductDetails() {
      * @type {Object|undefined}
      */
     const pechinchaFound = pechinchas.find(p => p.idProduct === product.id && p.buyer === buyer);
+    const productFound = useSelector(state => selectProductsById(state, pechinchaFound ? pechinchaFound.idProduct : null));
+
+    const handlepayClick = useCallback(() => {
+        if (productFound && pechinchaFound) {
+            const novoPagamento = {
+                idProduto: productFound.id,
+                name: productFound.name,
+                image: productFound.image,
+                price: pechinchaFound.descount,
+                NomeVendedor: productFound.seller,
+                comprador: buyer,
+                status: 'Finalizado',
+                endereco: '',
+            };
+            navigate(`/pagamentosCard/${productFound.id}`, { state: novoPagamento });
+        }
+
+    }, [productFound, pechinchaFound, buyer, navigate]);
+    
+    const [showButton, setShowButton] = useState(null);
+
+    useEffect(() => {
+        if (!pechinchaFound) {
+            setShowButton(
+                <button className="btn btn-danger btn-lg mt-4 w-100" data-bs-toggle="collapse" data-bs-target="#valorOptions">
+                    PECHINCHAR!
+                </button>
+            );
+        } else if (pechinchaFound.status === "aceito") {
+            setShowButton(       
+                <button className="btn btn-success btn-lg mt-4 w-100" onClick={handlepayClick}>
+                    Sua pechincha foi aceita! Clique aqui para comprar
+                </button>
+            );
+        } else {
+            setShowButton(
+                <button className="btn btn-danger btn-lg mt-4 w-100" onClick={() => navigate("/pechinchas")}>
+                    Você já possui uma pechincha neste produto!
+                </button>
+            );
+        }
+    }, [pechinchaFound, navigate, handlepayClick]);
 
     /**
      * Função para confirmar o valor da pechincha e enviá-la ao servidor.
@@ -82,11 +129,6 @@ export default function ProductDetails() {
             buyer: buyer,
             status: 'pendente'
         };
-
-        if (pechinchaFound) {
-            setMessage('Já existe uma pechincha para este produto! Você pode alterá-la na página de pechinchas.');
-            return; 
-        }
         
         setMessage('Pechincha enviada!');
         dispatch(addPechinchaServer(pechincha));
@@ -128,10 +170,7 @@ export default function ProductDetails() {
                 <div id="product-seller">Vendido por: {product.seller}</div>
                 <br/>
                 <p id="product-description">{product.description}</p>
-                <button className="btn btn-danger btn-lg mt-4 w-100" data-bs-toggle="collapse" data-bs-target="#valorOptions" disabled={pechinchaFound}>
-                    {pechinchaFound ? 'Você já fez uma pechincha!' : 'PECHINCHAR!'}
-                </button>
-        
+                {showButton}
                 <div className="collapse" id="valorOptions">
                     <div className="card card-body mt-3">
                         <h5>Insira o valor da pechincha (novo valor do produto):</h5>
@@ -149,16 +188,13 @@ export default function ProductDetails() {
                                     min={0.1 * product.price}
                                     defaultValue={pechinchaFound?.descount || ''}
                                     {...register("descount")}
-                                    disabled={pechinchaFound} // Desabilita o campo se já houver pechincha
                                 />
                             </div>
                             {errors.descount && <span>{errors.descount.message}</span>}
                             <br/>
-                            {!pechinchaFound && (
-                                <button className="btn btn-danger mt-3">
-                                    Confirmar Pechincha!
-                                </button>
-                            )}
+                            <button className="btn btn-danger mt-3">
+                                Confirmar Pechincha!
+                            </button>
                             {message && (
                                 <div className="alert alert-success mt-3">
                                     {message}

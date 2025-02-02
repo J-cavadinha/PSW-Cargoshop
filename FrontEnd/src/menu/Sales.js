@@ -25,8 +25,12 @@ export default function Sales() {
     const seller = useSelector(state => state.logins.username); // Nome do vendedor logado.
 
     useEffect(() => {
+        dispatch(fetchPedidos());
+    }, [dispatch]);
+
+    useEffect(() => {
         // Quando as avaliações não foram carregadas, estão salvas ou foram excluídas, realiza o fetch.
-        if (status === "not_loaded" || status === "saved" || status === "deleted") {
+        if (status === "not_loaded") {
             dispatch(fetchPedidos());
         } else if (status === "failed") {
             // Se a requisição falhou, tenta novamente após 1 segundo.

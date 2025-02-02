@@ -27,9 +27,13 @@ export default function MyProducts() {
 
     const dispatch = useDispatch(); // Função para despachar ações do Redux
 
+    useEffect(() => {
+            dispatch(fetchProducts());
+        }, [dispatch]);
+
     // Efeito para carregar os produtos
     useEffect(() => {
-        if (status === "not_loaded" || status === "saved" || status === "deleted") {
+        if (status === "not_loaded") {
             dispatch(fetchProducts()); // Buscar produtos se necessário
         } else if (status === "failed") {
             setTimeout(() => dispatch(fetchProducts()), 1000); // Tentar novamente após erro

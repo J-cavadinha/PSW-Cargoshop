@@ -29,7 +29,11 @@ export default function Reviews() {
     const seller = useSelector(state => state.logins.username);
 
     useEffect(() => {
-        if (status === "not_loaded" || status === "saved" || status === "deleted") {
+            dispatch(fetchReviews());
+        }, [dispatch]);
+
+    useEffect(() => {
+        if (status === "not_loaded") {
             dispatch(fetchReviews());
         } else if (status === "failed") {
             setTimeout(() => dispatch(fetchReviews()), 1000);
